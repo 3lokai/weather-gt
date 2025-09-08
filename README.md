@@ -1,4 +1,25 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Weather GT
+
+A modern weather application built with Next.js 15, React 19, and TypeScript, featuring a comprehensive OKLCH-based design system.
+
+## Design System
+
+This project uses a sophisticated OKLCH color token system for consistent, accessible theming:
+
+### Color System
+- **OKLCH Color Space**: Better color consistency and accessibility than traditional RGB/HSL
+- **Light/Dark Themes**: Automatic theme switching with proper contrast ratios
+- **Weather Condition Themes**: Dynamic accent colors based on weather conditions
+- **Semantic Tokens**: Primary, secondary, accent, and semantic color scales
+
+### Key Features
+- AA contrast compliance in both light and dark modes
+- Weather-specific color theming (clear, rain, snow, cloudy, fog, thunder)
+- Comprehensive typography scale optimized for weather data display
+- Custom gradients and shadows for depth and visual hierarchy
+
+### Usage
+The design system is implemented in `src/app/globals.css` using Tailwind CSS v4's `@theme` directive. All color tokens are available as CSS custom properties and can be used throughout the application.
 
 ## Getting Started
 

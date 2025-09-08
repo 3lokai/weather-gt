@@ -1,103 +1,348 @@
-import Image from "next/image";
+'use client';
 
-export default function Home() {
+import { LottieWeatherIcon } from "@/components/icons/lottie-weather-icon";
+import WeatherLiquidEther from "@/components/background/weather-liquid-ether";
+import { ThemeToggle } from "@/components/theme-toggle/theme-toggle";
+import { ThemeToggleDemo } from "@/components/theme-toggle/theme-toggle-demo";
+import { SearchProvider } from "@/components/search";
+import { InlineSearch } from "@/components/search/inline-search";
+import { CurrentConditionsCard, CurrentConditionsDemo } from "@/components/weather";
+import { useWeatherTheme } from "@/hooks/use-weather-theme";
+import { useTheme } from "@/hooks/use-theme";
+import { useWeatherStore } from "@/lib/store/weather-store";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Separator } from "@/components/ui/separator";
+import { Icon, type CommonIconName } from "@/components/icons/phosphor-icon";
+import { Button } from "@/components/ui/button";
+
+export default function HomePage() {
+  // Demo weather condition - you can replace this with real weather data
+  const demoWeatherCode = 0; // Clear day
+  const isDay = true;
+  
+  // Get selected location from store
+  const { selectedLocation } = useWeatherStore();
+  
+  // Apply theme switching logic with weather data
+  useTheme(demoWeatherCode, isDay);
+  
+  // Apply weather theme to document
+  useWeatherTheme({
+    weatherCode: demoWeatherCode,
+    isDay: isDay,
+    applyToDocument: true
+  });
+
   return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
+    <SearchProvider>
+    <div className="min-h-screen relative bg-background transition-colors duration-300">
+      {/* Weather-themed liquid ether background */}
+      <div className="fixed inset-0 z-0 pointer-events-none">
+        {/* Atmospheric blur layers for depth */}
+        <div className="atmospheric-blur-bg glass-layer-1"></div>
+        
+        {/* Fallback background for testing theme switching */}
+        <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-secondary/5 to-accent/10 opacity-50 glass-layer-2"></div>
+        
+        <WeatherLiquidEther
+          weatherCode={demoWeatherCode}
+          isDay={isDay}
+          className="weather-liquid-ether pointer-events-auto glass-layer-3"
+          mouseForce={40}
+          cursorSize={150}
+          resolution={0.6}
+          autoDemo={true}
+          autoSpeed={0.3}
+          autoIntensity={2.5}
         />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
-
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+      </div>
+      
+      {/* Content overlay */}
+      <div className="relative z-10 bg-transparent pointer-events-none">
+      {/* Top Bar - Clean minimal navigation */}
+      <header className="glass-nav transition-colors duration-300 pointer-events-auto">
+        <div className="container mx-auto px-4 sm:px-6 py-4 sm:py-6">
+          {/* Simplified header with branding and controls */}
+          <div className="flex items-center justify-between">
+            {/* Left: Logo and Brand */}
+            <div className="flex items-center gap-2 sm:gap-3">
+              <LottieWeatherIcon code={0} isDay={true} size={28} variant="fill" speed={1.5} className="sm:w-8 sm:h-8" />
+              <h1 className="text-h3 sm:text-h1 font-display text-foreground">
+                Weather GT
+              </h1>
+            </div>
+            
+            {/* Right: Location and Controls */}
+            <div className="flex items-center gap-3 sm:gap-4">
+              {/* Current Location Display */}
+              {selectedLocation && (
+                <div className="text-right hidden sm:block">
+                  <div className="text-body-m font-medium text-foreground">
+                    {selectedLocation.name}
+                  </div>
+                  <div className="text-body-s text-muted-foreground">
+                    {[selectedLocation.admin1, selectedLocation.country].filter(Boolean).join(', ')}
+                  </div>
+                </div>
+              )}
+              <ThemeToggle />
+            </div>
+          </div>
         </div>
+      </header>
+
+      {/* Main Content */}
+      <main className="container mx-auto px-4 py-12 sm:py-16 pointer-events-auto">
+        {/* Hero Section with Search */}
+        <section className="text-center mb-16 max-w-4xl mx-auto">
+          {/* Hero Headline */}
+          <h2 className="text-display sm:text-temp-s font-display text-foreground mb-6 sm:mb-8">
+            How&apos;s the sky looking today?
+          </h2>
+          
+          {/* Search Interface */}
+          <div className="max-w-2xl mx-auto mb-8">
+            <InlineSearch placeholder="Search for a place..." />
+          </div>
+
+          {/* Subtitle */}
+          <p className="text-h4 text-muted-foreground max-w-2xl mx-auto">
+            {selectedLocation ? 
+              `Current conditions and forecast for ${selectedLocation.name}` :
+              'Get detailed weather information for any city worldwide'
+            }
+          </p>
+        </section>
+
+        {/* Current Conditions Card */}
+        {selectedLocation && (
+          <section className="mb-12 max-w-md mx-auto">
+            <CurrentConditionsCard
+              conditions={{
+                temperature_2m: 22,
+                apparent_temperature: 24,
+                weather_code: demoWeatherCode,
+                is_day: isDay
+              }}
+              location={selectedLocation}
+              size="lg"
+              className="glass-clear glass-hover"
+            />
+          </section>
+        )}
+
+        {/* Current Conditions Demo */}
+        <section className="mb-12">
+          <CurrentConditionsDemo />
+        </section>
+
+        {/* Weather Icons Test Section */}
+        <section className="mb-12">
+          <Card className="glass-strong">
+            <CardHeader>
+              <CardTitle className="text-h2 font-display">Weather Icons Test</CardTitle>
+              <CardDescription>
+                Showcasing animated weather icons with different conditions
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+                <Card className="text-center glass-hover glass-subtle">
+                  <CardContent className="pt-6">
+                    <LottieWeatherIcon code={0} isDay={true} size={48} variant="fill" />
+                    <p className="text-caption text-muted-foreground mt-2">Clear Day</p>
+                  </CardContent>
+                </Card>
+                <Card className="text-center glass-hover glass-subtle">
+                  <CardContent className="pt-6">
+                    <LottieWeatherIcon code={0} isDay={false} size={48} variant="fill" />
+                    <p className="text-caption text-muted-foreground mt-2">Clear Night</p>
+                  </CardContent>
+                </Card>
+                <Card className="text-center glass-hover glass-rain">
+                  <CardContent className="pt-6">
+                    <LottieWeatherIcon code={61} isDay={true} size={48} variant="fill" />
+                    <p className="text-caption text-muted-foreground mt-2">Rain</p>
+                  </CardContent>
+                </Card>
+                <Card className="text-center glass-hover glass-snow">
+                  <CardContent className="pt-6">
+                    <LottieWeatherIcon code={71} isDay={true} size={48} variant="fill" />
+                    <p className="text-caption text-muted-foreground mt-2">Snow</p>
+                  </CardContent>
+                </Card>
+                <Card className="text-center glass-hover glass-storm">
+                  <CardContent className="pt-6">
+                    <LottieWeatherIcon code={95} isDay={true} size={48} variant="fill" />
+                    <p className="text-caption text-muted-foreground mt-2">Thunderstorm</p>
+                  </CardContent>
+                </Card>
+                <Card className="text-center glass-hover glass-subtle">
+                  <CardContent className="pt-6">
+                    <LottieWeatherIcon code={45} isDay={true} size={48} variant="fill" />
+                    <p className="text-caption text-muted-foreground mt-2">Fog</p>
+                  </CardContent>
+                </Card>
+              </div>
+            </CardContent>
+          </Card>
+        </section>
+
+        {/* Theme Toggle Demo Section */}
+        <section className="mb-12">
+          <Card className="max-w-md mx-auto glass-float glass-hover">
+            <CardHeader className="text-center">
+              <CardTitle className="text-h2 font-display">Theme Toggle Demo</CardTitle>
+              <CardDescription>
+                Interactive theme switching demonstration
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <ThemeToggleDemo />
+            </CardContent>
+          </Card>
+        </section>
+
+        {/* Animation Speed Test Section */}
+        <section className="mb-12">
+          <Card className="glass">
+            <CardHeader>
+              <CardTitle className="text-h2 font-display">Animation Speed Test</CardTitle>
+              <CardDescription>
+                Demonstrating different animation speeds for weather icons
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <Card className="text-center glass-hover glass-rain">
+                  <CardContent className="pt-6">
+                    <LottieWeatherIcon code={61} isDay={true} size={64} variant="fill" speed={0.5} />
+                    <div className="mt-4 space-y-2">
+                      <div className="flex items-center justify-center gap-2">
+                        <p className="text-body-m text-card-foreground">Slow</p>
+                        <Badge variant="outline">0.5x</Badge>
+                      </div>
+                      <p className="text-caption text-muted-foreground">Gentle rain animation</p>
+                    </div>
+                  </CardContent>
+                </Card>
+                <Card className="text-center glass-hover glass-rain">
+                  <CardContent className="pt-6">
+                    <LottieWeatherIcon code={61} isDay={true} size={64} variant="fill" speed={1} />
+                    <div className="mt-4 space-y-2">
+                      <div className="flex items-center justify-center gap-2">
+                        <p className="text-body-m text-card-foreground">Normal</p>
+                        <Badge variant="secondary">1x</Badge>
+                      </div>
+                      <p className="text-caption text-muted-foreground">Standard rain animation</p>
+                    </div>
+                  </CardContent>
+                </Card>
+                <Card className="text-center glass-hover glass-rain">
+                  <CardContent className="pt-6">
+                    <LottieWeatherIcon code={61} isDay={true} size={64} variant="fill" speed={2} />
+                    <div className="mt-4 space-y-2">
+                      <div className="flex items-center justify-center gap-2">
+                        <p className="text-body-m text-card-foreground">Fast</p>
+                        <Badge variant="destructive">2x</Badge>
+                      </div>
+                      <p className="text-caption text-muted-foreground">Heavy rain animation</p>
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+            </CardContent>
+          </Card>
+        </section>
+
+        {/* Weather Metrics Section */}
+        <section className="mb-12">
+          <Card className="glass-strong">
+            <CardHeader>
+              <CardTitle className="text-h2 font-display">Weather Metrics</CardTitle>
+              <CardDescription>
+                Key weather measurements and atmospheric conditions
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {[
+                  { label: 'Temperature', value: '--°', unit: 'C', icon: 'Thermometer' as CommonIconName },
+                  { label: 'Humidity', value: '--%', unit: 'RH', icon: 'Drop' as CommonIconName },
+                  { label: 'Wind Speed', value: '--', unit: 'km/h', icon: 'Wind' as CommonIconName },
+                  { label: 'Pressure', value: '--', unit: 'hPa', icon: 'Gauge' as CommonIconName },
+                  { label: 'Visibility', value: '--', unit: 'km', icon: 'Eye' as CommonIconName },
+                  { label: 'UV Index', value: '--', unit: 'UVI', icon: 'Sun' as CommonIconName }
+                ].map((metric, i) => (
+                  <Card key={i} className="glass-hover glass-subtle">
+                    <CardContent className="pt-6">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-3">
+                          <Icon name={metric.icon} size={20} color="muted" />
+                          <div>
+                            <p className="text-caption text-muted-foreground">{metric.label}</p>
+                            <p className="text-body-m text-card-foreground font-semibold">{metric.value}</p>
+                          </div>
+                        </div>
+                        <Badge variant="outline">{metric.unit}</Badge>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        </section>
+
+        {/* 7-Day Forecast Section */}
+        <section className="mb-12">
+          <Card className="glass">
+            <CardHeader>
+              <CardTitle className="text-h2 font-display">7-Day Forecast</CardTitle>
+              <CardDescription>
+                Extended weather outlook for the upcoming week
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-7 gap-4">
+                {[
+                  { day: 'Today', high: '--°', low: '--°' },
+                  { day: 'Tomorrow', high: '--°', low: '--°' },
+                  { day: 'Wednesday', high: '--°', low: '--°' },
+                  { day: 'Thursday', high: '--°', low: '--°' },
+                  { day: 'Friday', high: '--°', low: '--°' },
+                  { day: 'Saturday', high: '--°', low: '--°' },
+                  { day: 'Sunday', high: '--°', low: '--°' }
+                ].map((forecast, i) => (
+                  <Card key={i} className="text-center glass-hover glass-subtle">
+                    <CardContent className="pt-6">
+                      <div className="space-y-3">
+                        <Badge variant={i === 0 ? "default" : "secondary"} className="mb-2">
+                          {forecast.day}
+                        </Badge>
+                        <LottieWeatherIcon 
+                          code={i === 0 ? 0 : i === 1 ? 61 : i === 2 ? 71 : 0} 
+                          isDay={true} 
+                          size={32} 
+                          variant="fill" 
+                        />
+                        <div className="text-body-s text-card-foreground">
+                          <span className="font-semibold">{forecast.high}</span>
+                          <span className="text-muted-foreground mx-1">/</span>
+                          <span>{forecast.low}</span>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        </section>
       </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+      </div>
     </div>
+    </SearchProvider>
   );
 }

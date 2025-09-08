@@ -1,0 +1,108 @@
+name: Weather Component Template
+description: Template for creating weather-specific React components
+version: 1.0
+
+sections:
+  - name: Component Overview
+    fields:
+      - name: componentName
+        type: string
+        required: true
+        description: Name of the React component
+      - name: purpose
+        type: string
+        required: true
+        description: What this component does in the weather app
+      - name: category
+        type: select
+        options: [Search, Weather Display, Specialized, Interactive, UI]
+        required: true
+        description: Component category
+
+  - name: Props & Types
+    fields:
+      - name: props
+        type: text
+        required: true
+        description: TypeScript interface for component props
+      - name: dataTypes
+        type: text
+        description: Weather data types used by this component
+      - name: stateManagement
+        type: select
+        options: [Local State, Zustand Store, TanStack Query, Props Only]
+        required: true
+        description: How component manages state
+
+  - name: Accessibility
+    fields:
+      - name: ariaRoles
+        type: text
+        description: ARIA roles and properties used
+      - name: keyboardSupport
+        type: text
+        description: Keyboard navigation support
+      - name: screenReaderSupport
+        type: text
+        description: Screen reader considerations
+
+  - name: Theming & Styling
+    fields:
+      - name: themeTokens
+        type: text
+        description: CSS custom properties used
+      - name: conditionThemes
+        type: text
+        description: How component adapts to weather conditions
+      - name: responsiveBreakpoints
+        type: text
+        description: Responsive behavior
+
+  - name: Performance
+    fields:
+      - name: optimizationTechniques
+        type: text
+        description: Performance optimizations applied
+      - name: loadingStates
+        type: text
+        description: Loading and skeleton states
+      - name: memoization
+        type: text
+        description: React.memo or useMemo usage
+
+  - name: Testing
+    fields:
+      - name: unitTests
+        type: text
+        description: Unit test coverage
+      - name: integrationTests
+        type: text
+        description: Integration test scenarios
+      - name: accessibilityTests
+        type: text
+        description: A11y test requirements
+
+  - name: Dependencies
+    fields:
+      - name: externalLibraries
+        type: text
+        description: Third-party libraries used
+      - name: internalComponents
+        type: text
+        description: Other components this depends on
+      - name: hooks
+        type: text
+        description: Custom hooks used
+
+  - name: Implementation Notes
+    fields:
+      - name: implementationSteps
+        type: text
+        required: true
+        description: Step-by-step implementation guide
+      - name: commonPitfalls
+        type: text
+        description: Common issues and how to avoid them
+      - name: relatedStories
+        type: text
+        description: Related user stories or epics

@@ -1,0 +1,19 @@
+{
+  "location": {"name": "Reykjavík", "country": "IS", "lat": 64.1466, "lon": -21.9426, "tz": "Atlantic/Reykjavik"},
+  "lastUpdated": "2025-02-10T10:00:00+00:00",
+  "current": {
+    "temp": -2.5, "feelsLike": -7.0, "wmo": 75, "isDay": false, "humidity": 92,
+    "wind": 22.0, "gust": 38.0, "pop": 60, "precip": 3.2, "pressure": 1009.3,
+    "uv": 0, "visibility": 2.0, "cloudCover": 100, "dewPoint": -3.0,
+    "iconKey": "snow"
+  },
+  "daily": [
+    {"date": "2025-02-10", "wmo": 75, "tMax": -1.0, "tMin": -6.0, "popMax": 70, "sunrise": "10:04", "sunset": "17:36"}
+  ],
+  "hourlySample": [
+    {"time": "18:00", "temp": -2.0, "precip": 1.0, "pop": 60, "cloud": 100},
+    {"time": "21:00", "temp": -2.8, "precip": 0.6, "pop": 55, "cloud": 100},
+    {"time": "00:00", "temp": -3.2, "precip": 0.4, "pop": 50, "cloud": 100},
+    {"time": "03:00", "temp": -3.8, "precip": 0.3, "pop": 45, "cloud": 95}
+  ]
+}

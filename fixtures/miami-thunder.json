@@ -1,0 +1,19 @@
+{
+  "location": {"name": "Miami", "country": "US", "lat": 25.7617, "lon": -80.1918, "tz": "America/New_York"},
+  "lastUpdated": "2025-08-12T15:45:00-04:00",
+  "current": {
+    "temp": 31.2, "feelsLike": 38.0, "wmo": 95, "isDay": true, "humidity": 72,
+    "wind": 20.0, "gust": 35.0, "pop": 90, "precip": 5.6, "pressure": 1008.1,
+    "uv": 9, "visibility": 6.0, "cloudCover": 90, "dewPoint": 25.8,
+    "iconKey": "thunderstorms-day"
+  },
+  "daily": [
+    {"date": "2025-08-12", "wmo": 95, "tMax": 32.5, "tMin": 27.1, "popMax": 95, "sunrise": "06:50", "sunset": "20:02"}
+  ],
+  "hourlySample": [
+    {"time": "13:00", "temp": 30.1, "precip": 2.2, "pop": 80, "cloud": 85},
+    {"time": "15:00", "temp": 31.2, "precip": 3.6, "pop": 90, "cloud": 95},
+    {"time": "17:00", "temp": 30.3, "precip": 1.8, "pop": 85, "cloud": 90},
+    {"time": "19:00", "temp": 28.4, "precip": 0.9, "pop": 70, "cloud": 80}
+  ]
+}

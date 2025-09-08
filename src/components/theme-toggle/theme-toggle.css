@@ -1,0 +1,220 @@
+/* === 3-STATE ANIMATED THEME TOGGLE === */
+.theme-toggle-container {
+  position: relative;
+  display: inline-block;
+  width: 100px; /* Wider to accommodate 3 states */
+  height: 34px;
+  transform: scale(0.8);
+  cursor: pointer;
+}
+
+.theme-toggle-container input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.theme-toggle-slider {
+  position: absolute;
+  cursor: pointer;
+  inset: 0;
+  background: linear-gradient(135deg, var(--accent), var(--accent-600));
+  box-shadow: inset 0 0 3px var(--border);
+  transition: 0.4s;
+  filter: drop-shadow(0 0 2px var(--background));
+  overflow: hidden;
+  z-index: 1;
+}
+
+/* Mode indicators - positioned at left, center, right */
+.theme-toggle-mode-indicators {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 8px;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.theme-toggle-mode-indicator {
+  width: 16px;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  opacity: 0.6;
+  transition: opacity 0.3s ease;
+}
+
+/* Light mode indicator (sun) */
+.theme-toggle-container[data-mode="light"] .theme-toggle-mode-indicator:nth-child(1) {
+  opacity: 1;
+}
+
+/* Auto mode indicator (gear) */
+.theme-toggle-container[data-mode="auto"] .theme-toggle-mode-indicator:nth-child(2) {
+  opacity: 1;
+}
+
+/* Dark mode indicator (moon) */
+.theme-toggle-container[data-mode="dark"] .theme-toggle-mode-indicator:nth-child(3) {
+  opacity: 1;
+}
+
+.theme-toggle-slider::before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px; /* Light mode position */
+  bottom: 4px;
+  background-color: var(--accent); /* Theme-aware accent color */
+  transition: 0.4s;
+  box-shadow:
+    inset 0 -1px 2px var(--accent-600),
+    0 1px 2px var(--border),
+    0 0 0 10px var(--accent-50),
+    0 0 0 20px var(--accent-50),
+    10px 0 0 20px var(--accent-50);
+}
+
+/* 3-state positioning for the slider handle */
+.theme-toggle-container[data-mode="light"] .theme-toggle-slider::before {
+  left: 4px; /* Left position for light mode */
+  background-color: var(--accent); /* Theme-aware accent color */
+}
+
+.theme-toggle-container[data-mode="auto"] .theme-toggle-slider::before {
+  left: 37px; /* Center position for auto mode */
+  background-color: var(--primary); /* Theme-aware primary color */
+}
+
+.theme-toggle-container[data-mode="dark"] .theme-toggle-slider::before {
+  left: 70px; /* Right position for dark mode */
+  background-color: var(--secondary); /* Theme-aware secondary color */
+}
+
+/* Background changes based on mode */
+.theme-toggle-container[data-mode="dark"] .theme-toggle-slider {
+  background: linear-gradient(-45deg, var(--card), var(--background));
+  filter: drop-shadow(0 0 2px var(--foreground));
+}
+
+.theme-toggle-container[data-mode="auto"] .theme-toggle-slider {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  filter: drop-shadow(0 0 2px var(--primary));
+}
+
+.theme-toggle-slider::after {
+  content: "";
+  position: absolute;
+  background: var(--muted-foreground); /* Theme-aware crater color */
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  bottom: 65%;
+  right: 16%;
+  box-shadow:
+    -8px 7px 0 3px var(--muted-foreground),
+    2px 10px 0 var(--muted-foreground);
+  transition: 0.4s;
+  transform: scale(0) rotate(360deg);
+  filter: saturate(0.75);
+}
+
+.theme-toggle-container input:checked + .theme-toggle-slider::after {
+  transform: scale(1) rotate(-24deg);
+}
+
+.theme-toggle-container input:checked + .theme-toggle-slider .theme-toggle-background {
+  transform: translateY(260%);
+  opacity: 0;
+}
+
+.theme-toggle-star {
+  transform: scale(0);
+  transition: 0.4s;
+}
+
+.theme-toggle-container input:checked + .theme-toggle-slider .theme-toggle-star {
+  position: absolute;
+  width: 0;
+  height: 0;
+  border: 10px solid transparent;
+  border-bottom: 7px solid var(--foreground); /* Theme-aware star color */
+  transform: rotate(35deg);
+  border-top: none;
+  margin: 5px 0;
+  transform: scale(0.3) translate(50%);
+}
+
+.theme-toggle-container input:checked + .theme-toggle-slider .theme-toggle-star:last-child {
+  transform: scale(0.4) translate(225%, 300%);
+}
+
+.theme-toggle-container input:checked + .theme-toggle-slider .theme-toggle-star::before,
+.theme-toggle-container input:checked + .theme-toggle-slider .theme-toggle-star::after {
+  content: "";
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-top: none;
+}
+
+.theme-toggle-container input:checked + .theme-toggle-slider .theme-toggle-star::before {
+  border: 3px solid transparent;
+  border-bottom: 8px solid var(--foreground);
+  transform: rotate(35deg);
+  top: -7.5px;
+  left: 1.5px;
+}
+
+.theme-toggle-container input:checked + .theme-toggle-slider .theme-toggle-star::after {
+  border: 10px solid transparent;
+  border-bottom: 7px solid var(--foreground);
+  transform: rotate(70deg);
+  top: -7px;
+  left: -4.5px;
+}
+
+.theme-toggle-slider.round {
+  border-radius: 34px;
+}
+
+.theme-toggle-slider.round:before {
+  border-radius: 50%;
+}
+
+.theme-toggle-background {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background: var(--foreground); /* Theme-aware cloud color */
+  border-radius: 50%;
+  bottom: 0;
+  right: 0;
+  box-shadow:
+    0 -10px 0 8px var(--foreground),
+    -10px 0px 0 8px var(--foreground),
+    -45px 4px 0 5px var(--foreground),
+    -60px 0px 0 3px var(--foreground),
+    -29px 2px 0 8px var(--foreground);
+  transition: 0.4s;
+}
+
+/* Reduced motion support for theme toggle animations */
+@media (prefers-reduced-motion: reduce) {
+  .reduced-motion .theme-toggle-slider,
+  .reduced-motion .theme-toggle-slider::before,
+  .reduced-motion .theme-toggle-slider::after,
+  .reduced-motion .theme-toggle-star,
+  .reduced-motion .theme-toggle-background {
+    transition-duration: 0.01ms !important;
+  }
+}
