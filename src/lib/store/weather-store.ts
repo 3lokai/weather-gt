@@ -15,6 +15,7 @@ export interface Units {
   temperature: 'celsius' | 'fahrenheit';
   windSpeed: 'kmh' | 'mph';
   precipitation: 'mm' | 'in';
+  pressure: 'hPa' | 'inHg';
   timeFormat: '12h' | '24h';
 }
 
@@ -41,6 +42,7 @@ const defaultUnits: Units = {
   temperature: 'celsius',
   windSpeed: 'kmh',
   precipitation: 'mm',
+  pressure: 'hPa',
   timeFormat: '12h',
 };
 

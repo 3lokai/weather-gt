@@ -12,6 +12,7 @@ export function ThemeProvider({ children, ...props }: NextThemesProviderProps) {
       defaultTheme="system"
       enableSystem
       disableTransitionOnChange={false}
+      storageKey="weather-gt-theme"
       {...props}
     >
       {children}

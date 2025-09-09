@@ -3,6 +3,7 @@
 import { useRef } from 'react';
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { LottieWeatherIcon } from "@/components/icons/lottie-weather-icon";
+import { AnimatedTemperature } from "@/components/common/animated-number";
 import { getWeatherCondition } from "@/lib/api/open-meteo";
 import { useWeatherStore, type Location } from "@/lib/store/weather-store";
 import { cn } from "@/lib/utils";
@@ -49,7 +50,7 @@ export function CurrentConditionsCard({
     conditions.is_day
   );
 
-  // Format temperature based on units
+  // Format temperature based on units (for accessibility labels)
   const formatTemperature = (temp: number) => {
     const rounded = Math.round(temp);
     const symbol = units.temperature === 'fahrenheit' ? '°F' : '°C';
@@ -64,24 +65,24 @@ export function CurrentConditionsCard({
     return `${loc.name}, ${loc.country}`;
   };
 
-  // Size-based styling
+  // Size-based styling with responsive aspect ratios
   const sizeStyles = {
     sm: {
-      card: "py-4",
+      card: "py-4 aspect-square md:aspect-[16/9]",
       icon: 64,
       tempSize: "text-4xl",
       locationSize: "text-sm",
       conditionSize: "text-xs"
     },
     md: {
-      card: "py-6", 
+      card: "py-6 aspect-square md:aspect-[16/9]", 
       icon: 96,
       tempSize: "text-6xl",
       locationSize: "text-base",
       conditionSize: "text-sm"
     },
     lg: {
-      card: "py-8",
+      card: "py-8 aspect-square md:aspect-[16/9]",
       icon: 128,
       tempSize: "text-8xl",
       locationSize: "text-lg", 
@@ -95,7 +96,7 @@ export function CurrentConditionsCard({
     <Card
       ref={cardRef}
       className={cn(
-        "relative overflow-hidden transition-all duration-300 hover:shadow-lg",
+        "relative overflow-hidden transition-all duration-300 hover:shadow-lg flex flex-col",
         styles.card,
         className
       )}
@@ -127,7 +128,7 @@ export function CurrentConditionsCard({
           />
         </div>
       )}
-      <CardHeader className="relative z-10 text-center space-y-2">
+      <CardHeader className="relative z-10 text-center space-y-1 md:space-y-2">
         {/* Location */}
         <div 
           className={cn(
@@ -140,7 +141,7 @@ export function CurrentConditionsCard({
         </div>
       </CardHeader>
 
-      <CardContent className="relative z-10 text-center space-y-4">
+      <CardContent className="relative z-10 text-center space-y-2 md:space-y-4 flex-1 flex flex-col justify-center">
         {/* Weather Icon */}
         <div className="flex justify-center">
           <LottieWeatherIcon
@@ -162,7 +163,12 @@ export function CurrentConditionsCard({
           )}
           aria-label={`Current temperature: ${formatTemperature(conditions.temperature_2m)}`}
         >
-          {formatTemperature(conditions.temperature_2m)}
+          <AnimatedTemperature
+            value={conditions.temperature_2m}
+            unit={units.temperature}
+            duration={180}
+            className="inline-block"
+          />
         </div>
 
         {/* Weather Condition */}
@@ -185,7 +191,13 @@ export function CurrentConditionsCard({
             )}
             aria-label={`Feels like ${formatTemperature(conditions.apparent_temperature)}`}
           >
-            Feels like {formatTemperature(conditions.apparent_temperature)}
+            Feels like{' '}
+            <AnimatedTemperature
+              value={conditions.apparent_temperature}
+              unit={units.temperature}
+              duration={180}
+              className="inline-block"
+            />
           </div>
         )}
       </CardContent>

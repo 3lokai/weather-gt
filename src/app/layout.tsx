@@ -6,16 +6,14 @@ import "./globals.css";
 
 const dmSans = DM_Sans({
   subsets: ["latin"],
-  variable: "--font-dm-sans",
-  display: "swap",
   weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
+  variable: "--font-sans",
 });
 
 const bricolageGrotesque = Bricolage_Grotesque({
   subsets: ["latin"],
-  variable: "--font-bricolage-grotesque",
-  display: "swap",
   weight: ["200", "300", "400", "500", "600", "700", "800"],
+  variable: "--font-display",
 });
 
 export const metadata: Metadata = {
@@ -36,8 +34,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${dmSans.variable} ${bricolageGrotesque.variable}`}>
-      <body className="font-sans antialiased" suppressHydrationWarning>
+    <html lang="en" className={`${dmSans.variable} ${bricolageGrotesque.variable}`} suppressHydrationWarning>
+      <body className="font-sans antialiased">
         <ThemeProvider>
           <QueryProvider>
             {children}

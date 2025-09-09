@@ -1,150 +1,196 @@
 # Weather Components
 
-This directory contains weather-related UI components for the Weather GT application.
+This directory contains weather-related UI components for the weather application.
 
 ## Components
 
 ### CurrentConditionsCard
+Displays current weather conditions with temperature, weather icon, and location information.
 
-A comprehensive card component that displays current weather conditions with accessibility features and responsive design.
+**Props:**
+- `conditions`: Current weather conditions data
+- `location`: Location information
+- `size`: Size variant ('sm' | 'md' | 'lg')
+- `showApparentTemp`: Whether to show apparent temperature
+- `showHeroBackground`: Enable weather hero background
+- `heroBackgroundOpacity`: Background opacity (0-1)
 
-#### Features
+### MetricsGrid
+Displays weather metrics in a responsive grid layout with 5 core metrics:
+- Feels like temperature
+- Humidity
+- Wind speed
+- Precipitation
+- Surface pressure
 
-- **Temperature Display**: Shows current and apparent temperature with configurable units
-- **Weather Icons**: Animated Lottie weather icons with day/night variants, enhanced styling, and fallbacks
-- **Location Display**: Formatted location name with country/region info
-- **Weather Condition**: Human-readable weather condition labels
-- **Accessibility**: Full ARIA support, keyboard navigation, and AA contrast compliance
-- **Responsive Design**: Three size variants (sm, md, lg) for different layouts
-- **Dynamic Weather Themes**: Uses enhanced `useWeatherTheme` hook with time-of-day variants
-- **Hero Backgrounds**: Optional weather-adaptive SVG backgrounds that respond to conditions and time
-- **Enhanced Atmospheric Effects**: Time-based theming (dawn, day, dusk, night) with automatic adjustments
+**Props:**
+- `weather`: Current weather data (can be null for loading/error states)
+- `isLoading`: Loading state
+- `error`: Error message
+- `size`: Size variant ('sm' | 'md' | 'lg')
+- `showTooltips`: Whether to show tooltips
+- `layout`: Layout variant ('grid' | 'list')
 
-#### Props
+**Features:**
+- Responsive grid layout (2 cols mobile, 3 cols tablet, 5 cols desktop)
+- Unit-aware formatting based on user preferences
+- Loading skeleton states
+- Error handling with user-friendly messages
+- Accessibility compliant (ARIA labels, keyboard navigation)
+- Glassmorphism styling with hover effects
+- Tooltip support for metric explanations
 
-```typescript
-interface CurrentConditionsCardProps {
-  /** Current weather conditions data */
-  conditions: CurrentConditionsData;
-  /** Location for display */
-  location: Location;
-  /** Additional CSS classes */
-  className?: string;
-  /** Size variant for the card */
-  size?: 'sm' | 'md' | 'lg';
-  /** Show apparent temperature */
-  showApparentTemp?: boolean;
-  /** Enable weather hero background */
-  showHeroBackground?: boolean;
-  /** Hero background opacity (0-1) */
-  heroBackgroundOpacity?: number;
-}
-```
+### WeatherHeroBackground
+Animated background component that adapts to weather conditions.
 
-#### Data Structure
+### DailyForecastChip
+Individual daily forecast chip showing day name, weather icon, temperature range, and precipitation probability.
 
-```typescript
-interface CurrentConditionsData {
-  temperature_2m: number;
-  apparent_temperature: number;
-  weather_code: number;
-  is_day: boolean;
-}
-```
+**Props:**
+- `data`: Daily forecast data
+- `dayIndex`: Day index (0-6)
+- `isSelected`: Whether this chip is currently selected
+- `isToday`: Whether this is today
+- `onSelect`: Click handler for selection
 
-#### Usage Examples
+### SevenDayForecastRail
+Horizontal scrollable rail displaying 7 daily forecast chips with selection functionality.
 
+**Props:**
+- `dailyData`: Array of daily forecast data (7 days)
+- `showScrollIndicators`: Whether to show scroll indicators
+- `className`: Additional CSS classes
+
+**Features:**
+- Horizontal scrollable layout
+- Keyboard navigation support
+- Selection state management via Zustand store
+- Responsive design for mobile and desktop
+- Accessibility compliant with ARIA patterns
+- Visual selection indicators
+
+### HourlyPanelChart
+Interactive hourly forecast component with both chart and list view modes. Shows temperature line chart with precipitation bars and comfort bands.
+
+**Props:**
+- `hourlyData`: Hourly weather data from Open-Meteo API
+- `selectedDayIndex`: Selected day index from daily forecast rail
+- `temperatureUnit`: Temperature unit ('celsius' | 'fahrenheit')
+- `timeFormat`: Time format preference ('12h' | '24h')
+- `viewMode`: Display mode ('chart' | 'list')
+- `className`: Additional CSS classes
+
+**Features:**
+- **Chart View:**
+  - Temperature line with interactive dots
+  - Precipitation bars with probability
+  - Comfort bands (cold/pleasant/hot) background indicators
+  - Hover tooltips with detailed information
+  - Keyboard navigation support
+  - Responsive design with Recharts
+- **List View:**
+  - Weather icons for each hour
+  - Temperature with comfort level badges
+  - Precipitation amounts and probability
+  - Click to select active hour
+  - Accessible button interactions
+- **Accessibility:**
+  - ARIA labels and keyboard navigation
+  - Screen reader friendly
+  - High contrast ratios
+  - Focus management
+
+## Usage Examples
+
+### Basic Metrics Grid
 ```tsx
-// Basic usage
-<CurrentConditionsCard
-  conditions={weatherData}
-  location={selectedLocation}
-/>
+import { MetricsGrid } from '@/components/weather';
 
-// Large size variant
-<CurrentConditionsCard
-  conditions={weatherData}
-  location={selectedLocation}
-  size="lg"
-/>
-
-// Custom styling
-<CurrentConditionsCard
-  conditions={weatherData}
-  location={selectedLocation}
-  className="border-primary"
-  showApparentTemp={false}
-/>
-
-// With hero background
-<CurrentConditionsCard
-  conditions={weatherData}
-  location={selectedLocation}
-  size="lg"
-  showHeroBackground={true}
-  heroBackgroundOpacity={0.6}
-/>
-
-// Enhanced atmospheric card (adapts to time and weather)
-<CurrentConditionsCard
-  conditions={weatherData}
-  location={selectedLocation}
-  showHeroBackground={true}
-  className="backdrop-blur-sm"
+<MetricsGrid
+  weather={weatherData}
+  size="md"
+  showTooltips={true}
+  layout="grid"
 />
 ```
 
-#### Accessibility Features
+### With Loading State
+```tsx
+<MetricsGrid
+  weather={null}
+  isLoading={true}
+  size="md"
+/>
+```
 
-- **ARIA Labels**: Comprehensive labeling for screen readers
-- **Semantic Markup**: Proper HTML5 semantic elements
-- **Keyboard Navigation**: Full keyboard accessibility
-- **High Contrast**: Theme-aware contrast ratios meeting AA standards
-- **Focus Management**: Visible focus indicators
-- **Screen Reader Support**: Descriptive labels for all interactive elements
+### With Error State
+```tsx
+<MetricsGrid
+  weather={null}
+  error="Failed to load weather data"
+  size="md"
+/>
+```
 
-#### Integration
+### Seven Day Forecast Rail
+```tsx
+import { SevenDayForecastRail, useDailyForecast } from '@/components/weather';
 
-The component integrates with:
+const dailyData = useDailyForecast(location);
 
-- **Weather Store**: Uses Zustand store for units and location state
-- **Icon System**: Leverages the Meteocons icon library
-- **Weather Theme System**: Uses `useWeatherTheme` hook to dynamically apply weather-specific themes
-- **Global Theme System**: Responds to light/dark theme changes via CSS custom properties
-- **API Layer**: Compatible with Open-Meteo API data structure
+<SevenDayForecastRail
+  dailyData={dailyData}
+  showScrollIndicators={true}
+/>
+```
 
-#### Testing
+### Hourly Panel Chart
+```tsx
+import { HourlyPanelChart, useHourlyData } from '@/components/weather';
 
-Component tests should cover:
+const hourlyData = useHourlyData(weatherData.hourly, selectedDayIndex);
 
-- **Rendering**: All size variants and prop combinations
-- **Accessibility**: ARIA attributes and keyboard navigation
-- **Units**: Temperature and location formatting
-- **Theming**: Light/dark theme variants
-- **Icons**: Icon loading and fallback behavior
+<HourlyPanelChart
+  hourlyData={hourlyData}
+  selectedDayIndex={selectedDayIndex}
+  temperatureUnit="celsius"
+  timeFormat="12h"
+  viewMode="chart"
+/>
+```
 
-#### Related Components
+### With List View
+```tsx
+<HourlyPanelChart
+  hourlyData={hourlyData}
+  selectedDayIndex={selectedDayIndex}
+  temperatureUnit="celsius"
+  timeFormat="24h"
+  viewMode="list"
+/>
+```
 
-- `LottieWeatherIcon` - Weather icon rendering
-- `WeatherTheme` - Theme integration hooks
-- `SearchProvider` - Location search functionality
+## Design System Integration
 
-#### Story Implementation
+All components use the weather app's design system:
+- OKLCH color space for consistent theming
+- Glassmorphism effects with backdrop blur
+- Responsive typography scale
+- Weather condition-based accent colors
+- Accessibility-first approach
 
-This component implements story E1-02 (Current Conditions Card) with the following acceptance criteria:
+## Accessibility
 
-- ✅ Displays temperature_2m, apparent_temperature, weather_code label, location
-- ✅ Icon changes with day/night
-- ✅ A11y label describes condition
-- ✅ Accessibility: Keyboard + visible focus + ARIA patterns; AA contrast
-- ✅ Performance: No unexpected layout shift; cached where applicable
-- ✅ Testing: Component structure ready for unit and E2E tests
-- ✅ Docs: README and component props documented
+Components are built with accessibility in mind:
+- Proper ARIA labels and roles
+- Keyboard navigation support
+- Screen reader friendly
+- High contrast ratios
+- Semantic HTML structure
 
-#### Technical Notes
+## Performance
 
-- Uses WMO weather codes for condition mapping
-- Supports day/night icon variants
-- Responsive design for different screen sizes
-- Integrates with weather condition mapping from API
-- Performance optimized with proper memoization patterns
+- Optimized for minimal layout shifts
+- Efficient re-renders with proper memoization
+- Responsive images with proper sizing
+- CSS-based animations for smooth performance

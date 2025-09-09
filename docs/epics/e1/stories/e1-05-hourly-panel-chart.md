@@ -17,10 +17,10 @@ E1-04.
 P0 (Must have for demo)
 
 ## Definition of Done
-- [ ] Accessibility: Keyboard + visible focus + ARIA patterns; AA contrast
-- [ ] Performance: No unexpected layout shift; cached where applicable
-- [ ] Testing: Unit for mappers/formatters; component tests for hourly chart; E2E happy path
-- [ ] Docs: README + changelog updated; component props documented
+- [x] Accessibility: Keyboard + visible focus + ARIA patterns; AA contrast
+- [x] Performance: No unexpected layout shift; cached where applicable
+- [x] Testing: Unit for mappers/formatters; component tests for hourly chart; E2E happy path
+- [x] Docs: README + changelog updated; component props documented
 
 ## Technical Notes
 - Create interactive chart showing hourly temperature line and precipitation bars

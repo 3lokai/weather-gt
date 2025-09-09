@@ -3,9 +3,11 @@
 import { LottieWeatherIcon } from "@/components/icons/lottie-weather-icon";
 import WeatherLiquidEther from "@/components/background/weather-liquid-ether";
 import { ThemeToggle } from "@/components/theme-toggle/theme-toggle";
+import { UnitsSheetDemo } from "@/components/settings/units-sheet-demo";
+import { SettingsDropdown } from "@/components/settings/settings-dropdown";
 import { SearchProvider } from "@/components/search";
 import { InlineSearch } from "@/components/search/inline-search";
-import { CurrentConditionsCard, CurrentConditionsDemo } from "@/components/weather";
+import { CurrentConditionsCard, CurrentConditionsDemo, MetricsGridDemo, SevenDayForecastDemo, HourlyPanelChartDemo } from "@/components/weather";
 import { useWeatherStore } from "@/lib/store/weather-store";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -76,6 +78,7 @@ export default function HomePage() {
                   </div>
                 </div>
               )}
+              <SettingsDropdown variant="icon" />
               <ThemeToggle />
             </div>
           </div>
@@ -107,7 +110,7 @@ export default function HomePage() {
 
         {/* Current Conditions Card */}
         {selectedLocation && (
-          <section className="mb-12 max-w-md mx-auto">
+          <section className="mb-12 max-w-sm md:max-w-2xl mx-auto">
             <CurrentConditionsCard
               conditions={{
                 temperature_2m: 22,
@@ -127,6 +130,11 @@ export default function HomePage() {
         {/* Current Conditions Demo */}
         <section className="mb-12">
           <CurrentConditionsDemo />
+        </section>
+
+        {/* Metrics Grid Demo */}
+        <section className="mb-12">
+          <MetricsGridDemo />
         </section>
 
         {/* Weather Icons Test Section */}
@@ -292,51 +300,22 @@ export default function HomePage() {
           </Card>
         </section>
 
-        {/* 7-Day Forecast Section */}
+        {/* 7-Day Forecast Rail Demo */}
         <section className="mb-12">
-          <Card className="glass">
-            <CardHeader>
-              <CardTitle className="text-h2 font-display">7-Day Forecast</CardTitle>
-              <CardDescription>
-                Extended weather outlook for the upcoming week
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-7 gap-4">
-                {[
-                  { day: 'Today', high: '--°', low: '--°' },
-                  { day: 'Tomorrow', high: '--°', low: '--°' },
-                  { day: 'Wednesday', high: '--°', low: '--°' },
-                  { day: 'Thursday', high: '--°', low: '--°' },
-                  { day: 'Friday', high: '--°', low: '--°' },
-                  { day: 'Saturday', high: '--°', low: '--°' },
-                  { day: 'Sunday', high: '--°', low: '--°' }
-                ].map((forecast, i) => (
-                  <Card key={i} className="text-center glass-hover glass-subtle">
-                    <CardContent className="pt-6">
-                      <div className="space-y-3">
-                        <Badge variant={i === 0 ? "default" : "secondary"} className="mb-2">
-                          {forecast.day}
-                        </Badge>
-                        <LottieWeatherIcon 
-                          code={i === 0 ? 0 : i === 1 ? 61 : i === 2 ? 71 : 0} 
-                          isDay={true} 
-                          size={32} 
-                          variant="fill" 
-                        />
-                        <div className="text-body-s text-card-foreground">
-                          <span className="font-semibold">{forecast.high}</span>
-                          <span className="text-muted-foreground mx-1">/</span>
-                          <span>{forecast.low}</span>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
+          <SevenDayForecastDemo />
         </section>
+
+        {/* Hourly Panel Chart Demo */}
+        <section className="mb-12">
+          <HourlyPanelChartDemo />
+        </section>
+
+        {/* Units Sheet Demo */}
+        <section className="mb-12">
+          <UnitsSheetDemo />
+        </section>
+
+
       </main>
       </div>
     </div>

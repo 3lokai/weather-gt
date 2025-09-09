@@ -75,12 +75,12 @@ export function InlineSearch({ className, placeholder = 'Search for a place...' 
           }}
           onFocus={() => setIsOpen(true)}
           placeholder={selectedLocation ? selectedLocation.name : placeholder}
-          className="peer w-full h-14 ps-14 pe-12 glass-clear glass-hover border-2 border-border hover:border-primary/40 focus:border-primary/60 bg-background/60 hover:bg-background/80 focus:bg-background/90 rounded-lg transition-all duration-200 text-body-l font-normal text-foreground placeholder:text-muted-foreground outline-none [&::-webkit-search-cancel-button]:hidden [&::-webkit-search-decoration]:hidden"
+          className="peer w-full h-16 ps-16 pe-16 glass-clear glass-hover border-2 border-border hover:border-primary/40 focus:border-primary/60 bg-background/60 hover:bg-background/80 focus:bg-background/90 rounded-lg transition-all duration-200 text-body-l font-normal text-foreground placeholder:text-muted-foreground outline-none [&::-webkit-search-cancel-button]:hidden [&::-webkit-search-decoration]:hidden"
           aria-label="Search for a location"
         />
         
         {/* Search/Loading Icon */}
-        <div className="absolute inset-y-0 start-0 flex items-center justify-center ps-4 pointer-events-none peer-disabled:opacity-50">
+        <div className="absolute inset-y-0 start-0 flex items-center justify-center ps-5 pointer-events-none peer-disabled:opacity-50">
           {isLoading ? (
             <div 
               className="animate-spin rounded-full h-5 w-5 border-2 border-primary border-t-transparent" 
@@ -105,7 +105,7 @@ export function InlineSearch({ className, placeholder = 'Search for a place...' 
               setQuery('');
               setIsOpen(false);
             }}
-            className="absolute inset-y-0 end-0 flex h-full w-12 items-center justify-center rounded-e-lg text-muted-foreground hover:text-foreground focus-visible:ring-2 focus-visible:ring-primary/50 transition-colors outline-none"
+            className="absolute inset-y-0 end-0 flex h-full w-16 items-center justify-center rounded-e-lg text-muted-foreground hover:text-foreground focus-visible:ring-2 focus-visible:ring-primary/50 transition-colors outline-none"
             aria-label="Clear search"
             type="button"
           >

@@ -46,6 +46,7 @@ export interface HourlyWeather {
   cloud_cover: number[];
   dew_point_2m: number[];
   surface_pressure: number[];
+  weather_code?: number[];
 }
 
 export interface DailyWeather {
@@ -125,6 +126,7 @@ export async function getWeatherForecast(
     temperature: 'celsius' | 'fahrenheit';
     windSpeed: 'kmh' | 'mph';
     precipitation: 'mm' | 'in';
+    pressure: 'hPa' | 'inHg';
   }
 ): Promise<WeatherForecast> {
   const params = new URLSearchParams({
@@ -190,9 +192,29 @@ export async function getWeatherForecast(
   // Use the is_day field from the API response
   const isDay = data.current.is_day === 1;
   
+  // Convert pressure units if needed
+  const convertPressure = (value: number) => {
+    if (units.pressure === 'inHg') {
+      return value * 0.02953; // Convert hPa to inHg
+    }
+    return value; // Already in hPa
+  };
+  
+  // Convert pressure values in current weather
+  const currentWithConvertedPressure = {
+    ...data.current,
+    surface_pressure: convertPressure(data.current.surface_pressure)
+  };
+  
+  // Convert pressure values in hourly weather
+  const hourlyWithConvertedPressure = {
+    ...data.hourly,
+    surface_pressure: data.hourly.surface_pressure.map(convertPressure)
+  };
+  
   return {
-    current: data.current,
-    hourly: data.hourly,
+    current: currentWithConvertedPressure,
+    hourly: hourlyWithConvertedPressure,
     daily: data.daily,
     isDay,
   };
