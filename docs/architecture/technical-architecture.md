@@ -34,10 +34,20 @@ Map `weather_code` → descriptive label + icon set + background bucket.
 ```typescript
 {
   units: { temp: 'celsius'|'fahrenheit', wind: 'kmh'|'mph', precip: 'mm' },
-  themeMode: 'system'|'light'|'dark'|'auto-time',
   selectedLocation?: { id, name, country, admin1, lat, lon, tz },
   selectedDayIndex: number,
   favorites: Location[],
+}
+```
+
+### Theme Management (next-themes)
+```typescript
+{
+  theme: 'light'|'dark'|'system',
+  systemTheme: 'light'|'dark',
+  setTheme: (theme: string) => void,
+  forcedTheme?: string,
+  resolvedTheme: 'light'|'dark'
 }
 ```
 
@@ -47,7 +57,8 @@ Map `weather_code` → descriptive label + icon set + background bucket.
 * **Strategy**: SWR (stale-while-revalidate)
 
 ### Persistence
-* **localStorage**: units, theme, favorites
+* **localStorage**: units, favorites (via Zustand persist)
+* **next-themes**: theme preference persistence  
 * **No server-side storage**: local persistence only
 
 ## Performance & Reliability
@@ -79,7 +90,7 @@ getForecast({lat,lon,units}): Promise<{ current, hourly, daily, isDay }>
 ```typescript
 getWmoGroup(code: number): string
 getIconKey(code: number, isDay: boolean): IconKey
-getThemeFor(code: number, isDay: boolean): ThemeTokens
+// Removed getThemeFor - themes now managed by next-themes
 ```
 
 ## Routes & Layout

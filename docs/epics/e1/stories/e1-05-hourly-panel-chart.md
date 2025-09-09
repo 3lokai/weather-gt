@@ -8,6 +8,7 @@ Hourly temperature line + precip bars and list view for selected day.
 * Uses `hourly.temperature_2m`, `precipitation`, `precipitation_probability`.
 * Hover shows tooltip (temp, PoP, precip); keyboard focusable points.
 * Comfort bands (cold/pleasant/hot) indicated in background.
+* Right rail on desktop, sticky within viewport; list item style matches comp (icon + time + temp pill).
 
 ## Dependencies
 E1-04.

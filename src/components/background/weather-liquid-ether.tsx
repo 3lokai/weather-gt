@@ -3,7 +3,6 @@
 import React from 'react';
 import LiquidEther from './liquid-ether';
 import { getWeatherCondition } from '@/lib/api/open-meteo';
-import { useThemeColors } from '@/hooks/use-theme-colors';
 
 export interface WeatherLiquidEtherProps {
   weatherCode: number;
@@ -29,47 +28,47 @@ export interface WeatherLiquidEtherProps {
   autoRampDuration?: number;
 }
 
-// Weather-specific color palettes using theme colors from Zustand store
-const getWeatherColorPalettes = (themeColors: any) => ({
+// Weather-specific color palettes using CSS variables (resolved in LiquidEther)
+const getWeatherColorPalettes = () => ({
   'clear-day': [
-    themeColors?.accent || '#000000',           // Uses your theme's accent color (adapts to light/dark)
-    themeColors?.accent100 || '#000000',        // Lighter accent variant
-    themeColors?.accent500 || '#000000'         // Base accent color
+    'var(--accent)',
+    'var(--primary)',
+    'var(--secondary)'
   ],
   'clear-night': [
-    themeColors?.accent || '#000000',           // Uses your theme's accent color (adapts to light/dark)
-    themeColors?.secondary || '#000000',        // Secondary color (adapts to light/dark)
-    themeColors?.secondary600 || '#000000'      // Darker secondary variant
+    'var(--accent)',
+    'var(--secondary)',
+    'var(--secondary-foreground)'
   ],
   'rain': [
-    themeColors?.accent || '#000000',           // Uses your theme's accent color (adapts to light/dark)
-    themeColors?.primary || '#000000',          // Primary color (adapts to light/dark)
-    themeColors?.primary600 || '#000000'        // Darker primary variant
+    'var(--accent)',
+    'var(--primary)',
+    'var(--ring)'
   ],
   'snow': [
-    themeColors?.accent || '#000000',           // Uses your theme's accent color (adapts to light/dark)
-    themeColors?.primary100 || '#000000',       // Lightest primary variant
-    themeColors?.primary200 || '#000000'        // Light primary variant
+    'var(--accent)',
+    'var(--primary-foreground)',
+    'var(--secondary)'
   ],
   'cloudy': [
-    themeColors?.accent || '#000000',           // Uses your theme's accent color (adapts to light/dark)
-    themeColors?.gray500 || '#000000',          // Gray-500 (adapts to light/dark)
-    themeColors?.gray800 || '#000000'           // Gray-800 (adapts to light/dark)
+    'var(--accent)',
+    'var(--muted-foreground)',
+    'var(--foreground)'
   ],
   'fog': [
-    themeColors?.accent || '#000000',           // Uses your theme's accent color (adapts to light/dark)
-    themeColors?.muted || '#000000',            // Muted color (adapts to light/dark)
-    themeColors?.subtle || '#000000'            // Subtle color (adapts to light/dark)
+    'var(--accent)',
+    'var(--muted)',
+    'var(--muted-foreground)'
   ],
   'thunder': [
-    themeColors?.accent || '#000000',           // Uses your theme's accent color (adapts to light/dark)
-    themeColors?.secondary || '#000000',        // Secondary color (adapts to light/dark)
-    themeColors?.secondary600 || '#000000'      // Darker secondary variant
+    'var(--accent)',
+    'var(--secondary)',
+    'var(--secondary-foreground)'
   ],
   'default': [
-    themeColors?.primary || '#000000',          // Primary color (adapts to light/dark)
-    themeColors?.secondary || '#000000',        // Secondary color (adapts to light/dark)
-    themeColors?.accent || '#000000'            // Accent color (adapts to light/dark)
+    'var(--primary)',
+    'var(--secondary)',
+    'var(--accent)'
   ]
 });
 
@@ -95,14 +94,11 @@ export default function WeatherLiquidEther({
   autoResumeDelay = 3000,
   autoRampDuration = 0.6
 }: WeatherLiquidEtherProps): React.ReactElement {
-  // Get theme colors from Zustand store
-  const themeColors = useThemeColors();
-  
   // Get weather condition and theme group
   const { themeGroup } = getWeatherCondition(weatherCode, isDay);
   
   // Get color palette based on weather and theme
-  const weatherColorPalettes = getWeatherColorPalettes(themeColors);
+  const weatherColorPalettes = getWeatherColorPalettes();
   const colors = weatherColorPalettes[themeGroup as keyof typeof weatherColorPalettes] || weatherColorPalettes.default;
   
 

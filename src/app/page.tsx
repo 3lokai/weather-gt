@@ -3,12 +3,9 @@
 import { LottieWeatherIcon } from "@/components/icons/lottie-weather-icon";
 import WeatherLiquidEther from "@/components/background/weather-liquid-ether";
 import { ThemeToggle } from "@/components/theme-toggle/theme-toggle";
-import { ThemeToggleDemo } from "@/components/theme-toggle/theme-toggle-demo";
 import { SearchProvider } from "@/components/search";
 import { InlineSearch } from "@/components/search/inline-search";
 import { CurrentConditionsCard, CurrentConditionsDemo } from "@/components/weather";
-import { useWeatherTheme } from "@/hooks/use-weather-theme";
-import { useTheme } from "@/hooks/use-theme";
 import { useWeatherStore } from "@/lib/store/weather-store";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -24,15 +21,8 @@ export default function HomePage() {
   // Get selected location from store
   const { selectedLocation } = useWeatherStore();
   
-  // Apply theme switching logic with weather data
-  useTheme(demoWeatherCode, isDay);
-  
-  // Apply weather theme to document
-  useWeatherTheme({
-    weatherCode: demoWeatherCode,
-    isDay: isDay,
-    applyToDocument: true
-  });
+  // Note: Theme management now handled by next-themes ThemeProvider
+  // Weather-based visual effects remain in WeatherLiquidEther component
 
   return (
     <SearchProvider>
@@ -127,8 +117,10 @@ export default function HomePage() {
               }}
               location={selectedLocation}
               size="lg"
-              className="glass-clear glass-hover"
-            />
+               className="glass-clear glass-hover"
+               showHeroBackground={true}
+               heroBackgroundOpacity={0.6}
+             />
           </section>
         )}
 
@@ -198,9 +190,14 @@ export default function HomePage() {
                 Interactive theme switching demonstration
               </CardDescription>
             </CardHeader>
-            <CardContent>
-              <ThemeToggleDemo />
-            </CardContent>
+             <CardContent>
+               <div className="text-center space-y-4">
+                 <ThemeToggle />
+                 <p className="text-body-s text-muted-foreground">
+                   Click to toggle: Light ↔ Dark
+                 </p>
+               </div>
+             </CardContent>
           </Card>
         </section>
 

@@ -9,6 +9,7 @@ Debounced autosuggest using Open‑Meteo Geocoding; keyboard‑first.
 * Results show `name, admin1, country` with keyboard navigation (↑/↓/Enter) and mouse.
 * `Cmd/Ctrl+K` opens, `Esc` closes, focus trapped.
 * Selecting result sets `selectedLocation` and prefetches forecast.
+* Supports separate "Search" button style variant shown in comps.
 
 ## Dependencies
 None

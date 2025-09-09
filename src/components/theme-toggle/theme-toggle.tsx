@@ -1,6 +1,6 @@
 'use client';
 
-import { useWeatherStore } from '@/lib/store/weather-store';
+import { useThemeToggle } from '@/hooks/use-theme-toggle';
 import { cn } from '@/lib/utils/cn';
 import './theme-toggle.css';
 
@@ -9,47 +9,51 @@ interface ThemeToggleProps {
 }
 
 export function ThemeToggle({ className }: ThemeToggleProps) {
-  const { themeMode, previousThemeMode, setThemeMode } = useWeatherStore();
+  const { theme, setTheme, mounted } = useThemeToggle();
 
   const handleToggle = () => {
-    // Simple logic: if light or dark, go to auto; if auto, go to opposite of previous
-    const nextMode = (() => {
-      if (themeMode === 'light' || themeMode === 'dark') {
-        return 'auto';
-      } else {
-        // We're in auto mode, go to opposite of previous mode
-        if (previousThemeMode === 'light') {
-          return 'dark';
-        } else if (previousThemeMode === 'dark') {
-          return 'light';
-        } else {
-          // No previous mode, default to light
-          return 'light';
-        }
-      }
-    })();
-    
-    setThemeMode(nextMode);
+    // Simple 2-state logic: toggle between light and dark
+    const nextMode = theme === 'light' ? 'dark' : 'light';
+    setTheme(nextMode);
   };
+
+  // Prevent hydration mismatch
+  if (!mounted) {
+    return (
+      <label 
+        className={cn("theme-toggle-container", className)}
+        data-mode="light"
+      >
+        <input 
+          type="checkbox" 
+          id="theme-toggle"
+          checked={false}
+          disabled
+          onChange={() => {}}
+          aria-label="Theme toggle loading..."
+        />
+        <span className="theme-toggle-slider round">
+          <div className="theme-toggle-background"></div>
+          <div className="theme-toggle-star"></div>
+          <div className="theme-toggle-star"></div>
+        </span>
+      </label>
+    );
+  }
 
   return (
     <label 
       className={cn("theme-toggle-container", className)}
-      data-mode={themeMode}
+      data-mode={theme}
     >
       <input 
         type="checkbox" 
         id="theme-toggle"
+        checked={theme === 'dark'}
         onChange={handleToggle}
-        aria-label={`Current mode: ${themeMode}. Click to cycle through light, dark, and auto modes.`}
+        aria-label={`Current mode: ${theme}. Click to toggle between light and dark modes.`}
       />
       <span className="theme-toggle-slider round">
-        {/* Mode indicators */}
-        <div className="theme-toggle-mode-indicators">
-          <div className="theme-toggle-mode-indicator">☀️</div>
-          <div className="theme-toggle-mode-indicator">⚙️</div>
-          <div className="theme-toggle-mode-indicator">🌙</div>
-        </div>
         <div className="theme-toggle-background"></div>
         <div className="theme-toggle-star"></div>
         <div className="theme-toggle-star"></div>

@@ -18,21 +18,7 @@ export interface Units {
   timeFormat: '12h' | '24h';
 }
 
-export interface ThemeColors {
-  accent: string;
-  accent100: string;
-  accent500: string;
-  primary: string;
-  primary100: string;
-  primary200: string;
-  primary600: string;
-  secondary: string;
-  secondary600: string;
-  gray500: string;
-  gray800: string;
-  muted: string;
-  subtle: string;
-}
+// ThemeColors interface removed - themes now managed by next-themes
 
 export interface WeatherState {
   // Core state
@@ -42,11 +28,6 @@ export interface WeatherState {
   
   // Settings
   units: Units;
-  themeMode: 'light' | 'dark' | 'auto';
-  previousThemeMode: 'light' | 'dark' | null; // Track previous mode for auto cycling
-  
-  // Theme colors (computed from CSS variables)
-  themeColors: ThemeColors | null;
   
   // Actions
   setSelectedLocation: (location: Location | null) => void;
@@ -54,8 +35,6 @@ export interface WeatherState {
   addFavorite: (location: Location) => void;
   removeFavorite: (locationId: string) => void;
   setUnits: (units: Partial<Units>) => void;
-  setThemeMode: (mode: 'light' | 'dark' | 'auto') => void;
-  setThemeColors: (colors: ThemeColors) => void;
 }
 
 const defaultUnits: Units = {
@@ -73,9 +52,6 @@ export const useWeatherStore = create<WeatherState>()(
       selectedDayIndex: 0,
       favorites: [],
       units: defaultUnits,
-      themeMode: 'auto',
-      previousThemeMode: null,
-      themeColors: null,
 
       // Actions
       setSelectedLocation: (location) => set({ selectedLocation: location }),
@@ -97,24 +73,12 @@ export const useWeatherStore = create<WeatherState>()(
         const { units } = get();
         set({ units: { ...units, ...newUnits } });
       },
-      
-      setThemeMode: (mode) => {
-        const { themeMode } = get();
-        set({ 
-          themeMode: mode,
-          previousThemeMode: themeMode !== 'auto' ? themeMode : get().previousThemeMode
-        });
-      },
-      
-      setThemeColors: (colors) => set({ themeColors: colors }),
     }),
     {
       name: 'weather-store',
       partialize: (state) => ({
         favorites: state.favorites,
         units: state.units,
-        themeMode: state.themeMode,
-        previousThemeMode: state.previousThemeMode,
         selectedLocation: state.selectedLocation,
       }),
     }

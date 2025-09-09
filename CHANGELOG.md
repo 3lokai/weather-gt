@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 ## [0.1.0] - 2024-12-19
 
 ### Added
+- **Current Conditions Card (E1-02)**: Complete weather display component
+  - Temperature display with unit conversion (°C/°F) 
+  - Apparent temperature ("feels like") indication
+  - Weather condition labels from WMO weather codes
+  - Location formatting with country/region support
+  - Animated Lottie weather icons with day/night variants
+  - Dynamic weather-specific theming integration
+  - Three responsive size variants (sm, md, lg)
+  - Full accessibility support (ARIA, keyboard navigation, AA contrast)
+  - Integration with Zustand store and weather theme system
+  - Interactive demo with multiple weather scenarios
+
 - **OKLCH Token System (E2-01)**: Complete design system implementation
   - Full OKLCH color space integration for better color consistency and accessibility
   - Light and dark theme variants with proper contrast ratios

@@ -5,7 +5,7 @@ Skeletons for hero, metrics, daily, hourly; prevent CLS.
 
 ## Acceptance Criteria
 
-* Card sizes locked; skeleton shapes match final.
+* Skeletons match exact shapes (hero, metrics tiles, daily chips, hourly rows) with subtle grain.
 
 ## Dependencies
 None

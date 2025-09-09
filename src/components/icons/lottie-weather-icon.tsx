@@ -14,6 +14,10 @@ interface LottieWeatherIconProps {
   autoplay?: boolean;
   variant?: 'fill' | 'line';
   speed?: number; // Animation speed multiplier (1 = normal, 2 = 2x faster, 0.5 = 2x slower)
+  /** Apply weather-aware styling enhancements */
+  enhancedStyling?: boolean;
+  /** Custom filter effects for better background integration */
+  customFilter?: string;
 }
 
 export function LottieWeatherIcon({ 
@@ -24,7 +28,9 @@ export function LottieWeatherIcon({
   loop = true,
   autoplay = true,
   variant = 'fill',
-  speed = 1
+  speed = 1,
+  enhancedStyling = false,
+  customFilter
 }: LottieWeatherIconProps) {
   const [animationData, setAnimationData] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -33,6 +39,34 @@ export function LottieWeatherIcon({
 
   const iconKey = getIconKey(code, isDay);
   const iconId = getIconId(code, isDay, 'bas');
+  
+  // Enhanced styling for better background integration
+  const getEnhancedStyles = () => {
+    if (!enhancedStyling) return {};
+    
+    const timeOfDay = (() => {
+      const hour = new Date().getHours();
+      if (hour >= 5 && hour < 7) return 'dawn';
+      if (hour >= 7 && hour < 17) return 'day';
+      if (hour >= 17 && hour < 20) return 'dusk';
+      return 'night';
+    })();
+    
+    const baseStyles: React.CSSProperties = {
+      filter: customFilter || 'drop-shadow(0 4px 8px rgba(0,0,0,0.1))'
+    };
+    
+    // Add time-of-day specific styling
+    if (timeOfDay === 'dawn') {
+      baseStyles.filter += ' brightness(1.1) saturate(1.2) hue-rotate(5deg)';
+    } else if (timeOfDay === 'dusk') {
+      baseStyles.filter += ' brightness(1.05) saturate(1.3) hue-rotate(-5deg)';
+    } else if (timeOfDay === 'night') {
+      baseStyles.filter += ' brightness(0.9) saturate(0.8) contrast(1.1)';
+    }
+    
+    return baseStyles;
+  };
   
   useEffect(() => {
     const loadAnimation = async () => {
@@ -93,10 +127,16 @@ export function LottieWeatherIcon({
     );
   }
 
+  const enhancedStyles = getEnhancedStyles();
+
   return (
     <div
       className={className}
-      style={{ width: size, height: size }}
+      style={{ 
+        width: size, 
+        height: size,
+        ...enhancedStyles
+      }}
       aria-label={`Weather condition: ${iconKey}`}
     >
       <Lottie
@@ -142,7 +182,7 @@ function getFallbackEmoji(iconKey: string): string {
     'thunderstorms-night': '⛈️',
     'thunderstorms-rain': '⛈️',
     'thunderstorms-day-rain': '⛈️',
-    'thunderstorms-night-rain': '⛈️',
+    'thunderstorms-night-rain': '⛈️'
   };
   
   return emojiMap[iconKey] || '🌤️';

@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from "react";
-import { useWeatherStore } from "@/lib/store/weather-store";
+import { useTheme } from "next-themes";
 
 interface LogoProps {
   width?: number;
@@ -10,7 +10,7 @@ interface LogoProps {
 }
 
 export function Logo({ width = 150, height = 30, className = "" }: LogoProps) {
-  const { themeMode } = useWeatherStore();
+  const { resolvedTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
   const [isDark, setIsDark] = useState(false);
 
@@ -22,35 +22,8 @@ export function Logo({ width = 150, height = 30, className = "" }: LogoProps) {
   // Determine if we're in dark mode
   useEffect(() => {
     if (!mounted) return;
-
-    const updateDarkMode = () => {
-      switch (themeMode) {
-        case 'dark':
-          setIsDark(true);
-          break;
-        case 'light':
-          setIsDark(false);
-          break;
-        case 'auto':
-          // Check if dark class is applied to document
-          setIsDark(document.documentElement.classList.contains('dark'));
-          break;
-        default:
-          setIsDark(false);
-      }
-    };
-
-    updateDarkMode();
-
-    // Watch for theme changes on the document
-    const observer = new MutationObserver(updateDarkMode);
-    observer.observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: ['class']
-    });
-
-    return () => observer.disconnect();
-  }, [themeMode, mounted]);
+    setIsDark(resolvedTheme === 'dark');
+  }, [resolvedTheme, mounted]);
 
   if (!mounted) {
     // Return a placeholder during hydration

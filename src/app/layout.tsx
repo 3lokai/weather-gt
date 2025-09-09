@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { DM_Sans, Bricolage_Grotesque } from "next/font/google";
 import { QueryProvider } from "@/lib/providers/query-provider";
+import { ThemeProvider } from "@/lib/providers/theme-provider";
 import "./globals.css";
 
 const dmSans = DM_Sans({
@@ -37,9 +38,11 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${dmSans.variable} ${bricolageGrotesque.variable}`}>
       <body className="font-sans antialiased" suppressHydrationWarning>
-        <QueryProvider>
-          {children}
-        </QueryProvider>
+        <ThemeProvider>
+          <QueryProvider>
+            {children}
+          </QueryProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

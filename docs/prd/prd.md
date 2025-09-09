@@ -65,13 +65,19 @@ A modern, showcase‑quality **Weather Web App** powered by **Open‑Meteo** tha
 12. **Sunrise/Sunset**: times + sun‑path progress visualization.
 13. **Animated backgrounds**: based on condition + day/night.
 14. **Voice search**: Web Speech API; fallback input.
-15. **Theming**: light/dark + auto by local time; fine‑tuned palettes.
+15. **Theming**: light/dark/system modes with smooth transitions and user preference persistence.
 16. **PWA**: installable, offline shell, cached assets; SW update flow.
 
 ## 6) Information Architecture & Navigation
 
+**Layout by Device:**
+* **Desktop**: Hourly forecast sits in a right rail; daily rail and metrics live under the hero card
+* **Tablet**: Stacked layout with responsive breakpoints
+* **Mobile**: Fully stacked layout with optimized touch targets
+
+**Navigation Structure:**
 * **Top bar**: search (with voice), units dropdown, theme toggle, favorites.
-* **Hero**: current conditions card over animated background.
+* **Hero**: Rounded (≈24px), soft gradient, subtle particle layer (can be Rive or CSS), big temp on the right.
 * **Metrics grid**: key stats cards.
 * **Daily strip**: 7‑day tiles (selects the day for hourly view).
 * **Hourly panel**: tabs per day (or day selector), temperature chart + scrollable list.
@@ -85,11 +91,26 @@ A modern, showcase‑quality **Weather Web App** powered by **Open‑Meteo** tha
 * **Touch-friendly**: large hit targets, swipe where natural.
 * **Keyboardable**: full tab order; visible focus; ARIA where needed.
 
+## 7.1) Application States
+
+**Loading States:**
+* **Loading skeleton**: Match exact shapes (hero, metrics tiles, daily chips, hourly rows) with subtle grain
+* **Skeleton timing**: 300ms delay before showing, 1.2s shimmer cycle
+
+**Error States:**
+* **API error**: Centered icon, title "Something went wrong", helper text, Retry button
+* **Network error**: Offline indicator with cached data fallback
+* **Geolocation denied**: Graceful fallback to search prompt
+
+**Empty States:**
+* **No favorites**: Empty state illustration with "Add your first location" CTA
+* **No search results**: "No locations found" with search suggestions
+
 ## 8) Component Inventory (shadcn/ui + ReactBits mapping)
 
 * **Search (autosuggest)**: `Command` + `Input` + `Popover` (shadcn) with ReactBits debounce, async list, keyboard nav.
-* **Units dropdown**: `Select` with grouped options; shows active unit chips.
-* **Theme toggle**: `Toggle` or custom `ModeToggle` (system/light/dark/auto‑by‑time).
+* **Units dropdown**: Menu has a top "Switch to Imperial/Metric" action, then grouped options with checkmarks (temp, wind, precip).
+* **Theme toggle**: `Toggle` or custom `ModeToggle` (system/light/dark).
 * **Current card**: `Card`, `Avatar/Icon`, badges, micro‑transitions on data refresh.
 * **Metrics grid**: `Card` xN with iconography; tooltips for definitions.
 * **Daily strip**: `Tabs` or `SegmentedControl`‑like pills; `ScrollArea` on mobile.
@@ -103,16 +124,19 @@ A modern, showcase‑quality **Weather Web App** powered by **Open‑Meteo** tha
 
 ## 9) Visual System & Theming
 
-**Typography**: Inter/Geist or System UI stack. Size scale tuned for readability.
+**Typography**: Use the provided display scale (96/52/32/28/20/18/16/14) + DM Sans/Bricolage pairing.
 
-**Color Palettes (Tailwind tokens)**
+**Color Tokens**: Use the Neutral / Orange-500 / Blue-500/700 set as the base; dark uses the navy backdrop. (We already mapped these in Tailwind v4.)
 
-* **Light**: neutral‑100 bg, neutral‑900 text; accent hues for conditions (clear: amber, rain: blue, snow: slate, storm: violet, fog: zinc).
-* **Dark**: neutral‑950 bg, neutral‑50 text; dimmed surfaces; elevated cards with subtle shadows.
-* **States**: focus ring `accent/outline`; success/info/warn/error semantic scales.
-* **Auto theme**: switch at sunrise/sunset (local) unless user overrides.
+**Color Palettes (Traditional Light/Dark)**
 
-**Effects**: soft shadows (no harsh elevation), glassy overlays in hero, subtle gradient washes per condition.
+* **Light Theme**: neutral‑50 bg, neutral‑900 text; clean contrast with subtle accent colors.
+* **Dark Theme**: neutral‑950 bg, neutral‑50 text; elevated surfaces with soft shadows.
+* **System Theme**: Automatically follows user's OS preference.
+* **States**: focus ring with high contrast; success/info/warn/error semantic scales.
+* **Persistence**: User theme preference saved to localStorage via next-themes.
+
+**Effects**: soft shadows (no harsh elevation), subtle glass morphism effects, smooth theme transitions.
 
 ## 10) Data & APIs (Open‑Meteo)
 
@@ -133,9 +157,10 @@ A modern, showcase‑quality **Weather Web App** powered by **Open‑Meteo** tha
 
 ## 11) State & Persistence
 
-* **Global store** (Zustand): `{ units, themeMode, favorites[], selectedLocation, selectedDay }`.
+* **Global store** (Zustand): `{ units, favorites[], selectedLocation, selectedDay }`.
+* **Theme management** (next-themes): handles light/dark/system modes with persistence.
 * **Query cache** (TanStack Query): keyed by `{lat,lon,units,day}`; `staleTime: 10–15m`.
-* **Persistence**: localStorage for units, theme, favorites.
+* **Persistence**: localStorage for units, favorites; next-themes for theme preferences.
 
 ## 12) Performance & Reliability
 
@@ -281,116 +306,71 @@ showers-*→CloudRain; snow-showers-*→CloudSnow; thunderstorm→CloudLightning
 
 ---
 
-## 21) Condition → Theme Token Table (OKLCH • Tailwind vars)
+## 21) Traditional Theme System (Light/Dark with OKLCH)
 
-**Goal**: An atmospheric palette that changes with the weather + day/night. All values are OKLCH for consistent perceptual steps.
+**Goal**: Clean, accessible light and dark themes with consistent contrast ratios and smooth transitions.
 
-> **Implementation**: Expose CSS vars (e.g., `--accent`, `--bg`, `--card`, `--ring`, `--grad-from`, `--grad-to`, `--glow`) and wire Tailwind to use them (via `theme.extend.colors`). Night variants slightly lower L and C.
+> **Implementation**: Use next-themes for theme management with CSS custom properties for seamless transitions. All values use OKLCH for perceptual uniformity.
 
-### 21.1 Token Keys
+### 21.1 Theme Token Structure
 
-* `--bg`, `--fg`, `--card`, `--card-fg`, `--muted`, `--muted-fg`, `--ring`
-* `--accent`, `--accent-fg`, `--grad-from`, `--grad-to`, `--glow`, `--chart-line`
+* `--background`, `--foreground`, `--card`, `--card-foreground`
+* `--popover`, `--popover-foreground`, `--primary`, `--primary-foreground`
+* `--secondary`, `--secondary-foreground`, `--muted`, `--muted-foreground`
+* `--accent`, `--accent-foreground`, `--destructive`, `--destructive-foreground`
+* `--border`, `--input`, `--ring`
 
-### 21.2 Palettes (examples; tweak during design pass)
+### 21.2 Light Theme Palette
 
-**Clear‑Day**
-
-```
---bg: oklch(0.98 0.01 95);
---fg: oklch(0.22 0.03 257);
---card: oklch(0.99 0.01 95);
---muted: oklch(0.95 0.02 95);
---ring: oklch(0.78 0.12 95);
---accent: oklch(0.86 0.14 85);    /* warm amber */
---accent-fg: oklch(0.24 0.05 257);
---grad-from: oklch(0.94 0.05 240);
---grad-to: oklch(0.90 0.10 85);
---glow: oklch(0.90 0.12 85 / 0.35);
---chart-line: oklch(0.62 0.12 85);
-```
-
-**Clear‑Night**
-
-```
---bg: oklch(0.13 0.02 257);
---fg: oklch(0.95 0.02 95);
---card: oklch(0.18 0.02 257);
---muted: oklch(0.16 0.02 257);
---ring: oklch(0.62 0.10 85);
---accent: oklch(0.75 0.10 85);
---accent-fg: oklch(0.13 0.02 257);
---grad-from: oklch(0.22 0.03 257);
---grad-to: oklch(0.28 0.08 85);
---glow: oklch(0.50 0.12 85 / 0.35);
---chart-line: oklch(0.78 0.12 85);
+```css
+:root {
+  --background: oklch(0.98 0.004 106);
+  --foreground: oklch(0.15 0.006 106);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.15 0.006 106);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.15 0.006 106);
+  --primary: oklch(0.19 0.028 106);
+  --primary-foreground: oklch(0.98 0.004 106);
+  --secondary: oklch(0.96 0.006 106);
+  --secondary-foreground: oklch(0.19 0.028 106);
+  --muted: oklch(0.96 0.006 106);
+  --muted-foreground: oklch(0.45 0.009 106);
+  --accent: oklch(0.96 0.006 106);
+  --accent-foreground: oklch(0.19 0.028 106);
+  --destructive: oklch(0.55 0.18 27);
+  --destructive-foreground: oklch(0.98 0.004 106);
+  --border: oklch(0.89 0.005 106);
+  --input: oklch(0.89 0.005 106);
+  --ring: oklch(0.19 0.028 106);
+}
 ```
 
-**Rain**
+### 21.3 Dark Theme Palette
 
+```css
+.dark {
+  --background: oklch(0.07 0.004 106);
+  --foreground: oklch(0.98 0.004 106);
+  --card: oklch(0.07 0.004 106);
+  --card-foreground: oklch(0.98 0.004 106);
+  --popover: oklch(0.07 0.004 106);
+  --popover-foreground: oklch(0.98 0.004 106);
+  --primary: oklch(0.98 0.004 106);
+  --primary-foreground: oklch(0.19 0.028 106);
+  --secondary: oklch(0.12 0.006 106);
+  --secondary-foreground: oklch(0.98 0.004 106);
+  --muted: oklch(0.12 0.006 106);
+  --muted-foreground: oklch(0.65 0.009 106);
+  --accent: oklch(0.12 0.006 106);
+  --accent-foreground: oklch(0.98 0.004 106);
+  --destructive: oklch(0.65 0.15 27);
+  --destructive-foreground: oklch(0.98 0.004 106);
+  --border: oklch(0.12 0.006 106);
+  --input: oklch(0.12 0.006 106);
+  --ring: oklch(0.82 0.018 106);
+}
 ```
---bg: oklch(0.97 0.02 250);
---fg: oklch(0.20 0.04 250);
---card: oklch(0.99 0.01 250);
---muted: oklch(0.93 0.02 250);
---ring: oklch(0.70 0.08 250);
---accent: oklch(0.70 0.12 250);   /* blue */
---accent-fg: oklch(0.18 0.04 250);
---grad-from: oklch(0.92 0.04 240);
---grad-to: oklch(0.86 0.06 220);
---glow: oklch(0.70 0.10 250 / 0.35);
---chart-line: oklch(0.52 0.10 250);
-```
-
-**Thunder**
-
-```
---bg: oklch(0.15 0.02 260);
---fg: oklch(0.96 0.02 95);
---card: oklch(0.18 0.02 260);
---muted: oklch(0.17 0.02 260);
---ring: oklch(0.78 0.12 300);
---accent: oklch(0.74 0.15 300);   /* violet */
---accent-fg: oklch(0.15 0.02 260);
---grad-from: oklch(0.22 0.04 260);
---grad-to: oklch(0.30 0.10 300);
---glow: oklch(0.70 0.15 300 / 0.35);
---chart-line: oklch(0.80 0.14 300);
-```
-
-**Snow**
-
-```
---bg: oklch(0.99 0.01 260);
---fg: oklch(0.24 0.03 260);
---card: oklch(1 0 0);
---muted: oklch(0.96 0.01 260);
---ring: oklch(0.72 0.07 250);
---accent: oklch(0.85 0.08 250);   /* crisp icy blue */
---accent-fg: oklch(0.20 0.03 260);
---grad-from: oklch(0.96 0.03 250);
---grad-to: oklch(0.90 0.05 230);
---glow: oklch(0.85 0.08 250 / 0.30);
---chart-line: oklch(0.55 0.08 250);
-```
-
-**Fog / Overcast** (shared base, overcast slightly darker)
-
-```
---bg: oklch(0.96 0.01 260);
---fg: oklch(0.26 0.02 260);
---card: oklch(0.99 0.005 260);
---muted: oklch(0.92 0.005 260);
---ring: oklch(0.70 0.05 260);
---accent: oklch(0.72 0.06 260);   /* neutral slate */
---accent-fg: oklch(0.20 0.02 260);
---grad-from: oklch(0.94 0.01 260);
---grad-to: oklch(0.90 0.02 260);
---glow: oklch(0.72 0.06 260 / 0.25);
---chart-line: oklch(0.48 0.04 260);
-```
-
-> Add `Partly‑Cloudy` variants by blending Clear & Overcast (50/50) and lowering contrast at night.
 
 ---
 
@@ -407,27 +387,34 @@ showers-*→CloudRain; snow-showers-*→CloudSnow; thunderstorm→CloudLightning
 
 ```
 units: { temp: 'celsius'|'fahrenheit', wind: 'kmh'|'mph', precip: 'mm' },
-themeMode: 'system'|'light'|'dark'|'auto-time',
 selectedLocation?: { id, name, country, admin1, lat, lon, tz },
 selectedDayIndex: number,
 favorites: Location[],
 ```
 
-### 22.3 API Utilities (shapes)
+### 22.3 Theme Management (next-themes)
+
+```
+theme: 'light'|'dark'|'system',
+systemTheme: 'light'|'dark',
+setTheme: (theme: string) => void,
+```
+
+### 22.4 API Utilities (shapes)
 
 * `geocode(q: string): Promise<Location[]>`
 * `getForecast({lat,lon,units}): Promise<{ current, hourly, daily, isDay }>`
-* Derived helpers: `getWmoGroup(code)`, `getIconKey(code,isDay)`, `getThemeFor(code,isDay)`
+* Derived helpers: `getWmoGroup(code)`, `getIconKey(code,isDay)`
 
-### 22.4 Components (key props)
+### 22.5 Components (key props)
 
 * **LocationSearch**: `{ onSelect(Location), onVoice?, recent?: Location[], favorites?: Location[] }`
-* **CurrentConditionsCard**: `{ current, location, iconKey, theme }`
+* **CurrentConditionsCard**: `{ current, location, iconKey }`
 * **MetricsGrid**: `{ current }` (calculates chips + tooltips)
 * **DailyStrip**: `{ days[], selectedIndex, onSelect(i) }`
 * **HourlyPanel**: `{ day, units }` + **linked hover** via context
 * **UnitsDropdown**: `{ units, onChange }`
-* **ThemeToggle**: `{ mode, onChange }`
+* **ThemeToggle**: next-themes integration with system/light/dark options
 * **FavoritesDrawer**: `{ favorites, onRemove, onSelect }`
 * **CompareGrid**: `{ locations[], units }`
 * **SunCycle**: `{ sunrise, sunset, now }` (computes progress)

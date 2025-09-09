@@ -2,7 +2,6 @@
 
 import React, { useState } from 'react';
 import WeatherLiquidEther from './weather-liquid-ether';
-import { useWeatherTheme } from '@/hooks/use-weather-theme';
 
 // Demo weather conditions
 const demoConditions = [
@@ -18,12 +17,7 @@ const demoConditions = [
 export default function WeatherBackgroundDemo() {
   const [selectedCondition, setSelectedCondition] = useState(demoConditions[0]);
 
-  // Apply weather theme to document
-  useWeatherTheme({
-    weatherCode: selectedCondition.code,
-    isDay: selectedCondition.isDay,
-    applyToDocument: true
-  });
+  // Weather-based theming removed; background remains purely visual
 
   return (
     <div className="min-h-screen relative">
@@ -90,7 +84,7 @@ export default function WeatherBackgroundDemo() {
                 Reduced Motion Support
               </h3>
               <p className="text-body-s text-muted-foreground">
-                Respects user's motion preferences and disables animations when needed for accessibility.
+                Respects user&apos;s motion preferences and disables animations when needed for accessibility.
               </p>
             </div>
           </div>

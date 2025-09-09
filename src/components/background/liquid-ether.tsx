@@ -59,6 +59,35 @@ const defaultColors = [
   'var(--accent)'
 ];
 
+// Convert any CSS color (including oklch(), rgb(), hsl()) to hex using canvas
+function colorToHex(colorString: string): string {
+  if (!colorString || colorString === '') return '#000000';
+  if (colorString.startsWith('#')) return colorString;
+  try {
+    const canvas = document.createElement('canvas');
+    canvas.width = 1; canvas.height = 1;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return '#000000';
+    ctx.fillStyle = colorString;
+    ctx.fillRect(0, 0, 1, 1);
+    const [r, g, b] = ctx.getImageData(0, 0, 1, 1).data;
+    return `#${r.toString(16).padStart(2, '0')}${g.toString(16).padStart(2, '0')}${b.toString(16).padStart(2, '0')}`;
+  } catch {
+    return '#000000';
+  }
+}
+
+// Resolve CSS variables like var(--primary) and convert to hex
+function resolveColorToHex(input: string): string {
+  if (typeof window === 'undefined') return '#000000';
+  const varMatch = input?.match(/^var\((--[\w-]+)\)$/);
+  if (varMatch) {
+    const raw = getComputedStyle(document.documentElement).getPropertyValue(varMatch[1]).trim();
+    return colorToHex(raw || '#000000');
+  }
+  return colorToHex(input);
+}
+
 export default function LiquidEther({
   mouseForce = 20,
   cursorSize = 100,
@@ -101,7 +130,8 @@ export default function LiquidEther({
       const w = arr.length;
       const data = new Uint8Array(w * 4);
       for (let i = 0; i < w; i++) {
-        const c = new THREE.Color(arr[i]);
+        const hex = resolveColorToHex(arr[i]);
+        const c = new THREE.Color(hex);
         data[i * 4 + 0] = Math.round(c.r * 255);
         data[i * 4 + 1] = Math.round(c.g * 255);
         data[i * 4 + 2] = Math.round(c.b * 255);

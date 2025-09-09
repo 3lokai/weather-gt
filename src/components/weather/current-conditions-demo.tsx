@@ -80,6 +80,7 @@ const demoLocations = [
 export function CurrentConditionsDemo() {
   const { selectedLocation, setSelectedLocation } = useWeatherStore();
   const [selectedCondition, setSelectedCondition] = useState<string>('clear');
+  const [showHeroBackground, setShowHeroBackground] = useState<boolean>(false);
 
   // Use first demo location if no location selected
   const displayLocation = selectedLocation || demoLocations[0];
@@ -132,6 +133,31 @@ export function CurrentConditionsDemo() {
                 ))}
               </div>
             </div>
+
+            <div>
+              <label className="text-sm font-medium mb-2 block">Hero Background:</label>
+              <div className="flex gap-2">
+                <Button
+                  variant={!showHeroBackground ? "default" : "outline"}
+                  size="sm"
+                  onClick={() => setShowHeroBackground(false)}
+                >
+                  Off
+                </Button>
+                <Button
+                  variant={showHeroBackground ? "default" : "outline"}
+                  size="sm"
+                  onClick={() => setShowHeroBackground(true)}
+                >
+                  On
+                </Button>
+              </div>
+              {showHeroBackground && (
+                <p className="text-xs text-muted-foreground mt-2">
+                  Hero backgrounds adapt to weather conditions and time of day for enhanced atmospheric theming.
+                </p>
+              )}
+            </div>
           </div>
 
           {/* Size Variants Demo */}
@@ -144,6 +170,7 @@ export function CurrentConditionsDemo() {
                   conditions={displayConditions}
                   location={displayLocation}
                   size="sm"
+                  showHeroBackground={showHeroBackground}
                 />
               </div>
               <div className="space-y-2">
@@ -152,6 +179,7 @@ export function CurrentConditionsDemo() {
                   conditions={displayConditions}
                   location={displayLocation}
                   size="md"
+                  showHeroBackground={showHeroBackground}
                 />
               </div>
               <div className="space-y-2">
@@ -160,6 +188,7 @@ export function CurrentConditionsDemo() {
                   conditions={displayConditions}
                   location={displayLocation}
                   size="lg"
+                  showHeroBackground={showHeroBackground}
                 />
               </div>
             </div>
@@ -176,6 +205,7 @@ export function CurrentConditionsDemo() {
                   location={displayLocation}
                   size="md"
                   showApparentTemp={false}
+                  showHeroBackground={showHeroBackground}
                 />
               </div>
               <div className="space-y-2">
@@ -185,6 +215,7 @@ export function CurrentConditionsDemo() {
                   location={displayLocation}
                   size="md"
                   className="border-primary shadow-primary/20"
+                  showHeroBackground={showHeroBackground}
                 />
               </div>
             </div>

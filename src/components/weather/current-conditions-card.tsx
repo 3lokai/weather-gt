@@ -1,10 +1,12 @@
 'use client';
 
+import { useRef } from 'react';
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { LottieWeatherIcon } from "@/components/icons/lottie-weather-icon";
 import { getWeatherCondition } from "@/lib/api/open-meteo";
 import { useWeatherStore, type Location } from "@/lib/store/weather-store";
 import { cn } from "@/lib/utils";
+import Image from "next/image";
 
 export interface CurrentConditionsData {
   temperature_2m: number;
@@ -24,6 +26,10 @@ export interface CurrentConditionsCardProps {
   size?: 'sm' | 'md' | 'lg';
   /** Show apparent temperature */
   showApparentTemp?: boolean;
+  /** Enable weather hero background */
+  showHeroBackground?: boolean;
+  /** Hero background opacity (0-1) */
+  heroBackgroundOpacity?: number;
 }
 
 export function CurrentConditionsCard({
@@ -31,9 +37,12 @@ export function CurrentConditionsCard({
   location,
   className,
   size = 'md',
-  showApparentTemp = true
+  showApparentTemp = true,
+  showHeroBackground = false,
+  heroBackgroundOpacity = 0.4
 }: CurrentConditionsCardProps) {
   const { units } = useWeatherStore();
+  const cardRef = useRef<HTMLDivElement>(null);
   
   const { condition, iconKey, themeGroup } = getWeatherCondition(
     conditions.weather_code,
@@ -84,16 +93,41 @@ export function CurrentConditionsCard({
 
   return (
     <Card
+      ref={cardRef}
       className={cn(
-        "transition-all duration-300 hover:shadow-lg",
-        `weather-theme-${themeGroup}`,
+        "relative overflow-hidden transition-all duration-300 hover:shadow-lg",
         styles.card,
         className
       )}
       role="region"
       aria-label={`Current weather conditions for ${formatLocation(location)}`}
     >
-      <CardHeader className="text-center space-y-2">
+      {/* Weather Hero Background */}
+      {showHeroBackground && (
+        <div className="absolute inset-0 pointer-events-none">
+          {/* Desktop Background */}
+          <Image
+            src="/Desktop - Hero bg.svg"
+            alt=""
+            width={800}
+            height={286}
+            className="hidden md:block w-full h-full object-cover"
+            style={{ opacity: heroBackgroundOpacity }}
+            priority
+          />
+          {/* Mobile Background */}
+          <Image
+            src="/Mobile - Hero bg.svg"
+            alt=""
+            width={343}
+            height={286}
+            className="block md:hidden w-full h-full object-cover"
+            style={{ opacity: heroBackgroundOpacity }}
+            priority
+          />
+        </div>
+      )}
+      <CardHeader className="relative z-10 text-center space-y-2">
         {/* Location */}
         <div 
           className={cn(
@@ -106,7 +140,7 @@ export function CurrentConditionsCard({
         </div>
       </CardHeader>
 
-      <CardContent className="text-center space-y-4">
+      <CardContent className="relative z-10 text-center space-y-4">
         {/* Weather Icon */}
         <div className="flex justify-center">
           <LottieWeatherIcon
@@ -114,6 +148,8 @@ export function CurrentConditionsCard({
             isDay={conditions.is_day}
             size={styles.icon}
             className="drop-shadow-lg"
+            enhancedStyling={showHeroBackground}
+            customFilter={showHeroBackground ? 'drop-shadow(0 6px 12px rgba(0,0,0,0.15))' : undefined}
             aria-hidden="true"
           />
         </div>

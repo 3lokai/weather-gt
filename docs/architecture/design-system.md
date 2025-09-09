@@ -7,131 +7,99 @@
 * **Size Scale**: tuned for readability across devices
 * **Line Height**: optimized for weather data display
 
-### Color Palettes (Tailwind tokens)
+### Color System (Traditional Light/Dark)
 
 #### Light Theme
-* **Background**: neutral‑100
-* **Text**: neutral‑900
-* **Accent Hues**: condition-based (clear: amber, rain: blue, snow: slate, storm: violet, fog: zinc)
+* **Background**: neutral‑50
+* **Text**: neutral‑900  
+* **Cards**: white with subtle borders
+* **Primary**: clean slate-based tones
 
 #### Dark Theme
 * **Background**: neutral‑950
 * **Text**: neutral‑50
-* **Surfaces**: dimmed with elevated cards and subtle shadows
+* **Cards**: elevated dark surfaces
+* **Primary**: softened contrast for comfortable viewing
 
-#### States
-* **Focus Ring**: `accent/outline`
-* **Semantic Scales**: success/info/warn/error
-* **Auto Theme**: switch at sunrise/sunset (local) unless user overrides
+#### System Theme
+* **Automatic**: Follows user's OS preference
+* **Smooth Transitions**: CSS custom properties enable seamless switching
+* **Persistence**: Theme preference saved via next-themes
 
 ### Effects
 * **Shadows**: soft, no harsh elevation
 * **Overlays**: glassy effects in hero sections
 * **Gradients**: subtle washes per condition
 
-## Condition → Theme Token Table (OKLCH • Tailwind vars)
+## Theme Token System (OKLCH • next-themes)
 
-**Goal**: An atmospheric palette that changes with the weather + day/night. All values are OKLCH for consistent perceptual steps.
+**Goal**: Clean, accessible light/dark themes with consistent contrast and smooth transitions powered by next-themes.
 
-> **Implementation**: Expose CSS vars (e.g., `--accent`, `--bg`, `--card`, `--ring`, `--grad-from`, `--grad-to`, `--glow`) and wire Tailwind to use them (via `theme.extend.colors`). Night variants slightly lower L and C.
+> **Implementation**: Use next-themes `ThemeProvider` with CSS custom properties. All colors use OKLCH for perceptual uniformity and better accessibility.
 
-### Token Keys
-* `--bg`, `--fg`, `--card`, `--card-fg`, `--muted`, `--muted-fg`, `--ring`
-* `--accent`, `--accent-fg`, `--grad-from`, `--grad-to`, `--glow`, `--chart-line`
+### Core Token Structure
+* `--background`, `--foreground`, `--card`, `--card-foreground`
+* `--popover`, `--popover-foreground`, `--primary`, `--primary-foreground` 
+* `--secondary`, `--secondary-foreground`, `--muted`, `--muted-foreground`
+* `--accent`, `--accent-foreground`, `--border`, `--input`, `--ring`
 
-### Palettes (examples; tweak during design pass)
+### Theme Implementation
 
-#### Clear‑Day
+#### Light Theme
 ```css
---bg: oklch(0.98 0.01 95);
---fg: oklch(0.22 0.03 257);
---card: oklch(0.99 0.01 95);
---muted: oklch(0.95 0.02 95);
---ring: oklch(0.78 0.12 95);
---accent: oklch(0.86 0.14 85);    /* warm amber */
---accent-fg: oklch(0.24 0.05 257);
---grad-from: oklch(0.94 0.05 240);
---grad-to: oklch(0.90 0.10 85);
---glow: oklch(0.90 0.12 85 / 0.35);
---chart-line: oklch(0.62 0.12 85);
+:root {
+  --background: oklch(0.98 0.004 106);
+  --foreground: oklch(0.15 0.006 106);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.15 0.006 106);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.15 0.006 106);
+  --primary: oklch(0.19 0.028 106);
+  --primary-foreground: oklch(0.98 0.004 106);
+  --secondary: oklch(0.96 0.006 106);
+  --secondary-foreground: oklch(0.19 0.028 106);
+  --muted: oklch(0.96 0.006 106);
+  --muted-foreground: oklch(0.45 0.009 106);
+  --accent: oklch(0.96 0.006 106);
+  --accent-foreground: oklch(0.19 0.028 106);
+  --destructive: oklch(0.55 0.18 27);
+  --destructive-foreground: oklch(0.98 0.004 106);
+  --border: oklch(0.89 0.005 106);
+  --input: oklch(0.89 0.005 106);
+  --ring: oklch(0.19 0.028 106);
+}
 ```
 
-#### Clear‑Night
+#### Dark Theme
 ```css
---bg: oklch(0.13 0.02 257);
---fg: oklch(0.95 0.02 95);
---card: oklch(0.18 0.02 257);
---muted: oklch(0.16 0.02 257);
---ring: oklch(0.62 0.10 85);
---accent: oklch(0.75 0.10 85);
---accent-fg: oklch(0.13 0.02 257);
---grad-from: oklch(0.22 0.03 257);
---grad-to: oklch(0.28 0.08 85);
---glow: oklch(0.50 0.12 85 / 0.35);
---chart-line: oklch(0.78 0.12 85);
+.dark {
+  --background: oklch(0.07 0.004 106);
+  --foreground: oklch(0.98 0.004 106);
+  --card: oklch(0.07 0.004 106);
+  --card-foreground: oklch(0.98 0.004 106);
+  --popover: oklch(0.07 0.004 106);
+  --popover-foreground: oklch(0.98 0.004 106);
+  --primary: oklch(0.98 0.004 106);
+  --primary-foreground: oklch(0.19 0.028 106);
+  --secondary: oklch(0.12 0.006 106);
+  --secondary-foreground: oklch(0.98 0.004 106);
+  --muted: oklch(0.12 0.006 106);
+  --muted-foreground: oklch(0.65 0.009 106);
+  --accent: oklch(0.12 0.006 106);
+  --accent-foreground: oklch(0.98 0.004 106);
+  --destructive: oklch(0.65 0.15 27);
+  --destructive-foreground: oklch(0.98 0.004 106);
+  --border: oklch(0.12 0.006 106);
+  --input: oklch(0.12 0.006 106);
+  --ring: oklch(0.82 0.018 106);
+}
 ```
 
-#### Rain
-```css
---bg: oklch(0.97 0.02 250);
---fg: oklch(0.20 0.04 250);
---card: oklch(0.99 0.01 250);
---muted: oklch(0.93 0.02 250);
---ring: oklch(0.70 0.08 250);
---accent: oklch(0.70 0.12 250);   /* blue */
---accent-fg: oklch(0.18 0.04 250);
---grad-from: oklch(0.92 0.04 240);
---grad-to: oklch(0.86 0.06 220);
---glow: oklch(0.70 0.10 250 / 0.35);
---chart-line: oklch(0.52 0.10 250);
-```
-
-#### Thunder
-```css
---bg: oklch(0.15 0.02 260);
---fg: oklch(0.96 0.02 95);
---card: oklch(0.18 0.02 260);
---muted: oklch(0.17 0.02 260);
---ring: oklch(0.78 0.12 300);
---accent: oklch(0.74 0.15 300);   /* violet */
---accent-fg: oklch(0.15 0.02 260);
---grad-from: oklch(0.22 0.04 260);
---grad-to: oklch(0.30 0.10 300);
---glow: oklch(0.70 0.15 300 / 0.35);
---chart-line: oklch(0.80 0.14 300);
-```
-
-#### Snow
-```css
---bg: oklch(0.99 0.01 260);
---fg: oklch(0.24 0.03 260);
---card: oklch(1 0 0);
---muted: oklch(0.96 0.01 260);
---ring: oklch(0.72 0.07 250);
---accent: oklch(0.85 0.08 250);   /* crisp icy blue */
---accent-fg: oklch(0.20 0.03 260);
---grad-from: oklch(0.96 0.03 250);
---grad-to: oklch(0.90 0.05 230);
---glow: oklch(0.85 0.08 250 / 0.30);
---chart-line: oklch(0.55 0.08 250);
-```
-
-#### Fog / Overcast (shared base, overcast slightly darker)
-```css
---bg: oklch(0.96 0.01 260);
---fg: oklch(0.26 0.02 260);
---card: oklch(0.99 0.005 260);
---muted: oklch(0.92 0.005 260);
---ring: oklch(0.70 0.05 260);
---accent: oklch(0.72 0.06 260);   /* neutral slate */
---accent-fg: oklch(0.20 0.02 260);
---grad-from: oklch(0.94 0.01 260);
---grad-to: oklch(0.90 0.02 260);
---glow: oklch(0.72 0.06 260 / 0.25);
---chart-line: oklch(0.48 0.04 260);
-```
-
-> Add `Partly‑Cloudy` variants by blending Clear & Overcast (50/50) and lowering contrast at night.
+### next-themes Integration
+* **ThemeProvider**: Wraps app with theme context
+* **System Detection**: Automatically detects OS preference  
+* **Smooth Transitions**: CSS custom properties enable seamless switching
+* **Persistence**: Saves user choice to localStorage
 
 ## Icon Strategy & Mapping (Hackathon‑Ready)
 

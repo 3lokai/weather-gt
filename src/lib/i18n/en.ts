@@ -1,5 +1,5 @@
 // lib/i18n/en.ts
-export default {
+const en = {
   app: {
     title: 'Weather',
     lastUpdated: 'Last updated at {{time}}',
@@ -79,3 +79,5 @@ export default {
     geoDenied: 'Location permission denied — use search',
   },
 };
+
+export default en;
