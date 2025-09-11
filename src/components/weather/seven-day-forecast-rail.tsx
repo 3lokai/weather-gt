@@ -54,6 +54,7 @@ export function SevenDayForecastRail({
           }}
           role="tablist"
           aria-label="7-day weather forecast"
+          aria-orientation="horizontal"
         >
           {processedDailyData.map((dayData, index) => (
             <DailyForecastChip

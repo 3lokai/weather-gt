@@ -9,6 +9,7 @@ Big temp, condition, location; icon via WMO→IconKey map.
 * Icon changes with day/night and overlays the hero background images.
 * A11y label describes condition (e.g., "Light rain").
 * Hero gradient + particle layer (CSS or Rive fallback), rounded ≈ 24px.
+* **Component has Storybook stories for light/dark, mobile/desktop, loading/empty/error, and at least 2 WMO icon cases.**
 
 ## Dependencies
 E2-02 (icon map types) optional but recommended.

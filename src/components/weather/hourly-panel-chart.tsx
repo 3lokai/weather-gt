@@ -76,6 +76,7 @@ function CustomTooltip({ active, payload, label }: any) {
             <span className="font-medium">{data.precipitation}mm</span>
           </div>
           <div className="flex items-center gap-2">
+            <div className="w-2 h-2 bg-blue-400 rounded-full" />
             <span className="text-muted-foreground">PoP:</span>
             <span className="font-medium">{data.precipitationProbability}%</span>
           </div>
@@ -117,6 +118,10 @@ function CustomDot({ cx, cy, payload, isActive }: any) {
 // Comfort band component
 function ComfortBands({ data }: { data: HourlyDataPoint[] }) {
   const bands = useMemo(() => {
+    if (!data || data.length === 0) {
+      return { coldBands: [], hotBands: [] };
+    }
+    
     const coldBands: Array<{ start: number; end: number }> = [];
     const hotBands: Array<{ start: number; end: number }> = [];
     
@@ -257,24 +262,31 @@ export function HourlyPanelChart({
   
   // Process hourly data for the selected day
   const processedData = useMemo(() => {
-    if (!hourlyData || !hourlyData.time) return [];
+    if (!hourlyData || !hourlyData.time || !Array.isArray(hourlyData.time)) return [];
     
     // Get 24 hours starting from the selected day
     const startIndex = selectedDayIndex * 24;
     const endIndex = startIndex + 24;
     
+    // Ensure we don't go beyond available data
+    if (startIndex >= hourlyData.time.length) return [];
+    
     const dayData = hourlyData.time.slice(startIndex, endIndex);
     
     return dayData.map((time, index) => {
       const actualIndex = startIndex + index;
+      
+      // Safety check for array bounds
+      if (actualIndex >= hourlyData.time.length) return null;
+      
       const date = new Date(time);
       const hour = timeFormat === '12h' 
         ? date.toLocaleTimeString('en-US', { hour: 'numeric', hour12: true })
         : date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false });
       
-      const temperature = hourlyData.temperature_2m[actualIndex];
-      const precipitation = hourlyData.precipitation[actualIndex];
-      const precipitationProbability = hourlyData.precipitation_probability[actualIndex];
+      const temperature = hourlyData.temperature_2m?.[actualIndex] || 0;
+      const precipitation = hourlyData.precipitation?.[actualIndex] || 0;
+      const precipitationProbability = hourlyData.precipitation_probability?.[actualIndex] || 0;
       const weatherCode = hourlyData.weather_code?.[actualIndex] || 0;
       
       // Determine comfort level
@@ -299,7 +311,7 @@ export function HourlyPanelChart({
         isDay,
         comfortLevel
       } as HourlyDataPoint;
-    });
+    }).filter(Boolean) as HourlyDataPoint[];
   }, [hourlyData, selectedDayIndex, timeFormat]);
   
   // Chart event handlers
@@ -323,7 +335,7 @@ export function HourlyPanelChart({
     return (
       <Card className={cn("p-6", className)}>
         <div className="text-center text-muted-foreground">
-          <Icon name="ChartLine" size={48} className="mx-auto mb-4 opacity-50" />
+          <Icon name="ChartLine" size={48} color="muted" className="mx-auto mb-4 opacity-50" />
           <p>No hourly data available</p>
         </div>
       </Card>

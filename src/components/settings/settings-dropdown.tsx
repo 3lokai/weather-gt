@@ -45,23 +45,23 @@ export function SettingsDropdown({
     <Button
       variant="outline"
       size="icon"
-      className={cn("h-9 w-9", className)}
+      className={cn("h-16 w-16", className)}
       aria-label="Open settings"
     >
-      <Icon name="Gear" size={18} className="h-4 w-4" />
+      <Icon name="Gear" size={24} color="primary" className="size-10" />
     </Button>
   ) : (
     <Button
       variant="outline"
       className={cn(
-        "flex items-center space-x-2 h-9 px-3 text-body-s",
+        "flex items-center space-x-2 h-10 px-3 text-body-s",
         className
       )}
       aria-label="Open settings"
     >
-      <Icon name="Gear" size={18} className="h-4 w-4" />
+      <Icon name="Gear" size={24} color="primary" className="size-6" />
       <span>Settings</span>
-      <Icon name="CaretDown" size={18} className="h-4 w-4" />
+      <Icon name="CaretDown" size={18} color="muted" className="h-4 w-4" />
     </Button>
   );
 
@@ -72,21 +72,21 @@ export function SettingsDropdown({
       </DropdownMenuTrigger>
       
       <DropdownMenuContent 
-        className="w-96 max-h-[80vh] overflow-y-auto"
+        className="w-[420px] max-h-[80vh] overflow-y-auto"
         align="end"
         sideOffset={8}
       >
-        <DropdownMenuLabel className="px-3 py-2 text-h4 font-display">
+        <DropdownMenuLabel className="px-6 py-4 text-body-l font-display">
           <div className="flex items-center space-x-2">
-            <Icon name="Gear" size={20} className="h-5 w-5" />
-            <span>Units & Settings</span>
+            <Icon name="Gear" size={20} color="primary" className="h-8 w-8" />
+            <span>Settings</span>
           </div>
         </DropdownMenuLabel>
         
         <DropdownMenuSeparator />
         
         {/* Simple Units Toggle */}
-        <div className="p-4">
+        <div className="p-6">
           <SimpleUnitsToggle size="md" className="justify-center" />
         </div>
         
@@ -94,8 +94,8 @@ export function SettingsDropdown({
         
         {/* Current Settings Summary */}
         <DropdownMenuGroup>
-          <DropdownMenuLabel className="px-3 py-2 text-h3 font-display">Current Settings</DropdownMenuLabel>
-          <div className="px-3 py-2 text-body-s text-muted-foreground space-y-1">
+          <DropdownMenuLabel className="px-6 py-3 text-body-m font-display">Current Settings</DropdownMenuLabel>
+          <div className="px-6 pb-4 text-body-s text-muted-foreground space-y-1">
             <div className="flex justify-between">
               <span>Temperature:</span>
               <span className="font-medium">{units.temperature === 'celsius' ? '°C' : '°F'}</span>

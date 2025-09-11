@@ -1,0 +1,496 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+import { TypographyExample } from './components/TypographyExample';
+import { TypographyScale } from './components/TypographyScale';
+
+<Meta title="Foundations/Typography" />
+
+# Typography
+
+Our typography system is built on a consistent scale that ensures readability and visual hierarchy across all components. We use system fonts for optimal performance and native feel.
+
+## Font Families
+
+Our typography system includes four font families for different use cases:
+
+### Sans Serif (Primary)
+```css
+font-family: var(--font-sans);
+```
+- **Usage**: Primary text, UI elements, body content
+- **Stack**: System UI, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif
+- **Characteristics**: Clean, modern, highly readable
+
+### Display
+```css
+font-family: var(--font-display);
+```
+- **Usage**: Headings, large text, hero sections
+- **Stack**: System UI, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif
+- **Characteristics**: Optimized for larger sizes, slightly more condensed
+
+### Serif
+```css
+font-family: var(--font-serif);
+```
+- **Usage**: Special content, quotes, decorative text
+- **Stack**: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif
+- **Characteristics**: Traditional, readable, elegant
+
+### Monospace
+```css
+font-family: var(--font-mono);
+```
+- **Usage**: Code, data, technical content
+- **Stack**: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace
+- **Characteristics**: Fixed-width, technical, code-friendly
+
+## Typography Scale
+
+Our typography scale follows a consistent progression that maintains visual hierarchy and readability across all screen sizes. We use a weather-specific typography scale optimized for data display and readability.
+
+<TypographyScale />
+
+## Weather-Specific Typography
+
+Our weather app includes specialized typography classes for displaying weather data with optimal readability and visual impact.
+
+### Temperature Display
+
+```css
+/* Extra large temperature display */
+.text-temp-xl {
+  font-family: var(--font-display);
+  font-optical-sizing: auto;
+  font-variation-settings: "wdth" 100;
+  font-size: 152px;
+  line-height: 160px;
+  font-weight: 700;
+}
+
+/* Large temperature display */
+.text-temp-l {
+  font-family: var(--font-display);
+  font-optical-sizing: auto;
+  font-variation-settings: "wdth" 100;
+  font-size: 112px;
+  line-height: 120px;
+  font-weight: 700;
+}
+
+/* Medium temperature display */
+.text-temp-m {
+  font-family: var(--font-display);
+  font-optical-sizing: auto;
+  font-variation-settings: "wdth" 100;
+  font-size: 72px;
+  line-height: 80px;
+  font-weight: 700;
+}
+
+/* Small temperature display */
+.text-temp-s {
+  font-family: var(--font-display);
+  font-optical-sizing: auto;
+  font-variation-settings: "wdth" 100;
+  font-size: 44px;
+  line-height: 52px;
+  font-weight: 600;
+}
+```
+
+### Display Typography
+
+```css
+/* Display heading */
+.text-display {
+  font-family: var(--font-display);
+  font-optical-sizing: auto;
+  font-variation-settings: "wdth" 100;
+  font-size: 60px;
+  line-height: 68px;
+  font-weight: 700;
+}
+
+/* Heading hierarchy */
+.text-h1 {
+  font-family: var(--font-display);
+  font-optical-sizing: auto;
+  font-variation-settings: "wdth" 100;
+  font-size: 44px;
+  line-height: 52px;
+  font-weight: 700;
+}
+
+.text-h2 {
+  font-family: var(--font-display);
+  font-optical-sizing: auto;
+  font-variation-settings: "wdth" 100;
+  font-size: 36px;
+  line-height: 44px;
+  font-weight: 600;
+}
+
+.text-h3 {
+  font-family: var(--font-display);
+  font-optical-sizing: auto;
+  font-variation-settings: "wdth" 100;
+  font-size: 28px;
+  line-height: 36px;
+  font-weight: 600;
+}
+
+.text-h4 {
+  font-family: var(--font-display);
+  font-optical-sizing: auto;
+  font-variation-settings: "wdth" 100;
+  font-size: 24px;
+  line-height: 32px;
+  font-weight: 600;
+}
+```
+
+### Body Typography
+
+```css
+/* Body text variants */
+.text-body-l {
+  font-size: 20px;
+  line-height: 30px;
+  font-optical-sizing: auto;
+}
+
+.text-body-m {
+  font-size: 18px;
+  line-height: 26px;
+  font-optical-sizing: auto;
+}
+
+.text-body-s {
+  font-size: 16px;
+  line-height: 22px;
+  font-optical-sizing: auto;
+}
+
+.text-caption {
+  font-size: 14px;
+  line-height: 18px;
+  font-optical-sizing: auto;
+}
+```
+
+## Heading Hierarchy
+
+Headings provide clear visual hierarchy and structure to content.
+
+<TypographyExample
+  title="Heading Hierarchy"
+  examples={[
+    {
+      element: 'h1',
+      className: 'text-4xl font-bold',
+      content: 'Heading 1 - Main Page Title',
+      description: 'Used for primary page titles and hero headings'
+    },
+    {
+      element: 'h2',
+      className: 'text-3xl font-semibold',
+      content: 'Heading 2 - Section Title',
+      description: 'Used for major section headings'
+    },
+    {
+      element: 'h3',
+      className: 'text-2xl font-semibold',
+      content: 'Heading 3 - Subsection Title',
+      description: 'Used for subsection headings'
+    },
+    {
+      element: 'h4',
+      className: 'text-xl font-medium',
+      content: 'Heading 4 - Component Title',
+      description: 'Used for component and card titles'
+    },
+    {
+      element: 'h5',
+      className: 'text-lg font-medium',
+      content: 'Heading 5 - Small Title',
+      description: 'Used for small titles and labels'
+    },
+    {
+      element: 'h6',
+      className: 'text-base font-medium',
+      content: 'Heading 6 - Micro Title',
+      description: 'Used for micro titles and captions'
+    }
+  ]}
+/>
+
+## Body Text
+
+Body text provides the foundation for readable content throughout the application.
+
+<TypographyExample
+  title="Body Text Variants"
+  examples={[
+    {
+      element: 'p',
+      className: 'text-lg',
+      content: 'Large body text - Used for important content and introductions. This size provides excellent readability for key information.',
+      description: 'Large body text for important content'
+    },
+    {
+      element: 'p',
+      className: 'text-base',
+      content: 'Regular body text - Used for standard content and paragraphs. This is the default size for most body text throughout the application.',
+      description: 'Standard body text size'
+    },
+    {
+      element: 'p',
+      className: 'text-sm',
+      content: 'Small body text - Used for secondary content, captions, and supporting information. Maintains readability while being more compact.',
+      description: 'Small body text for secondary content'
+    },
+    {
+      element: 'p',
+      className: 'text-xs',
+      content: 'Extra small text - Used for fine print, timestamps, and metadata. Use sparingly and ensure adequate contrast.',
+      description: 'Extra small text for metadata'
+    }
+  ]}
+/>
+
+## Text Weights
+
+Font weights provide emphasis and hierarchy within text content.
+
+<TypographyExample
+  title="Font Weights"
+  examples={[
+    {
+      element: 'span',
+      className: 'text-base font-thin',
+      content: 'Thin (100) - Very light weight for subtle emphasis',
+      description: 'Thin weight for subtle text'
+    },
+    {
+      element: 'span',
+      className: 'text-base font-light',
+      content: 'Light (300) - Light weight for elegant text',
+      description: 'Light weight for elegant text'
+    },
+    {
+      element: 'span',
+      className: 'text-base font-normal',
+      content: 'Normal (400) - Standard weight for body text',
+      description: 'Normal weight for body text'
+    },
+    {
+      element: 'span',
+      className: 'text-base font-medium',
+      content: 'Medium (500) - Medium weight for emphasis',
+      description: 'Medium weight for emphasis'
+    },
+    {
+      element: 'span',
+      className: 'text-base font-semibold',
+      content: 'Semibold (600) - Semibold weight for headings',
+      description: 'Semibold weight for headings'
+    },
+    {
+      element: 'span',
+      className: 'text-base font-bold',
+      content: 'Bold (700) - Bold weight for strong emphasis',
+      description: 'Bold weight for strong emphasis'
+    },
+    {
+      element: 'span',
+      className: 'text-base font-extrabold',
+      content: 'Extra Bold (800) - Extra bold for maximum emphasis',
+      description: 'Extra bold for maximum emphasis'
+    }
+  ]}
+/>
+
+## Special Text Styles
+
+Special text styles provide additional semantic meaning and visual distinction.
+
+<TypographyExample
+  title="Special Text Styles"
+  examples={[
+    {
+      element: 'code',
+      className: 'text-sm font-mono bg-muted px-2 py-1 rounded',
+      content: 'inline code',
+      description: 'Inline code for technical terms and values'
+    },
+    {
+      element: 'pre',
+      className: 'text-sm font-mono bg-muted p-4 rounded-lg overflow-x-auto',
+      content: `// Code block example
+function weatherApp() {
+  return "Hello, Weather!";
+}`,
+      description: 'Code blocks for multi-line code'
+    },
+    {
+      element: 'blockquote',
+      className: 'text-lg italic border-l-4 border-primary pl-4',
+      content: 'This is a blockquote example. It provides emphasis for quoted content or important statements.',
+      description: 'Blockquotes for quoted content'
+    },
+    {
+      element: 'small',
+      className: 'text-xs text-muted-foreground',
+      content: 'Small text for captions and metadata',
+      description: 'Small text for captions and metadata'
+    },
+    {
+      element: 'mark',
+      className: 'bg-accent text-accent-foreground px-1 rounded',
+      content: 'Highlighted text',
+      description: 'Highlighted text for search results and emphasis'
+    }
+  ]}
+/>
+
+## Accessibility Guidelines
+
+### Contrast Requirements
+
+All text must meet WCAG AA contrast requirements:
+
+- **Normal text**: Minimum 4.5:1 contrast ratio
+- **Large text (18px+)**: Minimum 3:1 contrast ratio
+- **UI components**: Minimum 3:1 contrast ratio
+
+### Readability
+
+- **Line height**: Minimum 1.4 for body text, 1.2 for headings
+- **Font size**: Minimum 16px for body text on mobile devices
+- **Line length**: 45-75 characters for optimal readability
+- **Spacing**: Adequate spacing between lines and paragraphs
+
+### Screen Reader Support
+
+- Use semantic HTML elements (h1-h6, p, strong, em, etc.)
+- Provide alternative text for images
+- Use proper heading hierarchy
+- Ensure focus indicators are visible
+
+## Responsive Typography
+
+Typography scales appropriately across different screen sizes:
+
+### Mobile (320px - 768px)
+- **H1**: 2rem (32px)
+- **H2**: 1.75rem (28px)
+- **H3**: 1.5rem (24px)
+- **Body**: 1rem (16px)
+
+### Tablet (768px - 1024px)
+- **H1**: 2.5rem (40px)
+- **H2**: 2rem (32px)
+- **H3**: 1.75rem (28px)
+- **Body**: 1rem (16px)
+
+### Desktop (1024px+)
+- **H1**: 3rem (48px)
+- **H2**: 2.5rem (40px)
+- **H3**: 2rem (32px)
+- **Body**: 1.125rem (18px)
+
+## Usage Examples
+
+### Weather App Specific Typography
+
+```css
+/* Weather data display */
+.weather-temp {
+  font-family: var(--font-display);
+  font-size: 3rem;
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+/* Weather description */
+.weather-desc {
+  font-size: 1.125rem;
+  font-weight: 500;
+  color: var(--muted-foreground);
+}
+
+/* Location name */
+.location-name {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--foreground);
+}
+
+/* Weather metrics */
+.weather-metric {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--muted-foreground);
+}
+
+/* Weather metric value */
+.weather-metric-value {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--foreground);
+}
+```
+
+### Component Typography
+
+```css
+/* Button text */
+.btn-primary {
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: 0.025em;
+}
+
+/* Card title */
+.card-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+/* Card content */
+.card-content {
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: var(--muted-foreground);
+}
+
+/* Form labels */
+.form-label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--foreground);
+}
+
+/* Form input */
+.form-input {
+  font-size: 1rem;
+  line-height: 1.5;
+}
+```
+
+## Best Practices
+
+### Do's
+- Use consistent font sizes from the typography scale
+- Maintain proper heading hierarchy (h1 → h2 → h3)
+- Ensure adequate contrast ratios for all text
+- Use semantic HTML elements for better accessibility
+- Test typography on different devices and screen sizes
+
+### Don'ts
+- Don't use more than 3-4 different font sizes on a single page
+- Don't use font sizes smaller than 12px
+- Don't use decorative fonts for body text
+- Don't rely solely on color to convey meaning
+- Don't use all caps for extended text (reduces readability)

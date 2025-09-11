@@ -9,6 +9,7 @@ Hourly temperature line + precip bars and list view for selected day.
 * Hover shows tooltip (temp, PoP, precip); keyboard focusable points.
 * Comfort bands (cold/pleasant/hot) indicated in background.
 * Right rail on desktop, sticky within viewport; list item style matches comp (icon + time + temp pill).
+* **Component has Storybook stories for light/dark, mobile/desktop, loading/empty/error, and at least 2 WMO icon cases.**
 
 ## Dependencies
 E1-04.

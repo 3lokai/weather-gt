@@ -13,37 +13,43 @@ const demoConditions: Record<string, CurrentConditionsData> = {
     temperature_2m: 24,
     apparent_temperature: 26,
     weather_code: 0, // Clear sky
-    is_day: true
+    is_day: true,
+    precipitation_probability: 0
   },
   'clear-night': {
     temperature_2m: 16,
     apparent_temperature: 14,
     weather_code: 0, // Clear sky
-    is_day: false
+    is_day: false,
+    precipitation_probability: 0
   },
   cloudy: {
     temperature_2m: 18,
     apparent_temperature: 19,
     weather_code: 3, // Overcast
-    is_day: true
+    is_day: true,
+    precipitation_probability: 15
   },
   rain: {
     temperature_2m: 15,
     apparent_temperature: 13,
     weather_code: 61, // Slight rain
-    is_day: true
+    is_day: true,
+    precipitation_probability: 85
   },
   thunderstorm: {
     temperature_2m: 20,
     apparent_temperature: 23,
     weather_code: 95, // Thunderstorm
-    is_day: true
+    is_day: true,
+    precipitation_probability: 95
   },
   snow: {
     temperature_2m: -2,
     apparent_temperature: -5,
     weather_code: 71, // Slight snow
-    is_day: true
+    is_day: true,
+    precipitation_probability: 70
   }
 };
 

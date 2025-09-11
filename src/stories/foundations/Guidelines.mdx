@@ -1,0 +1,513 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+import { DoDontExample } from './components/DoDontExample';
+
+<Meta title="Foundations/Guidelines" />
+
+# Design System Guidelines
+
+This section provides comprehensive guidelines for using our design system effectively. These guidelines ensure consistency, accessibility, and maintainability across all components and pages.
+
+## Color Usage Guidelines
+
+### Primary Colors
+
+**Do's:**
+- Use primary colors for main actions and brand elements
+- Maintain consistent primary color usage across the application
+- Use primary colors for links and interactive elements
+- Ensure sufficient contrast with background colors
+
+**Don'ts:**
+- Don't use primary colors for decorative elements only
+- Don't mix different primary color variations inconsistently
+- Don't use primary colors for text that needs to be subtle
+- Don't override primary colors without good reason
+
+<DoDontExample
+  title="Primary Color Usage"
+  doExample={{
+    title: "Correct Usage",
+    description: "Use primary colors for main actions and brand elements",
+    example: (
+      <div className="space-y-4">
+        <button className="bg-primary text-primary-foreground px-6 py-3 rounded-md font-medium">
+          Save Changes
+        </button>
+        <a href="#" className="text-primary hover:text-primary/80 font-medium">
+          Learn More
+        </a>
+      </div>
+    )
+  }}
+  dontExample={{
+    title: "Incorrect Usage",
+    description: "Don't use primary colors for decorative elements or inconsistent purposes",
+    example: (
+      <div className="space-y-4">
+        <div className="bg-primary text-primary-foreground p-4 rounded-md">
+          This is just decorative text
+        </div>
+        <span className="text-primary">Random highlighted text</span>
+      </div>
+    )
+  }}
+/>
+
+### Semantic Colors
+
+**Do's:**
+- Use semantic colors consistently for their intended meanings
+- Success colors for positive actions and confirmations
+- Warning colors for caution and attention
+- Error colors for destructive actions and errors
+- Info colors for neutral information
+
+**Don'ts:**
+- Don't use semantic colors for decorative purposes
+- Don't mix semantic color meanings
+- Don't use semantic colors without considering accessibility
+- Don't override semantic colors without good reason
+
+<DoDontExample
+  title="Semantic Color Usage"
+  doExample={{
+    title: "Correct Usage",
+    description: "Use semantic colors for their intended meanings",
+    example: (
+      <div className="space-y-4">
+        <div className="bg-success text-success-foreground p-4 rounded-md">
+          ✓ Changes saved successfully
+        </div>
+        <div className="bg-warning text-warning-foreground p-4 rounded-md">
+          ⚠ Please review your changes
+        </div>
+        <div className="bg-destructive text-destructive-foreground p-4 rounded-md">
+          ✗ Failed to save changes
+        </div>
+      </div>
+    )
+  }}
+  dontExample={{
+    title: "Incorrect Usage",
+    description: "Don't use semantic colors for decorative purposes or wrong meanings",
+    example: (
+      <div className="space-y-4">
+        <div className="bg-success text-success-foreground p-4 rounded-md">
+          This is just a green box
+        </div>
+        <div className="bg-destructive text-destructive-foreground p-4 rounded-md">
+          This is just a red box
+        </div>
+      </div>
+    )
+  }}
+/>
+
+## Typography Guidelines
+
+### Heading Hierarchy
+
+**Do's:**
+- Use proper heading hierarchy (h1 → h2 → h3 → h4 → h5 → h6)
+- Use headings to structure content logically
+- Maintain consistent heading styles across the application
+- Use appropriate heading sizes for content importance
+
+**Don'ts:**
+- Don't skip heading levels (h1 → h3 without h2)
+- Don't use headings for styling only
+- Don't use too many different heading sizes on one page
+- Don't use headings that are too small or too large
+
+<DoDontExample
+  title="Heading Hierarchy"
+  doExample={{
+    title: "Correct Usage",
+    description: "Use proper heading hierarchy and appropriate sizes",
+    example: (
+      <div className="space-y-4">
+        <h1 className="text-4xl font-bold">Main Page Title</h1>
+        <h2 className="text-3xl font-semibold">Section Title</h2>
+        <h3 className="text-2xl font-semibold">Subsection Title</h3>
+        <h4 className="text-xl font-medium">Component Title</h4>
+      </div>
+    )
+  }}
+  dontExample={{
+    title: "Incorrect Usage",
+    description: "Don't skip heading levels or use inappropriate sizes",
+    example: (
+      <div className="space-y-4">
+        <h1 className="text-4xl font-bold">Main Page Title</h1>
+        <h3 className="text-2xl font-semibold">Skipped h2</h3>
+        <h6 className="text-4xl font-bold">Wrong size for h6</h6>
+      </div>
+    )
+  }}
+/>
+
+### Text Readability
+
+**Do's:**
+- Use appropriate font sizes for different content types
+- Maintain adequate line height for readability
+- Use sufficient contrast between text and background
+- Test readability on different devices and screen sizes
+
+**Don'ts:**
+- Don't use font sizes smaller than 12px
+- Don't use line heights that are too tight or too loose
+- Don't use low contrast color combinations
+- Don't ignore responsive typography considerations
+
+<DoDontExample
+  title="Text Readability"
+  doExample={{
+    title: "Correct Usage",
+    description: "Use appropriate font sizes and line heights",
+    example: (
+      <div className="space-y-4">
+        <p className="text-base leading-relaxed">
+          This is readable body text with appropriate font size and line height.
+        </p>
+        <p className="text-sm leading-relaxed">
+          This is smaller text that's still readable.
+        </p>
+      </div>
+    )
+  }}
+  dontExample={{
+    title: "Incorrect Usage",
+    description: "Don't use font sizes that are too small or line heights that are too tight",
+    example: (
+      <div className="space-y-4">
+        <p className="text-xs leading-tight">
+          This text is too small and has tight line height, making it hard to read.
+        </p>
+        <p className="text-xs leading-none">
+          This text is also too small with no line height.
+        </p>
+      </div>
+    )
+  }}
+/>
+
+## Spacing Guidelines
+
+### Consistent Spacing
+
+**Do's:**
+- Use consistent spacing values from the design system
+- Maintain visual rhythm with consistent spacing patterns
+- Use appropriate spacing for different content types
+- Test spacing on different screen sizes
+
+**Don'ts:**
+- Don't use arbitrary spacing values
+- Don't mix different spacing patterns inconsistently
+- Don't use spacing that's too tight or too loose
+- Don't ignore responsive spacing considerations
+
+<DoDontExample
+  title="Consistent Spacing"
+  doExample={{
+    title: "Correct Usage",
+    description: "Use consistent spacing values and patterns",
+    example: (
+      <div className="space-y-6">
+        <div className="p-6 bg-card rounded-lg">
+          <h3 className="text-xl font-semibold mb-4">Card Title</h3>
+          <p className="text-muted-foreground">Card content with consistent spacing.</p>
+        </div>
+        <div className="p-6 bg-card rounded-lg">
+          <h3 className="text-xl font-semibold mb-4">Another Card</h3>
+          <p className="text-muted-foreground">Another card with the same spacing.</p>
+        </div>
+      </div>
+    )
+  }}
+  dontExample={{
+    title: "Incorrect Usage",
+    description: "Don't use inconsistent spacing values or patterns",
+    example: (
+      <div className="space-y-2">
+        <div className="p-3 bg-card rounded-lg">
+          <h3 className="text-xl font-semibold mb-2">Card Title</h3>
+          <p className="text-muted-foreground">Card content with different spacing.</p>
+        </div>
+        <div className="p-8 bg-card rounded-lg">
+          <h3 className="text-xl font-semibold mb-6">Another Card</h3>
+          <p className="text-muted-foreground">Another card with different spacing.</p>
+        </div>
+      </div>
+    )
+  }}
+/>
+
+### Touch Targets
+
+**Do's:**
+- Ensure minimum 44px × 44px touch targets
+- Provide adequate spacing between touch targets
+- Test touch targets on actual devices
+- Consider users with motor impairments
+
+**Don'ts:**
+- Don't use touch targets smaller than 44px × 44px
+- Don't place touch targets too close together
+- Don't ignore touch target accessibility
+- Don't assume all users have precise motor control
+
+<DoDontExample
+  title="Touch Targets"
+  doExample={{
+    title: "Correct Usage",
+    description: "Use adequate touch targets with proper spacing",
+    example: (
+      <div className="flex space-x-4">
+        <button className="px-6 py-3 bg-primary text-primary-foreground rounded-md font-medium min-h-[44px]">
+          Save
+        </button>
+        <button className="px-6 py-3 bg-secondary text-secondary-foreground rounded-md font-medium min-h-[44px]">
+          Cancel
+        </button>
+      </div>
+    )
+  }}
+  dontExample={{
+    title: "Incorrect Usage",
+    description: "Don't use touch targets that are too small or too close together",
+    example: (
+      <div className="flex space-x-1">
+        <button className="px-2 py-1 bg-primary text-primary-foreground rounded text-xs">
+          Save
+        </button>
+        <button className="px-2 py-1 bg-secondary text-secondary-foreground rounded text-xs">
+          Cancel
+        </button>
+      </div>
+    )
+  }}
+/>
+
+## Border Radius Guidelines
+
+### Appropriate Radius Values
+
+**Do's:**
+- Use appropriate radius values for different component types
+- Maintain consistency within component categories
+- Consider the overall design aesthetic
+- Test radius values on different screen sizes
+
+**Don'ts:**
+- Don't use radius values that are too extreme
+- Don't mix different radius patterns inconsistently
+- Don't use radius values that break visual hierarchy
+- Don't ignore responsive radius considerations
+
+<DoDontExample
+  title="Border Radius Usage"
+  doExample={{
+    title: "Correct Usage",
+    description: "Use appropriate radius values for different component types",
+    example: (
+      <div className="space-y-4">
+        <div className="p-4 bg-card rounded-sm border">
+          <p className="text-sm">Small radius for compact elements</p>
+        </div>
+        <div className="p-4 bg-card rounded-md border">
+          <p className="text-sm">Medium radius for standard components</p>
+        </div>
+        <div className="p-4 bg-card rounded-lg border">
+          <p className="text-sm">Large radius for prominent elements</p>
+        </div>
+      </div>
+    )
+  }}
+  dontExample={{
+    title: "Incorrect Usage",
+    description: "Don't use inconsistent or inappropriate radius values",
+    example: (
+      <div className="space-y-4">
+        <div className="p-4 bg-card rounded-sm border">
+          <p className="text-sm">Small radius</p>
+        </div>
+        <div className="p-4 bg-card rounded-3xl border">
+          <p className="text-sm">Extreme radius for same component type</p>
+        </div>
+        <div className="p-4 bg-card rounded-md border">
+          <p className="text-sm">Medium radius</p>
+        </div>
+      </div>
+    )
+  }}
+/>
+
+## Accessibility Guidelines
+
+### Color Accessibility
+
+**Do's:**
+- Ensure all color combinations meet WCAG AA contrast requirements
+- Test colors with color blindness simulators
+- Provide alternative indicators beyond color
+- Ensure focus indicators are visible
+
+**Don'ts:**
+- Don't rely solely on color to convey information
+- Don't use color combinations with insufficient contrast
+- Don't ignore color blindness considerations
+- Don't use colors that are too similar
+
+### Keyboard Navigation
+
+**Do's:**
+- Ensure all interactive elements are keyboard accessible
+- Provide visible focus indicators
+- Use logical tab order
+- Test keyboard navigation thoroughly
+
+**Don'ts:**
+- Don't create keyboard traps
+- Don't hide focus indicators
+- Don't use non-standard keyboard interactions
+- Don't ignore keyboard navigation testing
+
+### Screen Reader Support
+
+**Do's:**
+- Use semantic HTML elements
+- Provide alternative text for images
+- Use proper heading hierarchy
+- Test with screen readers
+
+**Don'ts:**
+- Don't use divs for interactive elements
+- Don't forget alternative text for images
+- Don't skip heading levels
+- Don't ignore screen reader testing
+
+## Responsive Design Guidelines
+
+### Mobile-First Approach
+
+**Do's:**
+- Design for mobile devices first
+- Use responsive design principles
+- Test on actual devices
+- Consider touch interactions
+
+**Don'ts:**
+- Don't design for desktop only
+- Don't ignore mobile usability
+- Don't use desktop-only interactions
+- Don't forget about mobile performance
+
+### Breakpoint Usage
+
+**Do's:**
+- Use consistent breakpoints across the application
+- Test at all breakpoints
+- Consider content reflow
+- Use appropriate spacing for each breakpoint
+
+**Don'ts:**
+- Don't use arbitrary breakpoints
+- Don't ignore content reflow
+- Don't use desktop spacing on mobile
+- Don't forget about tablet considerations
+
+## Performance Guidelines
+
+### CSS Performance
+
+**Do's:**
+- Use CSS custom properties efficiently
+- Minimize CSS specificity
+- Use efficient selectors
+- Optimize for critical rendering path
+
+**Don'ts:**
+- Don't use overly specific selectors
+- Don't create CSS bloat
+- Don't ignore CSS performance
+- Don't use inefficient CSS patterns
+
+### Font Loading
+
+**Do's:**
+- Use system fonts when possible
+- Optimize font loading
+- Provide font fallbacks
+- Consider font display strategies
+
+**Don'ts:**
+- Don't load unnecessary fonts
+- Don't ignore font loading performance
+- Don't use fonts without fallbacks
+- Don't forget about font display optimization
+
+## Testing Guidelines
+
+### Visual Testing
+
+**Do's:**
+- Test on multiple devices and browsers
+- Use visual regression testing
+- Test with different content lengths
+- Verify responsive behavior
+
+**Don'ts:**
+- Don't test on only one device
+- Don't ignore visual regression testing
+- Don't test with only short content
+- Don't forget about cross-browser testing
+
+### Accessibility Testing
+
+**Do's:**
+- Use automated accessibility testing tools
+- Test with screen readers
+- Test keyboard navigation
+- Test with color blindness simulators
+
+**Don'ts:**
+- Don't rely only on automated testing
+- Don't ignore manual accessibility testing
+- Don't forget about keyboard testing
+- Don't skip color accessibility testing
+
+## Maintenance Guidelines
+
+### Documentation
+
+**Do's:**
+- Keep documentation up to date
+- Document design decisions
+- Provide usage examples
+- Include accessibility notes
+
+**Don'ts:**
+- Don't let documentation become outdated
+- Don't forget to document changes
+- Don't skip usage examples
+- Don't ignore accessibility documentation
+
+### Version Control
+
+**Do's:**
+- Use semantic versioning
+- Document breaking changes
+- Provide migration guides
+- Test changes thoroughly
+
+**Don'ts:**
+- Don't make breaking changes without notice
+- Don't skip migration documentation
+- Don't ignore backward compatibility
+- Don't forget to test changes
+
+## Conclusion
+
+Following these guidelines ensures that our design system remains consistent, accessible, and maintainable. Always consider the user experience, accessibility, and performance when making design decisions. When in doubt, refer to these guidelines and test your implementations thoroughly.

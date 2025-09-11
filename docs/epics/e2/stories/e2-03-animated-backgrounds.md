@@ -6,6 +6,7 @@ Subtle gradients per condition; night variants.
 ## Acceptance Criteria
 
 * Transitions ≤600ms; respects reduced motion.
+* **Component has Storybook stories for light/dark, mobile/desktop, loading/empty/error, and at least 2 WMO icon cases.**
 
 ## Dependencies
 E2-02.

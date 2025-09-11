@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { MetricsGrid } from './metrics-grid';
-import { CurrentWeather } from '@/lib/api/open-meteo';
+import { CurrentWeather, HourlyWeather } from '@/lib/api/open-meteo';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
@@ -14,7 +14,7 @@ const demoWeatherData: CurrentWeather = {
   weather_code: 0,
   is_day: true,
   wind_speed_10m: 15,
-  wind_gusts_10m: 20,
+  wind_gusts_10m: 25, // Higher gusts to trigger display
   relative_humidity_2m: 65,
   precipitation: 0.5,
   precipitation_probability: 30,
@@ -26,10 +26,26 @@ const demoWeatherData: CurrentWeather = {
   time: '2024-01-15T14:00'
 };
 
+// Demo hourly data for trend calculations
+const demoHourlyData: HourlyWeather = {
+  time: ['2024-01-15T10:00', '2024-01-15T11:00', '2024-01-15T12:00', '2024-01-15T13:00', '2024-01-15T14:00'],
+  temperature_2m: [20, 21, 22, 23, 22],
+  precipitation: [0, 0, 0.2, 0.3, 0.5],
+  precipitation_probability: [10, 15, 20, 25, 30],
+  wind_speed_10m: [12, 13, 14, 15, 15],
+  wind_gusts_10m: [18, 20, 22, 24, 25],
+  uv_index: [4, 5, 6, 6, 6],
+  visibility: [10, 10, 10, 10, 10],
+  cloud_cover: [30, 28, 26, 25, 25],
+  dew_point_2m: [14, 14, 15, 15, 15],
+  surface_pressure: [1015, 1014, 1013, 1012, 1013] // Slight pressure trend
+};
+
 export function MetricsGridDemo() {
   const [isLoading, setIsLoading] = useState(false);
   const [hasError, setHasError] = useState(false);
   const [currentWeather, setCurrentWeather] = useState<CurrentWeather | null>(demoWeatherData);
+  const [showExtendedMetrics, setShowExtendedMetrics] = useState(false);
 
   const handleLoadingDemo = () => {
     setIsLoading(true);
@@ -52,6 +68,10 @@ export function MetricsGridDemo() {
     setIsLoading(false);
     setHasError(false);
     setCurrentWeather(demoWeatherData);
+  };
+
+  const toggleExtendedMetrics = () => {
+    setShowExtendedMetrics(!showExtendedMetrics);
   };
 
   return (
@@ -78,6 +98,13 @@ export function MetricsGridDemo() {
               Error Demo
             </Button>
             <Button 
+              onClick={toggleExtendedMetrics}
+              variant={showExtendedMetrics ? "default" : "outline"}
+              size="sm"
+            >
+              {showExtendedMetrics ? 'Hide' : 'Show'} Extended Metrics
+            </Button>
+            <Button 
               onClick={handleReset}
               variant="outline"
               size="sm"
@@ -101,11 +128,13 @@ export function MetricsGridDemo() {
         <CardContent>
           <MetricsGrid
             weather={currentWeather}
+            hourlyWeather={demoHourlyData}
             isLoading={isLoading}
             error={hasError ? 'Failed to load weather data' : null}
             size="md"
             showTooltips={true}
             layout="grid"
+            showExtendedMetrics={showExtendedMetrics}
           />
         </CardContent>
       </Card>
@@ -118,11 +147,13 @@ export function MetricsGridDemo() {
         <CardContent>
           <MetricsGrid
             weather={currentWeather}
+            hourlyWeather={demoHourlyData}
             isLoading={isLoading}
             error={hasError ? 'Failed to load weather data' : null}
             size="md"
             showTooltips={true}
             layout="list"
+            showExtendedMetrics={showExtendedMetrics}
           />
         </CardContent>
       </Card>
@@ -135,11 +166,13 @@ export function MetricsGridDemo() {
         <CardContent>
           <MetricsGrid
             weather={currentWeather}
+            hourlyWeather={demoHourlyData}
             isLoading={isLoading}
             error={hasError ? 'Failed to load weather data' : null}
             size="sm"
             showTooltips={false}
             layout="grid"
+            showExtendedMetrics={showExtendedMetrics}
           />
         </CardContent>
       </Card>
@@ -152,11 +185,13 @@ export function MetricsGridDemo() {
         <CardContent>
           <MetricsGrid
             weather={currentWeather}
+            hourlyWeather={demoHourlyData}
             isLoading={isLoading}
             error={hasError ? 'Failed to load weather data' : null}
             size="lg"
             showTooltips={true}
             layout="grid"
+            showExtendedMetrics={showExtendedMetrics}
           />
         </CardContent>
       </Card>

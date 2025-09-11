@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { HourlyPanelChart } from './hourly-panel-chart';
 import { type HourlyWeather } from '@/lib/api/open-meteo';
 import { Card } from '@/components/ui/card';
@@ -88,13 +88,13 @@ export function HourlyPanelChartDemo() {
   const [temperatureUnit, setTemperatureUnit] = useState<'celsius' | 'fahrenheit'>('celsius');
   const [timeFormat, setTimeFormat] = useState<'12h' | '24h'>('12h');
   
-  const demoData = generateDemoHourlyData();
+  const demoData = useMemo(() => generateDemoHourlyData(), []);
   
   return (
     <div className="space-y-6">
       <Card className="p-6">
         <div className="flex items-center gap-2 mb-4">
-          <Icon name="ChartLine" size={24} />
+          <Icon name="ChartLine" size={24} color="accent" />
           <h2 className="text-xl font-semibold">Hourly Panel Chart Demo</h2>
         </div>
         
@@ -197,7 +197,7 @@ export function HourlyPanelChartDemo() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <Card className="p-4">
           <h3 className="font-semibold mb-2 flex items-center gap-2">
-            <Icon name="ChartLine" size={16} />
+            <Icon name="ChartLine" size={16} color="accent" />
             Chart Features
           </h3>
           <ul className="text-sm text-muted-foreground space-y-1">
@@ -211,7 +211,7 @@ export function HourlyPanelChartDemo() {
         
         <Card className="p-4">
           <h3 className="font-semibold mb-2 flex items-center gap-2">
-            <Icon name="List" size={16} />
+            <Icon name="List" size={16} color="accent" />
             List Features
           </h3>
           <ul className="text-sm text-muted-foreground space-y-1">

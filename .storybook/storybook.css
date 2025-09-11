@@ -1,0 +1,186 @@
+/* Storybook-specific CSS to ensure design tokens are available */
+
+/* Core Colors - Light Theme (OKLCH Color Space) */
+:root {
+  --background: oklch(0.9800 0.0100 264.0000);
+  --foreground: oklch(0.1500 0.0200 264.0000);
+  --card: oklch(0.9600 0.0150 264.0000);
+  --card-foreground: oklch(0.1500 0.0200 264.0000);
+  --popover: oklch(0.9700 0.0120 264.0000);
+  --popover-foreground: oklch(0.1500 0.0200 264.0000);
+
+  /* Primary Colors - Blue System (Light Theme) */
+  --primary: oklch(0.4500 0.1800 264.0000);
+  --primary-50: oklch(0.9600 0.0200 264.0000);
+  --primary-100: oklch(0.9200 0.0400 264.0000);
+  --primary-200: oklch(0.8500 0.0800 264.0000);
+  --primary-300: oklch(0.7500 0.1200 264.0000);
+  --primary-400: oklch(0.6000 0.1500 264.0000);
+  --primary-500: oklch(0.4500 0.1800 264.0000);
+  --primary-600: oklch(0.3500 0.2000 264.0000);
+  --primary-700: oklch(0.2500 0.1800 264.0000);
+  --primary-800: oklch(0.1800 0.1400 264.0000);
+  --primary-900: oklch(0.1200 0.1000 264.0000);
+  --primary-foreground: oklch(0.9800 0.0100 264.0000);
+
+  /* Secondary Colors - Purple System (Light Theme) */
+  --secondary: oklch(0.4200 0.1600 300.0000);
+  --secondary-50: oklch(0.9600 0.0300 300.0000);
+  --secondary-100: oklch(0.9200 0.0600 300.0000);
+  --secondary-200: oklch(0.8500 0.1000 300.0000);
+  --secondary-300: oklch(0.7500 0.1300 300.0000);
+  --secondary-400: oklch(0.6000 0.1500 300.0000);
+  --secondary-500: oklch(0.4200 0.1600 300.0000);
+  --secondary-600: oklch(0.3200 0.1800 300.0000);
+  --secondary-700: oklch(0.2400 0.1600 300.0000);
+  --secondary-800: oklch(0.1800 0.1200 300.0000);
+  --secondary-900: oklch(0.1300 0.0800 300.0000);
+  --secondary-foreground: oklch(0.9800 0.0100 264.0000);
+
+  /* Accent Color - Orange System (Light Theme) */
+  --accent: oklch(0.7500 0.1800 65.0000);
+  --accent-50: oklch(0.9800 0.0300 65.0000);
+  --accent-100: oklch(0.9600 0.0600 65.0000);
+  --accent-200: oklch(0.9200 0.1000 65.0000);
+  --accent-300: oklch(0.8800 0.1400 65.0000);
+  --accent-400: oklch(0.8200 0.1600 65.0000);
+  --accent-500: oklch(0.7500 0.1800 65.0000);
+  --accent-600: oklch(0.6500 0.2000 65.0000);
+  --accent-700: oklch(0.5500 0.1800 65.0000);
+  --accent-800: oklch(0.4500 0.1500 65.0000);
+  --accent-900: oklch(0.3500 0.1200 65.0000);
+  --accent-foreground: oklch(0.9800 0.0100 264.0000);
+
+  /* Neutral Colors (Light Theme) */
+  --muted: oklch(0.9200 0.0200 264.0000);
+  --muted-foreground: oklch(0.4500 0.0300 264.0000);
+  --subtle: oklch(0.9400 0.0250 264.0000);
+  --subtle-foreground: oklch(0.3500 0.0400 264.0000);
+
+  /* Gray Scale (Blue-tinted Light Theme) */
+  --gray-50: oklch(0.9800 0.0100 264.0000);
+  --gray-100: oklch(0.9500 0.0150 264.0000);
+  --gray-200: oklch(0.9000 0.0200 264.0000);
+  --gray-300: oklch(0.8000 0.0250 264.0000);
+  --gray-400: oklch(0.6500 0.0200 264.0000);
+  --gray-500: oklch(0.5000 0.0150 264.0000);
+  --gray-600: oklch(0.4000 0.0200 264.0000);
+  --gray-700: oklch(0.3000 0.0250 264.0000);
+  --gray-800: oklch(0.2200 0.0300 264.0000);
+  --gray-900: oklch(0.1500 0.0200 264.0000);
+
+  /* Semantic Colors (Light Theme) */
+  --success: oklch(0.6000 0.1500 142.5000);
+  --success-foreground: oklch(0.9800 0.0100 264.0000);
+  --warning: oklch(0.7000 0.1500 85.8700);
+  --warning-foreground: oklch(0.9800 0.0100 264.0000);
+  --destructive: oklch(0.5500 0.2200 27.3250);
+  --destructive-foreground: oklch(0.9800 0.0100 264.0000);
+  --info: oklch(0.6000 0.1800 220.0000);
+  --info-foreground: oklch(0.9800 0.0100 264.0000);
+
+  /* UI Elements (Light Theme) */
+  --border: oklch(0.8500 0.0300 264.0000);
+  --input: oklch(0.9500 0.0200 264.0000);
+  --ring: oklch(0.4500 0.1800 264.0000);
+}
+
+/* Dark theme */
+.dark {
+  /* Dark mode core colors */
+  --background: oklch(0.1200 0.0500 264.0000);
+  --foreground: oklch(0.9850 0 0);
+  --card: oklch(0.2000 0.0800 264.0000);
+  --card-foreground: oklch(0.9850 0 0);
+  --popover: oklch(0.2200 0.0600 264.0000);
+  --popover-foreground: oklch(0.9850 0 0);
+
+  /* Darker primary variants */
+  --primary: oklch(0.5500 0.2000 264.0000);
+  --primary-50: oklch(0.2200 0.1000 264.0000);
+  --primary-100: oklch(0.2800 0.1200 264.0000);
+  --primary-200: oklch(0.3400 0.1400 264.0000);
+  --primary-300: oklch(0.4000 0.1600 264.0000);
+  --primary-400: oklch(0.4800 0.1800 264.0000);
+  --primary-500: oklch(0.5500 0.2000 264.0000);
+  --primary-600: oklch(0.6200 0.2200 264.0000);
+  --primary-700: oklch(0.7000 0.2000 264.0000);
+  --primary-800: oklch(0.8000 0.1800 264.0000);
+  --primary-900: oklch(0.8800 0.1400 264.0000);
+  --primary-foreground: oklch(0.1200 0.0500 264.0000);
+
+  /* Darker secondary variants */
+  --secondary: oklch(0.5000 0.1800 300.0000);
+  --secondary-50: oklch(0.2000 0.0800 300.0000);
+  --secondary-100: oklch(0.2600 0.1000 300.0000);
+  --secondary-200: oklch(0.3200 0.1200 300.0000);
+  --secondary-300: oklch(0.3800 0.1400 300.0000);
+  --secondary-400: oklch(0.4400 0.1600 300.0000);
+  --secondary-500: oklch(0.5000 0.1800 300.0000);
+  --secondary-600: oklch(0.5600 0.2000 300.0000);
+  --secondary-700: oklch(0.6400 0.1800 300.0000);
+  --secondary-800: oklch(0.7200 0.1600 300.0000);
+  --secondary-900: oklch(0.8000 0.1200 300.0000);
+  --secondary-foreground: oklch(0.9850 0 0);
+
+  /* Brighter accent for dark mode */
+  --accent: oklch(0.8000 0.2000 65.0000);
+  --accent-50: oklch(0.3000 0.0800 65.0000);
+  --accent-100: oklch(0.4000 0.1000 65.0000);
+  --accent-200: oklch(0.5000 0.1200 65.0000);
+  --accent-300: oklch(0.6000 0.1400 65.0000);
+  --accent-400: oklch(0.7000 0.1600 65.0000);
+  --accent-500: oklch(0.8000 0.2000 65.0000);
+  --accent-600: oklch(0.8500 0.2200 65.0000);
+  --accent-700: oklch(0.9000 0.2000 65.0000);
+  --accent-800: oklch(0.9300 0.1800 65.0000);
+  --accent-900: oklch(0.9600 0.1400 65.0000);
+  --accent-foreground: oklch(0.1200 0.0500 264.0000);
+
+  /* Adjusted UI elements */
+  --muted: oklch(0.2500 0.0400 264.0000);
+  --muted-foreground: oklch(0.7000 0.0200 264.0000);
+  --subtle: oklch(0.3000 0.0600 264.0000);
+  --subtle-foreground: oklch(0.8500 0.0200 264.0000);
+  --border: oklch(0.2750 0.0600 264.0000);
+  --input: oklch(0.2000 0.0700 264.0000);
+  --ring: oklch(0.5500 0.2000 264.0000);
+  
+  /* Dark mode grays */
+  --gray-50: oklch(0.1400 0.0175 264.0000);
+  --gray-100: oklch(0.1800 0.0200 264.0000);
+  --gray-200: oklch(0.2400 0.0250 264.0000);
+  --gray-300: oklch(0.3000 0.0300 264.0000);
+  --gray-400: oklch(0.4200 0.0250 264.0000);
+  --gray-500: oklch(0.5600 0.0200 264.0000);
+  --gray-600: oklch(0.7000 0.0175 264.0000);
+  --gray-700: oklch(0.8200 0.0150 264.0000);
+  --gray-800: oklch(0.9000 0.0100 264.0000);
+  --gray-900: oklch(0.9600 0.0075 264.0000);
+}
+
+/* Ensure Storybook docs have proper styling */
+.sb-docs-content {
+  background: var(--background);
+  color: var(--foreground);
+}
+
+/* Fix color swatch borders to use design system colors */
+.color-swatch {
+  border-color: var(--border) !important;
+}
+
+/* Ensure proper contrast for text in docs */
+.sb-docs-content h1,
+.sb-docs-content h2,
+.sb-docs-content h3,
+.sb-docs-content h4,
+.sb-docs-content h5,
+.sb-docs-content h6 {
+  color: var(--foreground);
+}
+
+.sb-docs-content p,
+.sb-docs-content li {
+  color: var(--foreground);
+}

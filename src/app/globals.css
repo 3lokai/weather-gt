@@ -284,6 +284,16 @@
   transition: all 0.3s ease;
 }
 
+/* Skeleton shimmer animation */
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
 /* Reduced motion support for animations */
 @media (prefers-reduced-motion: reduce) {
   .reduced-motion * {
@@ -293,6 +303,10 @@
   }
   
   .reduced-motion .liquid-ether-container {
+    animation: none !important;
+  }
+  
+  .reduced-motion [class*="animate-shimmer"] {
     animation: none !important;
   }
 }
@@ -432,6 +446,8 @@ html, body {
     background: transparent;
     border-bottom: 1px solid oklch(from var(--border) l c h / 0.1);
     box-shadow: none;
+    z-index: 50;
+    position: relative;
   }
 
   /* Floating glass elements */
@@ -465,9 +481,9 @@ html, body {
   }
 
   /* Glass depth layers for atmospheric effects */
-  .glass-layer-1 { z-index: 10; }
-  .glass-layer-2 { z-index: 20; }
-  .glass-layer-3 { z-index: 30; }
+  .glass-layer-1 { z-index: 1; }
+  .glass-layer-2 { z-index: 2; }
+  .glass-layer-3 { z-index: 3; }
 
   /* Atmospheric blur backgrounds */
   .atmospheric-blur-bg {
@@ -481,6 +497,29 @@ html, body {
     pointer-events: none;
   }
   
+  /* Phosphor Icons Color System Integration */
+  .ph-icon {
+    color: var(--foreground);
+  }
+  
+  /* Ensure Phosphor duotone colors work with our design system */
+  .ph-icon[data-phosphor-icon] {
+    --ph-primary: var(--foreground);
+    --ph-secondary: var(--muted-foreground);
+  }
+  
+  /* Force color inheritance for Phosphor icons */
+  .ph-icon svg {
+    color: inherit;
+    fill: currentColor;
+  }
+  
+  /* Ensure duotone colors are applied */
+  .ph-icon[data-phosphor-icon] svg {
+    --ph-primary: inherit;
+    --ph-secondary: inherit;
+  }
+
   /* Liquid Ether background styles */
   .liquid-ether-container {
     position: relative;
@@ -616,6 +655,30 @@ html, body {
   * {
     @apply border-border outline-ring/50;
   }
+  
+  /* Enhanced focus styles for accessibility */
+  *:focus-visible {
+    @apply outline-2 outline-offset-2 outline-primary;
+  }
+  
+  /* Focus styles for interactive elements */
+  button:focus-visible,
+  [role="button"]:focus-visible,
+  [role="tab"]:focus-visible,
+  [role="option"]:focus-visible,
+  input:focus-visible,
+  textarea:focus-visible,
+  select:focus-visible,
+  [role="searchbox"]:focus-visible,
+  [role="combobox"]:focus-visible {
+    @apply ring-2 ring-primary ring-offset-2 ring-offset-background;
+  }
+  
+  /* Remove default focus outline for custom focus styles */
+  *:focus:not(:focus-visible) {
+    outline: none;
+  }
+  
   body {
     @apply bg-background text-foreground;
   }

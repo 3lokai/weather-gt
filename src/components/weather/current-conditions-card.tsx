@@ -3,7 +3,7 @@
 import { useRef } from 'react';
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { LottieWeatherIcon } from "@/components/icons/lottie-weather-icon";
-import { AnimatedTemperature } from "@/components/common/animated-number";
+import { LottieTemperature, LottiePrecipitationProbability } from "@/components/common/lottie-metric";
 import { getWeatherCondition } from "@/lib/api/open-meteo";
 import { useWeatherStore, type Location } from "@/lib/store/weather-store";
 import { cn } from "@/lib/utils";
@@ -14,6 +14,7 @@ export interface CurrentConditionsData {
   apparent_temperature: number;
   weather_code: number;
   is_day: boolean;
+  precipitation_probability?: number;
 }
 
 export interface CurrentConditionsCardProps {
@@ -163,11 +164,13 @@ export function CurrentConditionsCard({
           )}
           aria-label={`Current temperature: ${formatTemperature(conditions.temperature_2m)}`}
         >
-          <AnimatedTemperature
+          <LottieTemperature
             value={conditions.temperature_2m}
             unit={units.temperature}
             duration={180}
             className="inline-block"
+            showLottie={true}
+            lottieSize={32}
           />
         </div>
 
@@ -192,12 +195,34 @@ export function CurrentConditionsCard({
             aria-label={`Feels like ${formatTemperature(conditions.apparent_temperature)}`}
           >
             Feels like{' '}
-            <AnimatedTemperature
+            <LottieTemperature
               value={conditions.apparent_temperature}
               unit={units.temperature}
               duration={180}
               className="inline-block"
+              showLottie={true}
+              lottieSize={20}
             />
+          </div>
+        )}
+
+        {/* Precipitation Probability */}
+        {conditions.precipitation_probability !== undefined && conditions.precipitation_probability > 0 && (
+          <div 
+            className={cn(
+              "text-blue-600 dark:text-blue-400 font-medium",
+              size === 'sm' ? 'text-xs' : 'text-sm'
+            )}
+            aria-label={`${Math.round(conditions.precipitation_probability)}% chance of precipitation`}
+          >
+            <LottiePrecipitationProbability
+              value={conditions.precipitation_probability}
+              duration={180}
+              className="inline-block"
+              showLottie={true}
+              lottieSize={20}
+            />{' '}
+            chance of rain
           </div>
         )}
       </CardContent>

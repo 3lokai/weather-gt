@@ -2,7 +2,7 @@
 
 import { Card } from "@/components/ui/card";
 import { LottieWeatherIcon } from "@/components/icons/lottie-weather-icon";
-import { AnimatedTemperature } from "@/components/common/animated-number";
+// Removed LottieTemperature and LottiePrecipitationProbability imports - using simple text instead
 import { getWeatherCondition } from "@/lib/api/open-meteo";
 import { useWeatherStore } from "@/lib/store/weather-store";
 import { cn } from "@/lib/utils";
@@ -71,7 +71,7 @@ export function DailyForecastChip({
   return (
     <Card
       className={cn(
-        "relative cursor-pointer transition-all duration-200 hover:shadow-md",
+        "relative cursor-pointer transition-all duration-200 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2",
         "min-w-[120px] flex-shrink-0",
         "border-2",
         isSelected 
@@ -80,14 +80,22 @@ export function DailyForecastChip({
         className
       )}
       onClick={() => onSelect(dayIndex)}
-      role="button"
-      tabIndex={0}
-      aria-pressed={isSelected}
+      role="tab"
+      tabIndex={isSelected ? 0 : -1}
+      aria-selected={isSelected}
+      aria-controls={`day-${dayIndex}-panel`}
+      id={`day-${dayIndex}-tab`}
       aria-label={`${formatDayName(data.time, isToday)} forecast: ${condition}, high ${formatTemperature(data.temperature_2m_max)}, low ${formatTemperature(data.temperature_2m_min)}, ${formatPrecipitationProbability(data.precipitation_probability_max)} chance of precipitation`}
       onKeyDown={(e) => {
         if (e.key === 'Enter' || e.key === ' ') {
           e.preventDefault();
           onSelect(dayIndex);
+        } else if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
+          e.preventDefault();
+          // Handle arrow key navigation
+          const direction = e.key === 'ArrowLeft' ? -1 : 1;
+          const newIndex = Math.max(0, Math.min(6, dayIndex + direction));
+          onSelect(newIndex);
         }
       }}
     >
@@ -109,23 +117,8 @@ export function DailyForecastChip({
         </div>
 
         {/* Temperature Range */}
-        <div className="space-y-1">
-          <div className="text-sm font-semibold text-foreground">
-            <AnimatedTemperature
-              value={data.temperature_2m_max}
-              unit={units.temperature}
-              duration={180}
-              className="inline-block"
-            />
-          </div>
-          <div className="text-xs text-muted-foreground">
-            <AnimatedTemperature
-              value={data.temperature_2m_min}
-              unit={units.temperature}
-              duration={180}
-              className="inline-block"
-            />
-          </div>
+        <div className="text-sm font-semibold text-foreground">
+          {formatTemperature(data.temperature_2m_max)} / {formatTemperature(data.temperature_2m_min)}
         </div>
 
         {/* Precipitation Probability */}

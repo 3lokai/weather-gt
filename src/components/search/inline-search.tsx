@@ -109,7 +109,7 @@ export function InlineSearch({ className, placeholder = 'Search for a place...' 
             aria-label="Clear search"
             type="button"
           >
-            <Icon name="X" size={16} aria-hidden="true" />
+            <Icon name="X" size={16} color="muted" aria-hidden="true" />
           </button>
         )}
       </div>

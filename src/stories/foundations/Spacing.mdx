@@ -1,0 +1,426 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+import { SpacingExample } from './components/SpacingExample';
+import { RadiusExample } from './components/RadiusExample';
+
+<Meta title="Foundations/Spacing" />
+
+# Spacing & Radius
+
+Our spacing system provides consistent spacing and border radius values throughout the application. All spacing values are based on a visual parity scale (2/4/6/8/12/16/24/32...) for optimal visual harmony and consistency. The system includes comprehensive spacing utilities and weather-specific spacing patterns.
+
+## Spacing Scale
+
+Our spacing scale follows a consistent progression that maintains visual rhythm and balance across all components. The scale is based on a visual parity system optimized for weather app interfaces.
+
+<SpacingExample />
+
+### Complete Spacing Scale
+
+Our spacing system includes comprehensive values for all use cases:
+
+```css
+/* Spacing Scale - Visual Parity Scale (2/4/6/8/12/16/24/32...) */
+--spacing-px: 1px;        /* 1px */
+--spacing-0: 0;           /* 0px */
+--spacing-1: 0.125rem;    /* 2px */
+--spacing-2: 0.25rem;     /* 4px */
+--spacing-3: 0.375rem;    /* 6px */
+--spacing-4: 0.5rem;      /* 8px */
+--spacing-5: 0.625rem;    /* 10px */
+--spacing-6: 0.75rem;     /* 12px */
+--spacing-7: 0.875rem;    /* 14px */
+--spacing-8: 1rem;        /* 16px */
+--spacing-9: 1.125rem;    /* 18px */
+--spacing-10: 1.25rem;    /* 20px */
+--spacing-11: 1.375rem;   /* 22px */
+--spacing-12: 1.5rem;     /* 24px */
+--spacing-14: 1.75rem;    /* 28px */
+--spacing-16: 2rem;       /* 32px */
+--spacing-20: 2.5rem;     /* 40px */
+--spacing-24: 3rem;       /* 48px */
+--spacing-28: 3.5rem;     /* 56px */
+--spacing-32: 4rem;       /* 64px */
+--spacing-36: 4.5rem;     /* 72px */
+--spacing-40: 5rem;       /* 80px */
+--spacing-44: 5.5rem;     /* 88px */
+--spacing-48: 6rem;       /* 96px */
+--spacing-52: 6.5rem;     /* 104px */
+--spacing-56: 7rem;       /* 112px */
+--spacing-60: 7.5rem;     /* 120px */
+--spacing-64: 8rem;       /* 128px */
+--spacing-72: 9rem;       /* 144px */
+--spacing-80: 10rem;      /* 160px */
+--spacing-96: 12rem;      /* 192px */
+```
+
+## Border Radius
+
+Border radius values provide consistent corner rounding for components and elements. Our radius system follows a visual parity scale optimized for modern UI design.
+
+<RadiusExample />
+
+### Complete Border Radius Scale
+
+Our border radius system includes comprehensive values for all component types:
+
+```css
+/* Border Radius - Visual Parity Scale (12/16/20/24px) */
+--radius: 1rem;        /* 16px - default */
+--radius-xs: 0.5rem;   /* 8px */
+--radius-sm: 0.75rem;  /* 12px */
+--radius-md: 1rem;     /* 16px */
+--radius-lg: 1.25rem;  /* 20px */
+--radius-xl: 1.5rem;   /* 24px */
+--radius-2xl: 1.75rem; /* 28px */
+--radius-3xl: 2rem;    /* 32px */
+--radius-full: 9999px;
+```
+
+### Radius Usage Guidelines
+
+```css
+/* Small components - badges, tags, chips */
+.small-component {
+  border-radius: var(--radius-sm); /* 12px */
+}
+
+/* Medium components - buttons, inputs, cards */
+.medium-component {
+  border-radius: var(--radius-md); /* 16px */
+}
+
+/* Large components - modals, sheets, panels */
+.large-component {
+  border-radius: var(--radius-lg); /* 20px */
+}
+
+/* Hero elements - feature cards, hero sections */
+.hero-component {
+  border-radius: var(--radius-xl); /* 24px */
+}
+
+/* Circular elements - avatars, icons */
+.circular-component {
+  border-radius: var(--radius-full);
+}
+```
+
+## Spacing Guidelines
+
+### Component Spacing
+
+Use consistent spacing patterns for component layouts:
+
+```css
+/* Card spacing */
+.card {
+  padding: var(--spacing-6); /* 24px */
+  margin-bottom: var(--spacing-4); /* 16px */
+}
+
+/* Button spacing */
+.btn {
+  padding: var(--spacing-3) var(--spacing-6); /* 12px 24px */
+  margin: var(--spacing-2); /* 8px */
+}
+
+/* Form spacing */
+.form-group {
+  margin-bottom: var(--spacing-6); /* 24px */
+}
+
+.form-label {
+  margin-bottom: var(--spacing-2); /* 8px */
+}
+
+.form-input {
+  padding: var(--spacing-3) var(--spacing-4); /* 12px 16px */
+}
+```
+
+### Layout Spacing
+
+Use consistent spacing for page layouts and sections:
+
+```css
+/* Section spacing */
+.section {
+  padding: var(--spacing-16) var(--spacing-8); /* 64px 32px */
+  margin-bottom: var(--spacing-12); /* 48px */
+}
+
+/* Container spacing */
+.container {
+  padding: var(--spacing-8); /* 32px */
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Grid spacing */
+.grid {
+  gap: var(--spacing-6); /* 24px */
+}
+
+/* Flex spacing */
+.flex {
+  gap: var(--spacing-4); /* 16px */
+}
+```
+
+### Weather App Specific Spacing
+
+```css
+/* Weather card spacing */
+.weather-card {
+  padding: var(--spacing-6); /* 24px */
+  margin: var(--spacing-4); /* 16px */
+  border-radius: var(--radius-lg); /* 20px */
+}
+
+/* Weather metrics spacing */
+.weather-metrics {
+  gap: var(--spacing-4); /* 16px */
+  padding: var(--spacing-6); /* 24px */
+}
+
+/* Weather forecast spacing */
+.forecast-item {
+  padding: var(--spacing-4); /* 16px */
+  margin: var(--spacing-2); /* 8px */
+  border-radius: var(--radius-md); /* 16px */
+}
+
+/* Hero section spacing */
+.hero-section {
+  padding: var(--spacing-20) var(--spacing-8); /* 80px 32px */
+  margin-bottom: var(--spacing-16); /* 64px */
+}
+```
+
+## Responsive Spacing
+
+Spacing scales appropriately across different screen sizes:
+
+### Mobile (320px - 768px)
+- **Section padding**: 16px - 24px
+- **Component padding**: 12px - 16px
+- **Element spacing**: 8px - 12px
+- **Grid gaps**: 12px - 16px
+
+### Tablet (768px - 1024px)
+- **Section padding**: 24px - 32px
+- **Component padding**: 16px - 24px
+- **Element spacing**: 12px - 16px
+- **Grid gaps**: 16px - 24px
+
+### Desktop (1024px+)
+- **Section padding**: 32px - 64px
+- **Component padding**: 24px - 32px
+- **Element spacing**: 16px - 24px
+- **Grid gaps**: 24px - 32px
+
+## Spacing Patterns
+
+### Consistent Margins
+
+Use consistent margin patterns for related elements:
+
+```css
+/* Vertical rhythm */
+h1, h2, h3, h4, h5, h6 {
+  margin-bottom: var(--spacing-4); /* 16px */
+}
+
+p {
+  margin-bottom: var(--spacing-3); /* 12px */
+}
+
+/* Component margins */
+.card + .card {
+  margin-top: var(--spacing-6); /* 24px */
+}
+
+.section + .section {
+  margin-top: var(--spacing-16); /* 64px */
+}
+```
+
+### Consistent Padding
+
+Use consistent padding patterns for component internals:
+
+```css
+/* Button padding */
+.btn-sm {
+  padding: var(--spacing-2) var(--spacing-4); /* 8px 16px */
+}
+
+.btn-md {
+  padding: var(--spacing-3) var(--spacing-6); /* 12px 24px */
+}
+
+.btn-lg {
+  padding: var(--spacing-4) var(--spacing-8); /* 16px 32px */
+}
+
+/* Input padding */
+.input-sm {
+  padding: var(--spacing-2) var(--spacing-3); /* 8px 12px */
+}
+
+.input-md {
+  padding: var(--spacing-3) var(--spacing-4); /* 12px 16px */
+}
+
+.input-lg {
+  padding: var(--spacing-4) var(--spacing-5); /* 16px 20px */
+}
+```
+
+## Border Radius Guidelines
+
+### Component Radius
+
+Use appropriate border radius values for different component types:
+
+```css
+/* Small components */
+.badge, .tag, .chip {
+  border-radius: var(--radius-sm); /* 12px */
+}
+
+/* Medium components */
+.button, .input, .card {
+  border-radius: var(--radius-md); /* 16px */
+}
+
+/* Large components */
+.modal, .sheet, .panel {
+  border-radius: var(--radius-lg); /* 20px */
+}
+
+/* Hero elements */
+.hero-card, .feature-card {
+  border-radius: var(--radius-xl); /* 24px */
+}
+```
+
+### Weather App Specific Radius
+
+```css
+/* Weather cards */
+.weather-card {
+  border-radius: var(--radius-lg); /* 20px */
+}
+
+/* Weather metrics */
+.weather-metric {
+  border-radius: var(--radius-md); /* 16px */
+}
+
+/* Weather icons */
+.weather-icon {
+  border-radius: var(--radius-sm); /* 12px */
+}
+
+/* Forecast items */
+.forecast-item {
+  border-radius: var(--radius-md); /* 16px */
+}
+```
+
+## Accessibility Considerations
+
+### Touch Targets
+
+Ensure adequate spacing for touch targets:
+
+- **Minimum touch target**: 44px × 44px
+- **Recommended touch target**: 48px × 48px
+- **Touch target spacing**: Minimum 8px between targets
+
+### Focus Indicators
+
+Provide adequate spacing for focus indicators:
+
+```css
+/* Focus ring spacing */
+.focusable {
+  outline-offset: var(--spacing-1); /* 2px */
+}
+
+/* Focus ring size */
+.focusable:focus {
+  outline: 2px solid var(--ring);
+  outline-offset: var(--spacing-1); /* 2px */
+}
+```
+
+## Best Practices
+
+### Do's
+- Use consistent spacing values from the scale
+- Maintain visual rhythm with consistent spacing patterns
+- Use larger spacing for more important content
+- Test spacing on different screen sizes
+- Use CSS custom properties for all spacing values
+
+### Don'ts
+- Don't use arbitrary spacing values
+- Don't mix different spacing patterns inconsistently
+- Don't use spacing that's too tight for touch targets
+- Don't ignore responsive spacing considerations
+- Don't use spacing that breaks visual hierarchy
+
+## Spacing Utilities
+
+### Tailwind CSS Classes
+
+Our spacing system integrates with Tailwind CSS utilities:
+
+```css
+/* Padding utilities */
+.p-1 { padding: var(--spacing-1); } /* 2px */
+.p-2 { padding: var(--spacing-2); } /* 4px */
+.p-3 { padding: var(--spacing-3); } /* 6px */
+.p-4 { padding: var(--spacing-4); } /* 8px */
+.p-6 { padding: var(--spacing-6); } /* 12px */
+.p-8 { padding: var(--spacing-8); } /* 16px */
+
+/* Margin utilities */
+.m-1 { margin: var(--spacing-1); } /* 2px */
+.m-2 { margin: var(--spacing-2); } /* 4px */
+.m-3 { margin: var(--spacing-3); } /* 6px */
+.m-4 { margin: var(--spacing-4); } /* 8px */
+.m-6 { margin: var(--spacing-6); } /* 12px */
+.m-8 { margin: var(--spacing-8); } /* 16px */
+
+/* Gap utilities */
+.gap-1 { gap: var(--spacing-1); } /* 2px */
+.gap-2 { gap: var(--spacing-2); } /* 4px */
+.gap-3 { gap: var(--spacing-3); } /* 6px */
+.gap-4 { gap: var(--spacing-4); } /* 8px */
+.gap-6 { gap: var(--spacing-6); } /* 12px */
+.gap-8 { gap: var(--spacing-8); } /* 16px */
+```
+
+### Custom Spacing Classes
+
+```css
+/* Component-specific spacing */
+.weather-card-spacing {
+  padding: var(--spacing-6);
+  margin: var(--spacing-4);
+  gap: var(--spacing-4);
+}
+
+.section-spacing {
+  padding: var(--spacing-16) var(--spacing-8);
+  margin-bottom: var(--spacing-12);
+}
+
+.form-spacing {
+  gap: var(--spacing-4);
+  padding: var(--spacing-6);
+}
+```

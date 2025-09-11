@@ -80,59 +80,73 @@ export function SimpleUnitsToggle({
                    units.pressure === 'hPa';
 
   return (
-    <div className={cn("flex items-center", styles.container, className)}>
+    <div className={cn("flex flex-col space-y-4", styles.container, className)}>
       {/* Time Format Toggle */}
-      <div className="flex items-center gap-2">
-        <Icon name="Timer" size={18} className="text-muted-foreground" />
-        <button
-          onClick={toggleTimeFormat}
-          className={cn(
-            "relative inline-flex items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2",
-            styles.switch,
-            units.timeFormat === '24h' 
-              ? 'bg-primary' 
-              : 'bg-muted-foreground/20'
-          )}
-          aria-label={`Time format: ${units.timeFormat === '24h' ? '24-hour' : '12-hour'}. Click to toggle.`}
-        >
-          <span
+      <div className="flex items-center justify-between w-full">
+        <div className="flex items-center gap-2">
+          <Icon name="Timer" size={18} color="muted" />
+          <span className={cn("text-foreground font-medium", styles.text)}>
+            Time
+          </span>
+        </div>
+        <div className="flex items-center gap-2">
+          <span className={cn("text-muted-foreground font-medium", styles.text)}>
+            {units.timeFormat === '24h' ? '24h' : '12h'}
+          </span>
+          <button
+            onClick={toggleTimeFormat}
             className={cn(
-              "inline-block rounded-full bg-background shadow transform transition-transform",
-              styles.icon,
-              units.timeFormat === '24h' ? 'translate-x-5' : 'translate-x-0.5'
+              "relative inline-flex items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2",
+              styles.switch,
+              units.timeFormat === '24h' 
+                ? 'bg-primary' 
+                : 'bg-muted-foreground/20'
             )}
-          />
-        </button>
-        <span className={cn("text-muted-foreground font-medium", styles.text)}>
-          {units.timeFormat === '24h' ? '24h' : '12h'}
-        </span>
+            aria-label={`Time format: ${units.timeFormat === '24h' ? '24-hour' : '12-hour'}. Click to toggle.`}
+          >
+            <span
+              className={cn(
+                "inline-block rounded-full bg-background shadow transform transition-transform",
+                styles.icon,
+                units.timeFormat === '24h' ? 'translate-x-5' : 'translate-x-0.5'
+              )}
+            />
+          </button>
+        </div>
       </div>
 
       {/* Metric/Imperial Toggle */}
-      <div className="flex items-center gap-2">
-        <Icon name="Gauge" size={18} className="text-muted-foreground" />
-        <button
-          onClick={toggleMetricImperial}
-          className={cn(
-            "relative inline-flex items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2",
-            styles.switch,
-            isMetric 
-              ? 'bg-primary' 
-              : 'bg-muted-foreground/20'
-          )}
-          aria-label={`Units: ${isMetric ? 'Metric' : 'Imperial'}. Click to toggle.`}
-        >
-          <span
+      <div className="flex items-center justify-between w-full">
+        <div className="flex items-center gap-2">
+          <Icon name="Gauge" size={18} color="muted" />
+          <span className={cn("text-foreground font-medium", styles.text)}>
+            Units
+          </span>
+        </div>
+        <div className="flex items-center gap-2">
+          <span className={cn("text-muted-foreground font-medium", styles.text)}>
+            {isMetric ? 'Metric' : 'Imperial'}
+          </span>
+          <button
+            onClick={toggleMetricImperial}
             className={cn(
-              "inline-block rounded-full bg-background shadow transform transition-transform",
-              styles.icon,
-              isMetric ? 'translate-x-5' : 'translate-x-0.5'
+              "relative inline-flex items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2",
+              styles.switch,
+              isMetric 
+                ? 'bg-primary' 
+                : 'bg-muted-foreground/20'
             )}
-          />
-        </button>
-        <span className={cn("text-muted-foreground font-medium", styles.text)}>
-          {isMetric ? 'Metric' : 'Imperial'}
-        </span>
+            aria-label={`Units: ${isMetric ? 'Metric' : 'Imperial'}. Click to toggle.`}
+          >
+            <span
+              className={cn(
+                "inline-block rounded-full bg-background shadow transform transition-transform",
+                styles.icon,
+                isMetric ? 'translate-x-5' : 'translate-x-0.5'
+              )}
+            />
+          </button>
+        </div>
       </div>
     </div>
   );

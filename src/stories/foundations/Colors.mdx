@@ -1,0 +1,358 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+import { ColorSwatch } from './components/ColorSwatch';
+import { ColorPalette } from './components/ColorPalette';
+
+<Meta title="Foundations/Colors" />
+
+# Color Tokens
+
+Our color system is built using the OKLCH color space for better perceptual uniformity and accessibility. All colors are defined as CSS custom properties and automatically adapt between light and dark themes. The system includes comprehensive color palettes, weather-specific theming, and advanced glassmorphism effects.
+
+## Core Colors
+
+These are the foundational colors that define the overall appearance of the application.
+
+<ColorPalette
+  title="Core Colors"
+  colors={[
+    { name: 'Background', token: '--background', description: 'Main background color' },
+    { name: 'Foreground', token: '--foreground', description: 'Primary text color' },
+    { name: 'Card', token: '--card', description: 'Card and surface background' },
+    { name: 'Card Foreground', token: '--card-foreground', description: 'Text on card surfaces' },
+    { name: 'Popover', token: '--popover', description: 'Popover and dropdown background' },
+    { name: 'Popover Foreground', token: '--popover-foreground', description: 'Text in popovers' },
+  ]}
+/>
+
+## Primary Colors
+
+The primary color system uses a blue-based palette that provides excellent contrast and accessibility.
+
+<ColorPalette
+  title="Primary Colors"
+  colors={[
+    { name: 'Primary 50', token: '--primary-50', description: 'Lightest primary shade' },
+    { name: 'Primary 100', token: '--primary-100', description: 'Very light primary' },
+    { name: 'Primary 200', token: '--primary-200', description: 'Light primary' },
+    { name: 'Primary 300', token: '--primary-300', description: 'Medium light primary' },
+    { name: 'Primary 400', token: '--primary-400', description: 'Medium primary' },
+    { name: 'Primary 500', token: '--primary-500', description: 'Base primary color' },
+    { name: 'Primary 600', token: '--primary-600', description: 'Medium dark primary' },
+    { name: 'Primary 700', token: '--primary-700', description: 'Dark primary' },
+    { name: 'Primary 800', token: '--primary-800', description: 'Very dark primary' },
+    { name: 'Primary 900', token: '--primary-900', description: 'Darkest primary shade' },
+  ]}
+/>
+
+## Secondary Colors
+
+The secondary color system uses a purple-based palette for accents and secondary actions.
+
+<ColorPalette
+  title="Secondary Colors"
+  colors={[
+    { name: 'Secondary 50', token: '--secondary-50', description: 'Lightest secondary shade' },
+    { name: 'Secondary 100', token: '--secondary-100', description: 'Very light secondary' },
+    { name: 'Secondary 200', token: '--secondary-200', description: 'Light secondary' },
+    { name: 'Secondary 300', token: '--secondary-300', description: 'Medium light secondary' },
+    { name: 'Secondary 400', token: '--secondary-400', description: 'Medium secondary' },
+    { name: 'Secondary 500', token: '--secondary-500', description: 'Base secondary color' },
+    { name: 'Secondary 600', token: '--secondary-600', description: 'Medium dark secondary' },
+    { name: 'Secondary 700', token: '--secondary-700', description: 'Dark secondary' },
+    { name: 'Secondary 800', token: '--secondary-800', description: 'Very dark secondary' },
+    { name: 'Secondary 900', token: '--secondary-900', description: 'Darkest secondary shade' },
+  ]}
+/>
+
+## Accent Colors
+
+The accent color system uses an orange-based palette for highlights and call-to-action elements.
+
+<ColorPalette
+  title="Accent Colors"
+  colors={[
+    { name: 'Accent 50', token: '--accent-50', description: 'Lightest accent shade' },
+    { name: 'Accent 100', token: '--accent-100', description: 'Very light accent' },
+    { name: 'Accent 200', token: '--accent-200', description: 'Light accent' },
+    { name: 'Accent 300', token: '--accent-300', description: 'Medium light accent' },
+    { name: 'Accent 400', token: '--accent-400', description: 'Medium accent' },
+    { name: 'Accent 500', token: '--accent-500', description: 'Base accent color' },
+    { name: 'Accent 600', token: '--accent-600', description: 'Medium dark accent' },
+    { name: 'Accent 700', token: '--accent-700', description: 'Dark accent' },
+    { name: 'Accent 800', token: '--accent-800', description: 'Very dark accent' },
+    { name: 'Accent 900', token: '--accent-900', description: 'Darkest accent shade' },
+  ]}
+/>
+
+## Semantic Colors
+
+These colors convey specific meanings and states throughout the application.
+
+<ColorPalette
+  title="Semantic Colors"
+  colors={[
+    { name: 'Success', token: '--success', description: 'Success states and positive actions' },
+    { name: 'Warning', token: '--warning', description: 'Warning states and caution' },
+    { name: 'Destructive', token: '--destructive', description: 'Error states and destructive actions' },
+    { name: 'Info', token: '--info', description: 'Information and neutral states' },
+  ]}
+/>
+
+## Neutral Colors
+
+The neutral color system provides a range of grays for text, borders, and subtle backgrounds.
+
+<ColorPalette
+  title="Neutral Colors"
+  colors={[
+    { name: 'Gray 50', token: '--gray-50', description: 'Lightest gray' },
+    { name: 'Gray 100', token: '--gray-100', description: 'Very light gray' },
+    { name: 'Gray 200', token: '--gray-200', description: 'Light gray' },
+    { name: 'Gray 300', token: '--gray-300', description: 'Medium light gray' },
+    { name: 'Gray 400', token: '--gray-400', description: 'Medium gray' },
+    { name: 'Gray 500', token: '--gray-500', description: 'Base gray' },
+    { name: 'Gray 600', token: '--gray-600', description: 'Medium dark gray' },
+    { name: 'Gray 700', token: '--gray-700', description: 'Dark gray' },
+    { name: 'Gray 800', token: '--gray-800', description: 'Very dark gray' },
+    { name: 'Gray 900', token: '--gray-900', description: 'Darkest gray' },
+  ]}
+/>
+
+## UI Element Colors
+
+These colors are specifically used for UI elements like borders, inputs, and focus rings.
+
+<ColorPalette
+  title="UI Element Colors"
+  colors={[
+    { name: 'Border', token: '--border', description: 'Default border color' },
+    { name: 'Input', token: '--input', description: 'Input field background' },
+    { name: 'Ring', token: '--ring', description: 'Focus ring color' },
+    { name: 'Muted', token: '--muted', description: 'Muted background' },
+    { name: 'Muted Foreground', token: '--muted-foreground', description: 'Muted text color' },
+    { name: 'Subtle', token: '--subtle', description: 'Subtle background' },
+    { name: 'Subtle Foreground', token: '--subtle-foreground', description: 'Subtle text color' },
+  ]}
+/>
+
+## Weather Condition Themes
+
+Our weather app includes dynamic theming based on weather conditions. These themes override accent colors to create atmospheric experiences.
+
+<ColorPalette
+  title="Weather Condition Themes"
+  colors={[
+    { name: 'Clear Day', token: '--accent', description: 'Warm amber for clear weather', className: 'theme--clear-day' },
+    { name: 'Clear Night', token: '--accent', description: 'Dimmed amber for clear nights', className: 'theme--clear-night' },
+    { name: 'Rain', token: '--accent', description: 'Blue tones for rainy weather', className: 'theme--rain' },
+    { name: 'Snow', token: '--accent', description: 'Crisp icy blue for snowy weather', className: 'theme--snow' },
+    { name: 'Cloudy', token: '--accent', description: 'Neutral slate for cloudy weather', className: 'theme--cloudy' },
+    { name: 'Fog', token: '--accent', description: 'Neutral slate for foggy weather', className: 'theme--fog' },
+    { name: 'Thunder', token: '--accent', description: 'Violet tones for stormy weather', className: 'theme--thunder' },
+  ]}
+/>
+
+## Glassmorphism System
+
+Our design system includes a comprehensive glassmorphism system for creating depth and atmospheric effects.
+
+### Base Glass Effects
+
+```css
+/* Base glass effect - subtle transparency with backdrop blur */
+.glass {
+  backdrop-filter: blur(16px) saturate(180%);
+  background: oklch(from var(--card) l c h / 0.75);
+  border: 1px solid oklch(from var(--border) l c h / 0.2);
+  border-radius: var(--radius-lg);
+}
+
+/* Enhanced glass with stronger blur */
+.glass-strong {
+  backdrop-filter: blur(24px) saturate(200%);
+  background: oklch(from var(--card) l c h / 0.85);
+  border: 1px solid oklch(from var(--border) l c h / 0.3);
+  border-radius: var(--radius-xl);
+}
+
+/* Subtle glass - minimal blur for layering */
+.glass-subtle {
+  backdrop-filter: blur(8px) saturate(150%);
+  background: oklch(from var(--card) l c h / 0.6);
+  border: 1px solid oklch(from var(--border) l c h / 0.15);
+  border-radius: var(--radius-md);
+}
+```
+
+### Weather-Themed Glass Variants
+
+```css
+/* Clear weather glass */
+.glass-clear {
+  backdrop-filter: blur(20px) saturate(180%) brightness(110%);
+  background: oklch(from var(--accent) l c h / 0.15);
+  border: 1px solid oklch(from var(--accent) l c h / 0.25);
+  border-radius: var(--radius-2xl);
+}
+
+/* Rain weather glass */
+.glass-rain {
+  backdrop-filter: blur(18px) saturate(160%) hue-rotate(240deg);
+  background: oklch(from var(--primary) l c h / 0.2);
+  border: 1px solid oklch(from var(--primary) l c h / 0.3);
+  border-radius: var(--radius-lg);
+}
+
+/* Snow weather glass */
+.glass-snow {
+  backdrop-filter: blur(22px) saturate(140%) brightness(120%);
+  background: oklch(from var(--card) l c h / 0.8);
+  border: 1px solid oklch(from var(--border) l c h / 0.4);
+  border-radius: var(--radius-lg);
+}
+
+/* Storm weather glass */
+.glass-storm {
+  backdrop-filter: blur(16px) saturate(200%) contrast(120%);
+  background: oklch(from var(--secondary) l c h / 0.25);
+  border: 1px solid oklch(from var(--secondary) l c h / 0.35);
+  border-radius: var(--radius-lg);
+}
+```
+
+### Interactive Glass States
+
+```css
+/* Glass with hover effects */
+.glass-hover {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.glass-hover:hover {
+  backdrop-filter: blur(24px) saturate(200%) brightness(105%);
+  background: oklch(from var(--card) l c h / 0.85);
+  border-color: oklch(from var(--border) l c h / 0.35);
+  transform: translateY(-2px);
+}
+```
+
+## Usage Guidelines
+
+### Color Accessibility
+
+All colors in our system are designed to meet WCAG AA contrast requirements:
+
+- **Text on backgrounds**: Minimum 4.5:1 contrast ratio
+- **Large text**: Minimum 3:1 contrast ratio
+- **UI components**: Minimum 3:1 contrast ratio
+
+### Color Usage
+
+- **Primary colors**: Use for main actions, links, and brand elements
+- **Secondary colors**: Use for secondary actions and accents
+- **Accent colors**: Use for highlights and call-to-action elements
+- **Semantic colors**: Use consistently for their intended meanings
+- **Neutral colors**: Use for text, borders, and subtle backgrounds
+
+### Dark Mode
+
+All colors automatically adapt to dark mode using CSS custom properties. The dark theme maintains the same color relationships while providing appropriate contrast for dark backgrounds.
+
+### OKLCH Color Space
+
+We use the OKLCH color space for several advantages:
+
+- **Perceptual uniformity**: Colors appear more consistent across different hues
+- **Better accessibility**: Easier to maintain proper contrast ratios
+- **Future-proof**: Better support for wide color gamuts
+- **Consistent lightness**: Colors maintain consistent perceived brightness
+
+## Examples
+
+### Color Combinations
+
+Here are some recommended color combinations for common use cases:
+
+```css
+/* Primary button */
+background-color: var(--primary);
+color: var(--primary-foreground);
+
+/* Secondary button */
+background-color: var(--secondary);
+color: var(--secondary-foreground);
+
+/* Success message */
+background-color: var(--success);
+color: var(--success-foreground);
+
+/* Error message */
+background-color: var(--destructive);
+color: var(--destructive-foreground);
+```
+
+### Weather Condition Colors
+
+For weather-specific theming, we use condition-based color variations that override the accent color:
+
+```css
+/* Clear day weather - warm amber */
+.theme--clear-day {
+  --accent: oklch(0.8600 0.1400 85.0000);
+  transition: all 0.3s ease;
+}
+
+/* Clear night weather - dimmed amber */
+.theme--clear-night {
+  --accent: oklch(0.7500 0.1000 85.0000);
+  transition: all 0.3s ease;
+}
+
+/* Rainy weather - blue tones */
+.theme--rain {
+  --accent: oklch(0.7000 0.1200 250.0000);
+  transition: all 0.3s ease;
+}
+
+/* Snowy weather - crisp icy blue */
+.theme--snow {
+  --accent: oklch(0.8500 0.0800 250.0000);
+  transition: all 0.3s ease;
+}
+
+/* Cloudy weather - neutral slate */
+.theme--cloudy {
+  --accent: oklch(0.7200 0.0600 260.0000);
+  transition: all 0.3s ease;
+}
+
+/* Foggy weather - neutral slate */
+.theme--fog {
+  --accent: oklch(0.7200 0.0600 260.0000);
+  transition: all 0.3s ease;
+}
+
+/* Thunder weather - violet tones */
+.theme--thunder {
+  --accent: oklch(0.7400 0.1500 300.0000);
+  transition: all 0.3s ease;
+}
+```
+
+### Atmospheric Blur Backgrounds
+
+For creating depth and atmospheric effects, we use radial gradients with blur:
+
+```css
+/* Atmospheric blur background */
+.atmospheric-blur-bg {
+  position: absolute;
+  inset: 0;
+  background: 
+    radial-gradient(circle at 20% 30%, oklch(from var(--primary) l c h / 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 80% 70%, oklch(from var(--accent) l c h / 0.08) 0%, transparent 50%),
+    radial-gradient(circle at 40% 80%, oklch(from var(--secondary) l c h / 0.06) 0%, transparent 50%);
+  filter: blur(60px);
+  pointer-events: none;
+}
+```

@@ -10,6 +10,7 @@ Debounced autosuggest using Open‑Meteo Geocoding; keyboard‑first.
 * `Cmd/Ctrl+K` opens, `Esc` closes, focus trapped.
 * Selecting result sets `selectedLocation` and prefetches forecast.
 * Supports separate "Search" button style variant shown in comps.
+* **Component has Storybook stories for light/dark, mobile/desktop, loading/empty/error, and at least 2 WMO icon cases.**
 
 ## Dependencies
 None

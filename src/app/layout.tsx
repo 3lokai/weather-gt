@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { DM_Sans, Bricolage_Grotesque } from "next/font/google";
 import { QueryProvider } from "@/lib/providers/query-provider";
 import { ThemeProvider } from "@/lib/providers/theme-provider";
+import { CacheInvalidationProvider } from "@/components/providers/cache-invalidation-provider";
 import "./globals.css";
 
 const dmSans = DM_Sans({
@@ -38,7 +39,9 @@ export default function RootLayout({
       <body className="font-sans antialiased">
         <ThemeProvider>
           <QueryProvider>
-            {children}
+            <CacheInvalidationProvider>
+              {children}
+            </CacheInvalidationProvider>
           </QueryProvider>
         </ThemeProvider>
       </body>

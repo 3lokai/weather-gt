@@ -1,5 +1,7 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
+import { AirQualityData } from '@/lib/types/air-quality';
+import { PollenData } from '@/lib/types/pollen';
 
 export interface Location {
   id: string;
@@ -27,6 +29,12 @@ export interface WeatherState {
   selectedDayIndex: number;
   favorites: Location[];
   
+  // Air quality data
+  airQualityData: AirQualityData | null;
+  
+  // Pollen data
+  pollenData: PollenData | null;
+  
   // Settings
   units: Units;
   
@@ -36,6 +44,14 @@ export interface WeatherState {
   addFavorite: (location: Location) => void;
   removeFavorite: (locationId: string) => void;
   setUnits: (units: Partial<Units>) => void;
+  setAirQualityData: (data: AirQualityData | null) => void;
+  setPollenData: (data: PollenData | null) => void;
+  
+  // Cache invalidation callbacks
+  onUnitsChange?: () => void;
+  onLocationChange?: () => void;
+  setOnUnitsChange: (callback: (() => void) | undefined) => void;
+  setOnLocationChange: (callback: (() => void) | undefined) => void;
 }
 
 const defaultUnits: Units = {
@@ -53,10 +69,19 @@ export const useWeatherStore = create<WeatherState>()(
       selectedLocation: null,
       selectedDayIndex: 0,
       favorites: [],
+      airQualityData: null,
+      pollenData: null,
       units: defaultUnits,
+      onUnitsChange: undefined,
+      onLocationChange: undefined,
 
       // Actions
-      setSelectedLocation: (location) => set({ selectedLocation: location }),
+      setSelectedLocation: (location) => {
+        set({ selectedLocation: location });
+        // Trigger cache invalidation callback
+        const { onLocationChange } = get();
+        onLocationChange?.();
+      },
       setSelectedDayIndex: (index) => set({ selectedDayIndex: index }),
       
       addFavorite: (location) => {
@@ -74,7 +99,17 @@ export const useWeatherStore = create<WeatherState>()(
       setUnits: (newUnits) => {
         const { units } = get();
         set({ units: { ...units, ...newUnits } });
+        // Trigger cache invalidation callback
+        const { onUnitsChange } = get();
+        onUnitsChange?.();
       },
+      
+      setAirQualityData: (data) => set({ airQualityData: data }),
+      setPollenData: (data) => set({ pollenData: data }),
+      
+      // Cache invalidation callbacks
+      setOnUnitsChange: (callback) => set({ onUnitsChange: callback }),
+      setOnLocationChange: (callback) => set({ onLocationChange: callback }),
     }),
     {
       name: 'weather-store',

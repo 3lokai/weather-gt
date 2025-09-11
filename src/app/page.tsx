@@ -7,7 +7,7 @@ import { UnitsSheetDemo } from "@/components/settings/units-sheet-demo";
 import { SettingsDropdown } from "@/components/settings/settings-dropdown";
 import { SearchProvider } from "@/components/search";
 import { InlineSearch } from "@/components/search/inline-search";
-import { CurrentConditionsCard, CurrentConditionsDemo, MetricsGridDemo, SevenDayForecastDemo, HourlyPanelChartDemo } from "@/components/weather";
+import { CurrentConditionsCard, CurrentConditionsDemo, MetricsGridDemo, SevenDayForecastDemo, HourlyPanelChartDemo, PollenPanelDemo, AirQualityPanelDemo, RealWeatherConditions } from "@/components/weather";
 import { useWeatherStore } from "@/lib/store/weather-store";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -108,33 +108,137 @@ export default function HomePage() {
           </p>
         </section>
 
-        {/* Current Conditions Card */}
-        {selectedLocation && (
-          <section className="mb-12 max-w-sm md:max-w-2xl mx-auto">
-            <CurrentConditionsCard
-              conditions={{
-                temperature_2m: 22,
-                apparent_temperature: 24,
-                weather_code: demoWeatherCode,
-                is_day: isDay
-              }}
-              location={selectedLocation}
-              size="lg"
-               className="glass-clear glass-hover"
-               showHeroBackground={true}
-               heroBackgroundOpacity={0.6}
-             />
-          </section>
-        )}
+        {/* Real Weather Conditions Card */}
+        <section className="mb-12 max-w-sm md:max-w-2xl mx-auto">
+          <RealWeatherConditions />
+        </section>
 
         {/* Current Conditions Demo */}
         <section className="mb-12">
           <CurrentConditionsDemo />
         </section>
 
+        {/* Precipitation Probability Demo */}
+        <section className="mb-12">
+          <Card className="glass-strong">
+            <CardHeader>
+              <CardTitle className="text-h2 font-display">Precipitation Probability Demo</CardTitle>
+              <CardDescription>
+                Showcasing precipitation probability display across different components
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {/* Current Conditions with PoP */}
+                <div className="space-y-3">
+                  <h3 className="text-lg font-semibold">Current Conditions</h3>
+                  <CurrentConditionsCard
+                    conditions={{
+                      temperature_2m: 18,
+                      apparent_temperature: 20,
+                      weather_code: 61, // Rain
+                      is_day: true,
+                      precipitation_probability: 75
+                    }}
+                    location={{
+                      id: 'demo',
+                      name: 'Demo City',
+                      country: 'Demo Country',
+                      latitude: 0,
+                      longitude: 0,
+                      timezone: 'UTC'
+                    }}
+                    size="sm"
+                    className="glass-hover"
+                  />
+                </div>
+
+                {/* Daily Forecast with PoP */}
+                <div className="space-y-3">
+                  <h3 className="text-lg font-semibold">Daily Forecast</h3>
+                  <div className="flex gap-2">
+                    <div className="min-w-[120px]">
+                      <div className="p-3 text-center space-y-2 border rounded-lg glass-hover">
+                        <div className="text-sm font-medium text-muted-foreground">Today</div>
+                        <div className="flex justify-center">
+                          <LottieWeatherIcon code={61} isDay={true} size={32} className="drop-shadow-sm" />
+                        </div>
+                        <div className="space-y-1">
+                          <div className="text-sm font-semibold text-foreground">18°</div>
+                          <div className="text-xs text-muted-foreground">12°</div>
+                        </div>
+                        <div className="text-xs text-blue-600 dark:text-blue-400 font-medium">75%</div>
+                      </div>
+                    </div>
+                    <div className="min-w-[120px]">
+                      <div className="p-3 text-center space-y-2 border rounded-lg glass-hover">
+                        <div className="text-sm font-medium text-muted-foreground">Tomorrow</div>
+                        <div className="flex justify-center">
+                          <LottieWeatherIcon code={3} isDay={true} size={32} className="drop-shadow-sm" />
+                        </div>
+                        <div className="space-y-1">
+                          <div className="text-sm font-semibold text-foreground">22°</div>
+                          <div className="text-xs text-muted-foreground">15°</div>
+                        </div>
+                        <div className="text-xs text-blue-600 dark:text-blue-400 font-medium">30%</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Metrics Grid with PoP */}
+                <div className="space-y-3">
+                  <h3 className="text-lg font-semibold">Weather Metrics</h3>
+                  <div className="grid grid-cols-2 gap-2">
+                    <div className="p-3 border rounded-lg glass-hover">
+                      <div className="flex items-center justify-between space-x-3">
+                        <div className="text-lg flex-shrink-0">🌧️</div>
+                        <div className="flex flex-col items-end text-right flex-1">
+                          <div className="text-sm font-semibold text-foreground">2.5 mm</div>
+                          <div className="text-xs text-muted-foreground font-medium">Precipitation</div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="p-3 border rounded-lg glass-hover">
+                      <div className="flex items-center justify-between space-x-3">
+                        <div className="text-lg flex-shrink-0">🌦️</div>
+                        <div className="flex flex-col items-end text-right flex-1">
+                          <div className="text-sm font-semibold text-foreground">75%</div>
+                          <div className="text-xs text-muted-foreground font-medium">Rain Chance</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="mt-6 p-4 bg-muted/50 rounded-lg">
+                <h4 className="font-semibold mb-2">Key Features:</h4>
+                <ul className="text-sm text-muted-foreground space-y-1">
+                  <li>• Precipitation probability displayed as percentage values</li>
+                  <li>• Gracefully hidden when data is not available (0% or undefined)</li>
+                  <li>• Consistent blue color scheme for precipitation indicators</li>
+                  <li>• Animated number components for smooth value transitions</li>
+                  <li>• Accessible with proper ARIA labels and screen reader support</li>
+                </ul>
+              </div>
+            </CardContent>
+          </Card>
+        </section>
+
         {/* Metrics Grid Demo */}
         <section className="mb-12">
           <MetricsGridDemo />
+        </section>
+
+        {/* Pollen Panel Demo */}
+        <section className="mb-12">
+          <PollenPanelDemo />
+        </section>
+
+        {/* Air Quality Panel Demo */}
+        <section className="mb-12">
+          <AirQualityPanelDemo />
         </section>
 
         {/* Weather Icons Test Section */}
@@ -284,7 +388,7 @@ export default function HomePage() {
                     <CardContent className="pt-6">
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-3">
-                          <Icon name={metric.icon} size={20} color="muted" />
+                          <Icon name={metric.icon} size={20} color="accent" />
                           <div>
                             <p className="text-caption text-muted-foreground">{metric.label}</p>
                             <p className="text-body-m text-card-foreground font-semibold">{metric.value}</p>

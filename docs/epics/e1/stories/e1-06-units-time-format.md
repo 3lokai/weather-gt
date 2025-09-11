@@ -8,6 +8,7 @@ Global toggles: C/F, km/h|mph, mm (display "in"), hPa|inHg, 12/24‑h.
 * ✅ Dropdown uses group headings + checkmarks and a top "Switch to …" quick action.
 * ✅ Forecast refetches when units/time change; number flip animation ≤180ms.
 * ✅ Labels update across all views (cards, chart axes, tooltips).
+* **Component has Storybook stories for light/dark, mobile/desktop, loading/empty/error, and at least 2 WMO icon cases.**
 
 ## Dependencies
 None

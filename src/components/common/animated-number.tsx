@@ -272,3 +272,149 @@ export function AnimatedPressure({
     />
   );
 }
+
+/**
+ * Animated wind gusts component with unit formatting
+ */
+export interface AnimatedWindGustsProps {
+  /** Wind gusts value in the current unit */
+  value: number;
+  /** Wind speed unit */
+  unit: 'kmh' | 'mph';
+  /** Duration of the animation in milliseconds */
+  duration?: number;
+  /** Additional CSS classes */
+  className?: string;
+  /** ARIA label for accessibility */
+  'aria-label'?: string;
+}
+
+export function AnimatedWindGusts({
+  value,
+  unit,
+  duration = 180,
+  className,
+  'aria-label': ariaLabel,
+  ...props
+}: AnimatedWindGustsProps) {
+  const unitLabel = unit === 'mph' ? 'mph' : 'km/h';
+  
+  return (
+    <AnimatedNumber
+      value={value}
+      duration={duration}
+      precision={0}
+      className={className}
+      formatter={(val) => `${Math.round(val)} ${unitLabel}`}
+      aria-label={ariaLabel}
+      {...props}
+    />
+  );
+}
+
+/**
+ * Animated cloud cover component with percentage formatting
+ */
+export interface AnimatedCloudCoverProps {
+  /** Cloud cover percentage value */
+  value: number;
+  /** Duration of the animation in milliseconds */
+  duration?: number;
+  /** Additional CSS classes */
+  className?: string;
+  /** ARIA label for accessibility */
+  'aria-label'?: string;
+}
+
+export function AnimatedCloudCover({
+  value,
+  duration = 180,
+  className,
+  'aria-label': ariaLabel,
+  ...props
+}: AnimatedCloudCoverProps) {
+  return (
+    <AnimatedNumber
+      value={value}
+      duration={duration}
+      precision={0}
+      className={className}
+      formatter={(val) => `${Math.round(val)}%`}
+      aria-label={ariaLabel}
+      {...props}
+    />
+  );
+}
+
+/**
+ * Animated dew point component with temperature unit formatting
+ */
+export interface AnimatedDewPointProps {
+  /** Dew point temperature value in the current unit */
+  value: number;
+  /** Temperature unit */
+  unit: 'celsius' | 'fahrenheit';
+  /** Duration of the animation in milliseconds */
+  duration?: number;
+  /** Additional CSS classes */
+  className?: string;
+  /** ARIA label for accessibility */
+  'aria-label'?: string;
+}
+
+export function AnimatedDewPoint({
+  value,
+  unit,
+  duration = 180,
+  className,
+  'aria-label': ariaLabel,
+  ...props
+}: AnimatedDewPointProps) {
+  const symbol = unit === 'fahrenheit' ? '°F' : '°C';
+  
+  return (
+    <AnimatedNumber
+      value={value}
+      duration={duration}
+      precision={0}
+      className={className}
+      formatter={(val) => `${Math.round(val)}${symbol}`}
+      aria-label={ariaLabel}
+      {...props}
+    />
+  );
+}
+
+/**
+ * Animated precipitation probability component with percentage formatting
+ */
+export interface AnimatedPrecipitationProbabilityProps {
+  /** Precipitation probability percentage value */
+  value: number;
+  /** Duration of the animation in milliseconds */
+  duration?: number;
+  /** Additional CSS classes */
+  className?: string;
+  /** ARIA label for accessibility */
+  'aria-label'?: string;
+}
+
+export function AnimatedPrecipitationProbability({
+  value,
+  duration = 180,
+  className,
+  'aria-label': ariaLabel,
+  ...props
+}: AnimatedPrecipitationProbabilityProps) {
+  return (
+    <AnimatedNumber
+      value={value}
+      duration={duration}
+      precision={0}
+      className={className}
+      formatter={(val) => `${Math.round(val)}%`}
+      aria-label={ariaLabel}
+      {...props}
+    />
+  );
+}

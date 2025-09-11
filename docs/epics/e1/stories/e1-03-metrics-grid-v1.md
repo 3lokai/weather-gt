@@ -8,6 +8,7 @@ Feels‑like, humidity, wind speed, precip, pressure.
 * Shows: `apparent_temperature`, `relative_humidity_2m`, `wind_speed_10m`, `precipitation`, `surface_pressure`.
 * Unit labels reflect global units.
 * Tooltips explain metrics.
+* **Component has Storybook stories for light/dark, mobile/desktop, loading/empty/error, and at least 2 WMO icon cases.**
 
 ## Dependencies
 E6-02 (analytics) optional.

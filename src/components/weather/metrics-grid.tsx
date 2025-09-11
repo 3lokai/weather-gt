@@ -1,14 +1,17 @@
 'use client';
 
 import { Card, CardContent } from "@/components/ui/card";
-import { AnimatedTemperature, AnimatedWindSpeed, AnimatedPrecipitation, AnimatedPressure } from "@/components/common/animated-number";
+import { LottieTemperature, LottieWindSpeed, LottiePrecipitation, LottiePressure, LottieCloudCover, LottiePrecipitationProbability, LottieHumidity, LottieUVIndex, LottieVisibility } from "@/components/common/lottie-metric";
 import { useWeatherStore } from "@/lib/store/weather-store";
 import { cn } from "@/lib/utils";
-import { CurrentWeather } from "@/lib/api/open-meteo";
+import { CurrentWeather, HourlyWeather } from "@/lib/api/open-meteo";
+import { calculatePressureTrend, formatTrendDisplay, getTrendColorClass } from "@/lib/utils/trend-calculator";
 
 export interface MetricsGridProps {
   /** Current weather data containing all metrics */
   weather: CurrentWeather | null;
+  /** Hourly weather data for trend calculations */
+  hourlyWeather?: HourlyWeather | null;
   /** Loading state */
   isLoading?: boolean;
   /** Error state */
@@ -21,72 +24,119 @@ export interface MetricsGridProps {
   showTooltips?: boolean;
   /** Layout variant */
   layout?: 'grid' | 'list';
+  /** Show extended metrics (v2 features) */
+  showExtendedMetrics?: boolean;
 }
 
 interface MetricConfig {
   key: keyof CurrentWeather;
   label: string;
-  icon: string;
   tooltip: string;
   formatter: (value: number, units: any) => string;
   animatedComponent?: React.ComponentType<any>;
+  isExtended?: boolean;
+  conditionalDisplay?: (weather: CurrentWeather, units: any) => boolean;
+  trendDisplay?: (weather: CurrentWeather, hourlyWeather?: HourlyWeather | null, units?: any) => string | null;
 }
 
 const metricConfigs: MetricConfig[] = [
   {
     key: 'apparent_temperature',
     label: 'Feels like',
-    icon: '🌡️',
     tooltip: 'How the temperature actually feels to the human body, accounting for wind and humidity',
     formatter: (value, units) => {
       const rounded = Math.round(value);
       const symbol = units.temperature === 'fahrenheit' ? '°F' : '°C';
       return `${rounded}${symbol}`;
     },
-    animatedComponent: AnimatedTemperature
+    animatedComponent: LottieTemperature
   },
   {
     key: 'relative_humidity_2m',
     label: 'Humidity',
-    icon: '💧',
     tooltip: 'Amount of water vapor in the air relative to the maximum possible at current temperature',
-    formatter: (value) => `${Math.round(value)}%`
+    formatter: (value) => `${Math.round(value)}%`,
+    animatedComponent: LottieHumidity
   },
   {
     key: 'wind_speed_10m',
     label: 'Wind',
-    icon: '💨',
     tooltip: 'Wind speed measured at 10 meters above ground level',
     formatter: (value, units) => {
       const rounded = Math.round(value);
       const unit = units.windSpeed === 'mph' ? 'mph' : 'km/h';
       return `${rounded} ${unit}`;
     },
-    animatedComponent: AnimatedWindSpeed
+    animatedComponent: LottieWindSpeed
   },
   {
     key: 'precipitation',
     label: 'Precipitation',
-    icon: '🌧️',
     tooltip: 'Amount of precipitation (rain, snow, etc.) in the last hour',
     formatter: (value, units) => {
       const rounded = Math.round(value * 10) / 10;
       const unit = units.precipitation === 'in' ? 'in' : 'mm';
       return `${rounded} ${unit}`;
     },
-    animatedComponent: AnimatedPrecipitation
+    animatedComponent: LottiePrecipitation
+  },
+  {
+    key: 'precipitation_probability',
+    label: 'Rain Chance',
+    tooltip: 'Probability of precipitation occurring in the next hour',
+    formatter: (value) => `${Math.round(value)}%`,
+    animatedComponent: LottiePrecipitationProbability,
+    conditionalDisplay: (weather) => weather.precipitation_probability > 0
   },
   {
     key: 'surface_pressure',
     label: 'Pressure',
-    icon: '📊',
     tooltip: 'Atmospheric pressure at ground level, indicating weather patterns',
     formatter: (value, units) => {
       const rounded = Math.round(value);
       const unit = units.pressure === 'inHg' ? 'inHg' : 'hPa';
       return `${rounded} ${unit}`;
     },
-    animatedComponent: AnimatedPressure
+    animatedComponent: LottiePressure,
+    trendDisplay: (weather, hourlyWeather, units) => {
+      if (!hourlyWeather?.surface_pressure || hourlyWeather.surface_pressure.length < 2) {
+        return null;
+      }
+      const trend = calculatePressureTrend(
+        weather.surface_pressure,
+        hourlyWeather.surface_pressure.slice(1, 5) // Use 3-4 hours ago
+      );
+      return formatTrendDisplay(trend, units.pressure);
+    }
+  },
+  // Extended metrics (v2)
+  {
+    key: 'cloud_cover',
+    label: 'Clouds',
+    tooltip: 'Percentage of sky covered by clouds',
+    formatter: (value) => `${Math.round(value)}%`,
+    animatedComponent: LottieCloudCover,
+    isExtended: true
+  },
+  {
+    key: 'uv_index',
+    label: 'UV Index',
+    tooltip: 'Ultraviolet radiation index indicating sunburn risk and sun protection needs',
+    formatter: (value) => `${Math.round(value)}`,
+    animatedComponent: LottieUVIndex,
+    isExtended: true
+  },
+  {
+    key: 'visibility',
+    label: 'Visibility',
+    tooltip: 'Horizontal visibility distance, indicating atmospheric clarity and fog conditions',
+    formatter: (value, units) => {
+      const rounded = Math.round(value);
+      const unit = units.visibility === 'miles' ? 'mi' : 'km';
+      return `${rounded} ${unit}`;
+    },
+    animatedComponent: LottieVisibility,
+    isExtended: true
   }
 ];
 
@@ -100,7 +150,14 @@ function getUnitForMetric(key: keyof CurrentWeather, units: any) {
     case 'precipitation':
       return units.precipitation;
     case 'surface_pressure':
-      return units.pressure; // Use the selected pressure unit
+      return units.pressure;
+    case 'cloud_cover':
+    case 'relative_humidity_2m':
+    case 'precipitation_probability':
+    case 'uv_index':
+      return null; // Percentage values and UV index don't need unit conversion
+    case 'visibility':
+      return units.visibility;
     default:
       return null;
   }
@@ -108,12 +165,14 @@ function getUnitForMetric(key: keyof CurrentWeather, units: any) {
 
 export function MetricsGrid({
   weather,
+  hourlyWeather = null,
   isLoading = false,
   error = null,
   className,
   size = 'md',
   showTooltips = true,
-  layout = 'grid'
+  layout = 'grid',
+  showExtendedMetrics = false
 }: MetricsGridProps) {
   const { units } = useWeatherStore();
 
@@ -144,9 +203,33 @@ export function MetricsGrid({
 
   const styles = sizeStyles[size];
 
+  // Filter metrics based on extended metrics setting and conditional display
+  const visibleMetrics = metricConfigs.filter(metric => {
+    // Always show core metrics
+    if (!metric.isExtended) return true;
+    
+    // Show extended metrics only if enabled
+    if (!showExtendedMetrics) return false;
+    
+    // Check conditional display for metrics like wind gusts
+    if (metric.conditionalDisplay && weather) {
+      return metric.conditionalDisplay(weather, units);
+    }
+    
+    return true;
+  });
+
+  // Dynamic grid columns based on number of visible metrics
+  const getGridCols = (count: number) => {
+    if (count <= 3) return 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3';
+    if (count <= 6) return 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3';
+    if (count <= 9) return 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3';
+    return 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-3';
+  };
+
   // Layout classes
   const layoutClasses = layout === 'grid' 
-    ? `grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 ${styles.gap}`
+    ? `grid ${getGridCols(visibleMetrics.length)} ${styles.gap}`
     : `flex flex-col ${styles.gap}`;
 
   // Loading skeleton component
@@ -160,11 +243,12 @@ export function MetricsGrid({
       aria-label={`Loading ${metric.label}`}
     >
       <CardContent className="flex items-center justify-between space-x-3">
-        <div 
-          className={cn(styles.icon, "opacity-50 flex-shrink-0")}
-          aria-hidden="true"
-        >
-          {metric.icon}
+        {/* Loading placeholder for Lottie */}
+        <div className="flex-shrink-0">
+          <div 
+            className="animate-pulse bg-muted rounded-md"
+            style={{ width: 40, height: 40 }}
+          />
         </div>
         <div className="flex flex-col items-end text-right flex-1 space-y-1">
           <div 
@@ -223,7 +307,7 @@ export function MetricsGrid({
         role="region"
         aria-label="Weather metrics - Loading"
       >
-        {metricConfigs.map((metric) => (
+        {visibleMetrics.map((metric) => (
           <MetricSkeleton key={metric.key} metric={metric} />
         ))}
       </div>
@@ -236,10 +320,11 @@ export function MetricsGrid({
       role="region"
       aria-label="Weather metrics"
     >
-      {metricConfigs.map((metric) => {
+      {visibleMetrics.map((metric) => {
         const value = weather[metric.key] as number;
         const formattedValue = metric.formatter(value, units);
         const AnimatedComponent = metric.animatedComponent;
+        const trendDisplay = metric.trendDisplay?.(weather, hourlyWeather, units);
         
         return (
           <Card
@@ -253,15 +338,21 @@ export function MetricsGrid({
             tabIndex={0}
           >
             <CardContent className="flex items-center justify-between space-x-3">
-              {/* Icon on the left */}
-              <div 
-                className={cn(styles.icon, "flex-shrink-0")}
-                aria-hidden="true"
-              >
-                {metric.icon}
+              {/* Lottie Animation as Icon */}
+              <div className="flex-shrink-0">
+                {AnimatedComponent && (
+                  <AnimatedComponent
+                    value={value}
+                    unit={getUnitForMetric(metric.key, units)}
+                    duration={180}
+                    className="inline-block"
+                    showLottie={true}
+                    lottieSize={40}
+                    showText={false}
+                  />
+                )}
               </div>
-
-              {/* Value and label on the right */}
+              {/* Value and label */}
               <div className="flex flex-col items-end text-right flex-1">
                 {/* Value */}
                 <div 
@@ -271,17 +362,25 @@ export function MetricsGrid({
                   )}
                   aria-label={`Value: ${formattedValue}`}
                 >
-                  {AnimatedComponent ? (
-                    <AnimatedComponent
-                      value={value}
-                      unit={getUnitForMetric(metric.key, units)}
-                      duration={180}
-                      className="inline-block"
-                    />
-                  ) : (
-                    formattedValue
-                  )}
+                  {formattedValue}
                 </div>
+
+                {/* Trend display (for pressure) */}
+                {trendDisplay && (
+                  <div 
+                    className={cn(
+                      "text-xs font-medium",
+                      getTrendColorClass(
+                        trendDisplay.includes('↑') ? 'up' as const : 
+                        trendDisplay.includes('↓') ? 'down' as const : 
+                        'stable' as const
+                      )
+                    )}
+                    aria-label={`Trend: ${trendDisplay}`}
+                  >
+                    {trendDisplay}
+                  </div>
+                )}
 
                 {/* Label below the value */}
                 <div 
@@ -322,10 +421,16 @@ export function useMetricsData(weather: CurrentWeather | null) {
   if (!weather) return null;
 
   return {
+    // Core metrics (v1)
     apparent_temperature: weather.apparent_temperature,
     relative_humidity_2m: weather.relative_humidity_2m,
     wind_speed_10m: weather.wind_speed_10m,
     precipitation: weather.precipitation,
-    surface_pressure: weather.surface_pressure
+    precipitation_probability: weather.precipitation_probability,
+    surface_pressure: weather.surface_pressure,
+    // Extended metrics (v2)
+    wind_gusts_10m: weather.wind_gusts_10m,
+    cloud_cover: weather.cloud_cover,
+    dew_point_2m: weather.dew_point_2m
   };
 }

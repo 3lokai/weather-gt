@@ -39,3 +39,7 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+# BMAD (local only)
+
+*storybook.log
+storybook-static

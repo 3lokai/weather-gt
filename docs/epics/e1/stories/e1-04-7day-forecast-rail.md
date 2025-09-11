@@ -7,6 +7,7 @@ Selectable daily chips with hi/low, icon, PoP.
 
 * Uses `daily.temperature_2m_max/min`, `weather_code`, `precipitation_probability_max`.
 * Selecting day updates Hourly Panel.
+* **Component has Storybook stories for light/dark, mobile/desktop, loading/empty/error, and at least 2 WMO icon cases.**
 
 ## Dependencies
 E1-05.
