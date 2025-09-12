@@ -2,7 +2,6 @@
 
 import { Card } from "@/components/ui/card";
 import { LottieWeatherIcon } from "@/components/icons/lottie-weather-icon";
-// Removed LottieTemperature and LottiePrecipitationProbability imports - using simple text instead
 import { getWeatherCondition } from "@/lib/api/open-meteo";
 import { useWeatherStore } from "@/lib/store/weather-store";
 import { cn } from "@/lib/utils";
@@ -100,10 +99,10 @@ export function DailyForecastChip({
         }
       }}
     >
-      <div className="p-3 text-center space-y-2">
+      <div className="p-4 text-center space-y-3">
         {/* Day Name */}
         <div className={cn(
-          "text-sm font-medium",
+          "text-body-s font-medium",
           isToday ? "text-primary font-semibold" : "text-muted-foreground"
         )}>
           {formatDayName(data.time, isToday)}
@@ -121,13 +120,13 @@ export function DailyForecastChip({
         </div>
 
         {/* Temperature Range */}
-        <div className="text-sm font-semibold text-foreground">
+        <div className="text-body-s font-semibold text-foreground">
           {formatTemperature(data.temperature_2m_max)} / {formatTemperature(data.temperature_2m_min)}
         </div>
 
         {/* Precipitation Probability */}
         {data.precipitation_probability_max > 0 && (
-          <div className="text-xs text-blue-600 dark:text-blue-400 font-medium">
+          <div className="text-caption text-blue-600 dark:text-blue-400 font-medium">
             {formatPrecipitationProbability(data.precipitation_probability_max)}
           </div>
         )}

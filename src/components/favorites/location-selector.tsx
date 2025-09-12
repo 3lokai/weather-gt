@@ -65,7 +65,12 @@ export function LocationSelector({ className }: LocationSelectorProps) {
       <DropdownMenuTrigger asChild>
         <Button
           variant="ghost"
-          className={cn("h-auto p-2 hover:bg-muted/50 transition-colors", className)}
+          className={cn(
+            "h-auto p-2 transition-all duration-200",
+            "text-muted-foreground hover:text-foreground hover:bg-muted/50",
+            "active:text-foreground/80 active:bg-muted/70",
+            className
+          )}
           aria-label="Select location from favorites"
         >
           <div className="text-right">
@@ -92,21 +97,22 @@ export function LocationSelector({ className }: LocationSelectorProps) {
           <Icon 
             name="CaretDown" 
             size={32} 
+            withDuotone={true}
             className="ml-2 transition-transform duration-200 size-8" 
           />
         </Button>
       </DropdownMenuTrigger>
       
       <DropdownMenuContent 
-        className="w-[320px] max-h-[80vh] overflow-y-auto"
+        className="w-[320px] max-h-[80vh] overflow-y-auto glass-strong bg-background/80 border-border/50"
         align="end"
         sideOffset={8}
       >
         <DropdownMenuLabel className="px-6 py-4 text-body-l font-display">
           <div className="flex items-center space-x-2">
-            <Icon name="Heart" size={20} color="primary" className="h-8 w-8" />
+            <Icon name="Heart" size={20} color="primary" withDuotone={true} className="h-8 w-8" />
             <span>Favorites</span>
-            <span className="text-sm text-muted-foreground ml-auto">
+            <span className="text-caption text-muted-foreground ml-auto">
               {favorites.length}
             </span>
           </div>
@@ -116,9 +122,9 @@ export function LocationSelector({ className }: LocationSelectorProps) {
         
         {favorites.length === 0 ? (
           <div className="text-center py-8 px-6">
-            <Icon name="Heart" size={32} className="mx-auto text-muted-foreground/50 mb-2" />
-            <p className="text-sm text-muted-foreground">No favorites yet</p>
-            <p className="text-xs text-muted-foreground mt-1">
+            <Icon name="Heart" size={32} withDuotone={true} className="mx-auto text-muted-foreground/50 mb-2" />
+            <p className="text-body-s text-muted-foreground">No favorites yet</p>
+            <p className="text-caption text-muted-foreground mt-1">
               Add locations to favorites using the heart button
             </p>
           </div>
@@ -132,16 +138,17 @@ export function LocationSelector({ className }: LocationSelectorProps) {
                 onDragOver={handleDragOver}
                 onDrop={(e) => handleDrop(e, index)}
                 className={cn(
-                  "flex items-center gap-3 p-3 mx-2 rounded-lg cursor-pointer transition-all duration-200",
+                  "flex items-center gap-3 p-3 mx-2 rounded-md cursor-pointer transition-all duration-200",
                   "hover:bg-muted/50 border border-transparent hover:border-border/50",
+                  "active:bg-muted/70 active:border-border/70",
                   "group",
-                  selectedLocation?.id === favorite.id && "bg-primary/10 border-primary/20"
+                  selectedLocation?.id === favorite.id && "bg-primary/10 border-primary/20 hover:bg-primary/15 active:bg-primary/20"
                 )}
                 onClick={() => handleLocationSelect(favorite)}
               >
                 {/* Drag Handle */}
                 <div className="flex-shrink-0 cursor-grab active:cursor-grabbing">
-                  <Icon name="DotsSix" size={16} className="text-muted-foreground group-hover:text-foreground" />
+                  <Icon name="DotsSix" size={16} withDuotone={true} className="text-muted-foreground group-hover:text-foreground" />
                 </div>
 
                 {/* Weather Icon */}
@@ -181,10 +188,10 @@ export function LocationSelector({ className }: LocationSelectorProps) {
 
                 {/* Location Info */}
                 <div className="flex-1 min-w-0">
-                  <div className="font-medium text-foreground truncate text-sm">
+                  <div className="font-medium text-foreground truncate text-body-s">
                     {favorite.name}
                   </div>
-                  <div className="text-xs text-muted-foreground truncate">
+                  <div className="text-caption text-muted-foreground truncate">
                     {[favorite.admin1, favorite.country].filter(Boolean).join(', ')}
                   </div>
                   {/* Temperature Display */}
@@ -194,7 +201,7 @@ export function LocationSelector({ className }: LocationSelectorProps) {
                       const temp = Math.round(weather.current.temperature_2m);
                       const unit = units.temperature === 'fahrenheit' ? 'F' : 'C';
                       return (
-                        <div className="text-xs font-medium text-foreground mt-0.5">
+                        <div className="text-caption font-medium text-foreground mt-0.5">
                           {temp}°{unit}
                         </div>
                       );
@@ -205,16 +212,21 @@ export function LocationSelector({ className }: LocationSelectorProps) {
 
                 {/* Remove Button */}
                 <Button
-                  variant="ghost"
+                  variant="destructive"
                   size="sm"
-                  className="h-6 w-6 p-0 opacity-0 group-hover:opacity-100 transition-opacity"
+                  className="h-6 w-6 p-0 opacity-0 group-hover:opacity-100 transition-all duration-200 hover:scale-110 active:scale-95"
                   onClick={(e) => {
                     e.stopPropagation();
                     removeFavorite(favorite.id);
                   }}
                   aria-label={`Remove ${favorite.name} from favorites`}
                 >
-                  <Icon name="X" size={12} className="text-muted-foreground hover:text-destructive" />
+                  <Icon 
+                    name="X" 
+                    size={12} 
+                    withDuotone={true} 
+                    className="text-muted-foreground hover:text-destructive active:text-destructive/80 transition-colors duration-200" 
+                  />
                 </Button>
               </div>
             ))}

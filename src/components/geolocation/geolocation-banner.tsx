@@ -62,7 +62,7 @@ export function GeolocationBanner({
   return (
     <Banner
       className={cn(
-        "fixed top-0 left-0 right-0 z-[60] transition-all duration-300 ease-in-out",
+        "fixed bottom-0 left-0 right-0 z-[70] transition-all duration-300 ease-in-out",
         className
       )}
       onClose={handleDismiss}

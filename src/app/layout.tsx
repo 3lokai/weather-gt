@@ -4,6 +4,7 @@ import { QueryProvider } from "@/lib/providers/query-provider";
 import { ThemeProvider } from "@/lib/providers/theme-provider";
 import { CacheInvalidationProvider } from "@/components/providers/cache-invalidation-provider";
 import { Toaster } from "@/components/ui/sonner";
+import { Header } from "@/components/layout/header";
 import "./globals.css";
 
 const dmSans = DM_Sans({
@@ -41,6 +42,7 @@ export default function RootLayout({
         <ThemeProvider>
           <QueryProvider>
             <CacheInvalidationProvider>
+              <Header />
               {children}
               <Toaster />
             </CacheInvalidationProvider>

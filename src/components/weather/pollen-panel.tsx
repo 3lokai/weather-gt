@@ -64,23 +64,23 @@ export function PollenPanel({
   showTooltips = true,
   layout = 'grid',
 }: PollenPanelProps) {
-  // Size-based styling
+  // Size-based styling using consistent typography and spacing classes
   const sizeStyles = {
     sm: {
-      card: "p-3",
+      card: "p-4", // 16px - consistent with design system
       icon: "text-lg",
-      label: "text-xs",
-      value: "text-sm font-semibold",
-      gap: "gap-2",
-      title: "text-sm",
+      label: "text-caption", // 14px line-height: 18px
+      value: "text-body-s font-semibold", // 16px line-height: 22px
+      gap: "gap-3", // 12px - consistent spacing
+      title: "text-body-s", // 16px line-height: 22px
     },
     lg: {
-      card: "p-6",
+      card: "p-6", // 24px - consistent with design system
       icon: "text-2xl",
-      label: "text-base",
-      value: "text-lg font-semibold",
-      gap: "gap-4",
-      title: "text-lg",
+      label: "text-body-s", // 16px line-height: 22px
+      value: "text-body-m font-semibold", // 18px line-height: 26px
+      gap: "gap-3", // 12px - consistent spacing
+      title: "text-body-m", // 18px line-height: 26px
     }
   };
 
@@ -134,10 +134,10 @@ export function PollenPanel({
     <Card className="glass-subtle col-span-full">
       <CardContent className="flex flex-col items-center text-center space-y-2 p-6">
         <div className="text-2xl" aria-hidden="true">⚠️</div>
-        <div className="text-muted-foreground font-medium">
+        <div className="text-body-s text-muted-foreground font-medium">
           Unable to load pollen data
         </div>
-        <div className="text-sm text-muted-foreground">
+        <div className="text-caption text-muted-foreground">
           {error || 'Pollen data may not be available for this region'}
         </div>
       </CardContent>
@@ -149,10 +149,10 @@ export function PollenPanel({
     <Card className="glass-subtle col-span-full">
       <CardContent className="flex flex-col items-center text-center space-y-2 p-6">
         <div className="text-2xl" aria-hidden="true">🌱</div>
-        <div className="text-muted-foreground font-medium">
+        <div className="text-body-s text-muted-foreground font-medium">
           No pollen data available
         </div>
-        <div className="text-sm text-muted-foreground">
+        <div className="text-caption text-muted-foreground">
           Pollen information is not available for this region
         </div>
       </CardContent>
@@ -248,7 +248,7 @@ export function PollenPanel({
                 {/* Severity Badge */}
                 <Badge
                   className={cn(
-                    "text-xs font-medium mt-1",
+                    "text-caption font-medium mt-1",
                     colorClasses.background,
                     colorClasses.text,
                     colorClasses.border

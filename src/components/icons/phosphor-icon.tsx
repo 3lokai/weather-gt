@@ -56,6 +56,10 @@ interface CustomIconProps {
    * - glass: Optimized for glassmorphism effects
    */
   color?: 'primary' | 'secondary' | 'accent' | 'muted' | 'subtle' | 'success' | 'warning' | 'destructive' | 'info' | 'glass' | 'foreground';
+  /** 
+   * Enable duotone mode (default: true)
+   * When true, icons use two-tone coloring with primary and secondary colors
+   */
   withDuotone?: boolean;
 }
 
@@ -65,7 +69,7 @@ export const Icon = ({
   className = 'inline-block', 
   weight = 'regular',
   color = 'primary',
-  withDuotone = false 
+  withDuotone = true 
 }: CustomIconProps) => {
   const IconComponent = PhosphorIcons[name as keyof typeof PhosphorIcons] as React.FC<IconProps>;
 

@@ -102,23 +102,23 @@ export function AirQualityPanel({
   layout = 'grid',
   showAQI = true,
 }: AirQualityPanelProps) {
-  // Size-based styling
+  // Size-based styling using consistent typography and spacing classes
   const sizeStyles = {
     sm: {
-      card: "p-3",
+      card: "p-4", // 16px - consistent with design system
       icon: "text-lg",
-      label: "text-xs",
-      value: "text-sm font-semibold",
-      gap: "gap-2",
-      title: "text-sm",
+      label: "text-caption", // 14px line-height: 18px
+      value: "text-body-s font-semibold", // 16px line-height: 22px
+      gap: "gap-3", // 12px - consistent spacing
+      title: "text-body-s", // 16px line-height: 22px
     },
     lg: {
-      card: "p-6",
+      card: "p-6", // 24px - consistent with design system
       icon: "text-2xl",
-      label: "text-base",
-      value: "text-lg font-semibold",
-      gap: "gap-4",
-      title: "text-lg",
+      label: "text-body-s", // 16px line-height: 22px
+      value: "text-body-m font-semibold", // 18px line-height: 26px
+      gap: "gap-3", // 12px - consistent spacing
+      title: "text-body-m", // 18px line-height: 26px
     }
   };
 
@@ -173,10 +173,10 @@ export function AirQualityPanel({
     <Card className="glass-subtle col-span-full">
       <CardContent className="flex flex-col items-center text-center space-y-2 p-6">
         <div className="text-2xl" aria-hidden="true">⚠️</div>
-        <div className="text-muted-foreground font-medium">
+        <div className="text-body-s text-muted-foreground font-medium">
           Unable to load air quality data
         </div>
-        <div className="text-sm text-muted-foreground">
+        <div className="text-caption text-muted-foreground">
           {error || 'Please try again later'}
         </div>
       </CardContent>
@@ -238,7 +238,7 @@ export function AirQualityPanel({
               </div>
               <Badge
                 className={cn(
-                  "text-xs font-medium",
+                  "text-caption font-medium",
                   getSeverityColorClasses(airQuality.aqi.severity).background,
                   getSeverityColorClasses(airQuality.aqi.severity).text,
                   getSeverityColorClasses(airQuality.aqi.severity).border
@@ -249,7 +249,7 @@ export function AirQualityPanel({
               </Badge>
             </div>
             {showTooltips && (
-              <div className="mt-2 text-xs text-muted-foreground">
+              <div className="mt-2 text-caption text-muted-foreground">
                 {getHealthImplications(airQuality.aqi.severity)}
               </div>
             )}
@@ -318,7 +318,7 @@ export function AirQualityPanel({
                 {/* Severity Badge */}
                 <Badge
                   className={cn(
-                    "text-xs font-medium",
+                    "text-caption font-medium",
                     colorClasses.background,
                     colorClasses.text,
                     colorClasses.border

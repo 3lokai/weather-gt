@@ -4,7 +4,6 @@ import { CurrentConditionsCard } from './current-conditions-card';
 import { useWeatherStore } from '@/lib/store/weather-store';
 import { Card, CardContent } from '@/components/ui/card';
 import { Icon } from '@/components/icons/phosphor-icon';
-import { Button } from '@/components/ui/button';
 import { type WeatherForecast } from '@/lib/api/open-meteo';
 import { getSelectedDayWeather, getSelectedDayDate } from '@/lib/utils/weather-data-mapping';
 
@@ -30,15 +29,15 @@ export function RealWeatherConditions({
     return (
       <Card className="glass-clear glass-hover max-w-sm md:max-w-2xl mx-auto">
         <CardContent className="p-6">
-          <div className="flex flex-col items-center justify-center gap-4 text-center">
+          <div className="flex flex-col items-center justify-center gap-3 text-center">
             <div className="w-16 h-16 rounded-full bg-muted/20 flex items-center justify-center">
               <Icon name="MapPin" size={24} className="text-muted-foreground" />
             </div>
             <div>
-              <h3 className="text-lg font-semibold text-foreground mb-2">
+              <h3 className="text-body-m font-semibold text-foreground mb-2">
                 Select a Location
               </h3>
-              <p className="text-muted-foreground text-sm">
+              <p className="text-muted-foreground text-body-s">
                 Choose a location to see current weather conditions
               </p>
             </div>
@@ -70,7 +69,7 @@ export function RealWeatherConditions({
             <span>Failed to load weather data</span>
           </div>
           {error && (
-            <p className="text-sm text-muted-foreground mt-2 text-center">
+            <p className="text-body-s text-muted-foreground mt-2 text-center">
               {error}
             </p>
           )}
@@ -86,11 +85,6 @@ export function RealWeatherConditions({
   // Get weather data for the selected day
   const selectedDayWeather = getSelectedDayWeather(weather, selectedDayIndex);
   const selectedDayDate = getSelectedDayDate(weather, selectedDayIndex);
-  
-  console.log('🌡️ RealWeatherConditions - selectedDayIndex:', selectedDayIndex);
-  console.log('🌡️ RealWeatherConditions - selectedDayWeather:', selectedDayWeather);
-  console.log('🌡️ RealWeatherConditions - selectedDayDate:', selectedDayDate);
-
   if (!selectedDayWeather) {
     return null;
   }

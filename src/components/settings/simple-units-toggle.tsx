@@ -84,7 +84,7 @@ export function SimpleUnitsToggle({
       {/* Time Format Toggle */}
       <div className="flex items-center justify-between w-full">
         <div className="flex items-center gap-2">
-          <Icon name="Timer" size={18} color="muted" />
+          <Icon name="Timer" size={18} color="muted" withDuotone={true} />
           <span className={cn("text-foreground font-medium", styles.text)}>
             Time
           </span>
@@ -96,11 +96,12 @@ export function SimpleUnitsToggle({
           <button
             onClick={toggleTimeFormat}
             className={cn(
-              "relative inline-flex items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2",
+              "relative inline-flex items-center rounded-full transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2",
+              "hover:scale-105 active:scale-95",
               styles.switch,
               units.timeFormat === '24h' 
-                ? 'bg-primary' 
-                : 'bg-muted-foreground/20'
+                ? 'bg-primary hover:bg-primary/90 active:bg-primary/80' 
+                : 'bg-muted-foreground/20 hover:bg-muted-foreground/30 active:bg-muted-foreground/40'
             )}
             aria-label={`Time format: ${units.timeFormat === '24h' ? '24-hour' : '12-hour'}. Click to toggle.`}
           >
@@ -118,7 +119,7 @@ export function SimpleUnitsToggle({
       {/* Metric/Imperial Toggle */}
       <div className="flex items-center justify-between w-full">
         <div className="flex items-center gap-2">
-          <Icon name="Gauge" size={18} color="muted" />
+          <Icon name="Gauge" size={18} color="muted" withDuotone={true} />
           <span className={cn("text-foreground font-medium", styles.text)}>
             Units
           </span>
@@ -130,11 +131,12 @@ export function SimpleUnitsToggle({
           <button
             onClick={toggleMetricImperial}
             className={cn(
-              "relative inline-flex items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2",
+              "relative inline-flex items-center rounded-full transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2",
+              "hover:scale-105 active:scale-95",
               styles.switch,
               isMetric 
-                ? 'bg-primary' 
-                : 'bg-muted-foreground/20'
+                ? 'bg-primary hover:bg-primary/90 active:bg-primary/80' 
+                : 'bg-muted-foreground/20 hover:bg-muted-foreground/30 active:bg-muted-foreground/40'
             )}
             aria-label={`Units: ${isMetric ? 'Metric' : 'Imperial'}. Click to toggle.`}
           >

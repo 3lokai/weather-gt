@@ -204,21 +204,21 @@ export function MetricsGrid({
     }
   }, [weather, dailyWeather, selectedDayIndex]);
 
-  // Size-based styling
+  // Size-based styling using consistent typography and spacing classes
   const sizeStyles = {
     sm: {
-      card: "p-3",
+      card: "p-4", // 16px - consistent with design system
       icon: "text-lg",
-      label: "text-xs",
-      value: "text-sm font-semibold",
-      gap: "gap-2"
+      label: "text-caption", // 14px line-height: 18px
+      value: "text-body-s font-semibold", // 16px line-height: 22px
+      gap: "gap-3" // 12px - consistent spacing
     },
     lg: {
-      card: "p-6",
+      card: "p-6", // 24px - consistent with design system
       icon: "text-2xl",
-      label: "text-base",
-      value: "text-lg font-semibold",
-      gap: "gap-4"
+      label: "text-body-s", // 16px line-height: 22px
+      value: "text-body-m font-semibold", // 18px line-height: 26px
+      gap: "gap-3" // 12px - consistent spacing
     }
   };
 
@@ -297,10 +297,10 @@ export function MetricsGrid({
     <Card className="glass-subtle col-span-full">
       <CardContent className="flex flex-col items-center text-center space-y-2 p-6">
         <div className="text-2xl" aria-hidden="true">⚠️</div>
-        <div className="text-muted-foreground font-medium">
+        <div className="text-body-s text-muted-foreground font-medium">
           Unable to load weather metrics
         </div>
-        <div className="text-sm text-muted-foreground">
+        <div className="text-caption text-muted-foreground">
           {error || 'Please try again later'}
         </div>
       </CardContent>
@@ -390,7 +390,7 @@ export function MetricsGrid({
                 {trendDisplay && (
                   <div 
                     className={cn(
-                      "text-xs font-medium",
+                      "text-caption font-medium",
                       getTrendColorClass(
                         trendDisplay.includes('↑') ? 'up' as const : 
                         trendDisplay.includes('↓') ? 'down' as const : 
@@ -436,12 +436,12 @@ export function MetricsGrid({
           <button
             onClick={() => setIsExtendedVisible(!isExtendedVisible)}
             className={cn(
-              "flex items-center gap-1 px-3 py-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors rounded-md hover:bg-muted/50",
+              "flex items-center gap-1 px-3 py-1.5 text-body-s text-muted-foreground hover:text-foreground transition-colors rounded-md hover:bg-muted/50",
               "focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
             )}
             aria-label={isExtendedVisible ? "Hide additional metrics" : "Show additional metrics"}
           >
-            <span className="text-xs">
+            <span className="text-caption">
               {isExtendedVisible ? "Show less" : "Show more"}
             </span>
             <CaretDown 

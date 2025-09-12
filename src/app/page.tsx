@@ -1,10 +1,6 @@
 'use client';
 
-import { LottieWeatherIcon } from "@/components/icons/lottie-weather-icon";
 import WeatherLiquidEther from "@/components/background/weather-liquid-ether";
-import { ThemeToggle } from "@/components/theme-toggle/theme-toggle";
-import { SettingsDropdown } from "@/components/settings/settings-dropdown";
-import { LocationSelector } from "@/components/favorites/location-selector";
 import { SearchProvider } from "@/components/search";
 import { InlineSearch } from "@/components/search/inline-search";
 import { GeolocationProvider } from "@/components/geolocation";
@@ -60,41 +56,11 @@ export default function AppPage() {
       
       {/* Content overlay */}
       <div className="relative z-10 bg-transparent pointer-events-none">
-        {/* Top Bar - Clean minimal navigation */}
-        <header className="glass-nav transition-colors duration-300 pointer-events-auto">
-          <div className="container mx-auto px-4 sm:px-6 py-4 sm:py-6">
-            {/* Simplified header with branding and controls */}
-            <div className="flex items-center justify-between">
-              {/* Left: Logo and Brand */}
-              <div className="flex items-center gap-2 sm:gap-3">
-                <LottieWeatherIcon 
-                  code={weather?.current?.weather_code || 0} 
-                  isDay={weather?.current?.is_day ?? true} 
-                  size={28} 
-                  variant="fill" 
-                  speed={1.5} 
-                  className="sm:w-8 sm:h-8" 
-                />
-                <h1 className="text-h3 sm:text-h1 font-display text-foreground">
-                  Weather Now
-                </h1>
-              </div>
-              
-              {/* Right: Location and Controls */}
-              <div className="flex items-center gap-3 sm:gap-4">
-                {/* Location Selector */}
-                <LocationSelector />
-                <SettingsDropdown variant="icon" />
-                <ThemeToggle />
-              </div>
-            </div>
-          </div>
-        </header>
 
         {/* Main Content - Responsive Layout */}
-        <main className="container mx-auto px-4 py-8 sm:py-12 pointer-events-auto">
+        <main className="container mx-auto px-4 pt-20 pb-8 sm:pb-12 pointer-events-auto">
           {/* Hero Section with Search */}
-          <section className="text-center mb-16 max-w-4xl mx-auto">
+          <section className="text-center mb-12 max-w-4xl mx-auto">
             {/* Hero Headline */}
             <h2 className="text-display sm:text-temp-s font-display text-foreground mb-8 sm:mb-10">
               How&apos;s the sky looking today?
@@ -107,9 +73,9 @@ export default function AppPage() {
           </section>
 
            {/* Weather Content - Responsive Grid Layout */}
-               <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8 max-w-7xl mx-auto">
+               <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12 max-w-7xl mx-auto">
                  {/* Main Content Area - Left Column (Desktop) / Full Width (Mobile) */}
-                 <div className="lg:col-span-2 space-y-6 lg:space-y-8">
+                 <div className="lg:col-span-2 space-y-8 lg:space-y-10">
                    {/* Current Weather Card */}
                    <section>
                      <RealWeatherConditions 
@@ -137,7 +103,7 @@ export default function AppPage() {
                     {/* Daily Forecast */}
                     <section className="space-y-4">
                       <div className="flex items-center justify-between">
-                        <h2 className="text-xl font-semibold text-foreground">
+                        <h2 className="text-h3 font-semibold text-foreground">
                           Daily Forecast
                         </h2>
                       </div>
@@ -156,7 +122,7 @@ export default function AppPage() {
                     {/* Air Quality Index */}
                     <section className="space-y-4">
                       <div className="flex items-center justify-between">
-                        <h2 className="text-xl font-semibold text-foreground">
+                        <h2 className="text-h3 font-semibold text-foreground">
                           Air Quality
                         </h2>
                       </div>
@@ -172,7 +138,7 @@ export default function AppPage() {
                     {/* Pollen Information */}
                     <section className="space-y-4">
                       <div className="flex items-center justify-between">
-                        <h2 className="text-xl font-semibold text-foreground">
+                        <h2 className="text-h3 font-semibold text-foreground">
                           Pollen Count
                         </h2>
                       </div>
@@ -188,7 +154,12 @@ export default function AppPage() {
 
                  {/* Hourly Forecast Sidebar - Right Column (Desktop) / Full Width (Mobile) */}
                  <div className="lg:col-span-1 lg:flex lg:flex-col">
-                   <section className="lg:sticky lg:top-8 lg:flex-1 lg:flex lg:flex-col lg:max-h-[600px]">
+                   <section className="lg:sticky lg:top-8 lg:flex-1 lg:flex lg:flex-col lg:max-h-[600px] space-y-4">
+                     <div className="flex items-center justify-between">
+                       <h2 className="text-h3 font-semibold text-foreground">
+                         Hourly Forecast
+                       </h2>
+                     </div>
                      {weather?.hourly && (
                        <div className="lg:h-full lg:flex lg:flex-col">
                          <HourlyPanelChart 

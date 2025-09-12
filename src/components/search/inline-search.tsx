@@ -18,9 +18,18 @@ import {
 interface InlineSearchProps {
   className?: string;
   placeholder?: string;
+  /** Show compare button in search results */
+  showCompareButton?: boolean;
+  /** Callback when compare button is clicked */
+  onCompareLocation?: (location: any) => void;
 }
 
-export function InlineSearch({ className, placeholder = 'Search for a place...' }: InlineSearchProps) {
+export function InlineSearch({ 
+  className, 
+  placeholder = 'Search for a place...',
+  showCompareButton = false,
+  onCompareLocation
+}: InlineSearchProps) {
   const [query, setQuery] = useState('');
   const [isOpen, setIsOpen] = useState(false);
   const { 
@@ -114,7 +123,7 @@ export function InlineSearch({ className, placeholder = 'Search for a place...' 
           }}
           onFocus={() => setIsOpen(true)}
           placeholder={selectedLocation ? selectedLocation.name : placeholder}
-          className="peer w-full h-16 ps-16 pe-16 glass-clear glass-hover border-2 border-border hover:border-primary/40 focus:border-primary/60 bg-background/60 hover:bg-background/80 focus:bg-background/90 rounded-lg transition-all duration-200 text-body-l font-normal text-foreground placeholder:text-muted-foreground outline-none [&::-webkit-search-cancel-button]:hidden [&::-webkit-search-decoration]:hidden"
+          className="peer w-full h-16 ps-16 pe-16 glass-clear glass-hover border-2 border-border hover:border-primary/40 focus:border-primary/60 bg-background/60 hover:bg-background/80 focus:bg-background/90 rounded-md transition-all duration-200 text-body-m font-normal text-foreground placeholder:text-muted-foreground outline-none [&::-webkit-search-cancel-button]:hidden [&::-webkit-search-decoration]:hidden"
           aria-label="Search for a location"
         />
         
@@ -144,7 +153,7 @@ export function InlineSearch({ className, placeholder = 'Search for a place...' 
               setQuery('');
               setIsOpen(false);
             }}
-            className="absolute inset-y-0 end-0 flex h-full w-16 items-center justify-center rounded-e-lg text-muted-foreground hover:text-foreground focus-visible:ring-2 focus-visible:ring-primary/50 transition-colors outline-none"
+            className="absolute inset-y-0 end-0 flex h-full w-16 items-center justify-center rounded-e-md text-muted-foreground hover:text-foreground focus-visible:ring-2 focus-visible:ring-primary/50 transition-colors outline-none"
             aria-label="Clear search"
             type="button"
           >
@@ -156,31 +165,31 @@ export function InlineSearch({ className, placeholder = 'Search for a place...' 
       {/* Recent Searches Pills */}
       {showRecentPills && (
         <div className="absolute top-full left-0 right-0 mt-3 z-[100]">
-          <div className="glass-strong border border-border/20 rounded-lg shadow-xl backdrop-blur-xl p-4">
+          <div className="glass-strong bg-background/80 border border-border/50 rounded-md shadow-xl p-4">
             <div className="flex items-center justify-between mb-3">
-              <h3 className="text-sm font-medium text-foreground">Recent Searches</h3>
+              <h3 className="text-body-s font-medium text-foreground">Recent Searches</h3>
               <button
                 onClick={clearRecentSearches}
-                className="text-xs text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1"
+                className="text-caption text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1"
                 aria-label="Clear recent searches"
               >
                 <Icon name="Trash" size={12} />
                 Clear
               </button>
             </div>
-            <div className="flex flex-wrap gap-2">
+            <div className="flex flex-wrap gap-3">
               {recentSearches.slice(0, 3).map((recentSearch) => (
                 <button
                   key={recentSearch.id}
                   onClick={() => handleRecentSearchSelect(recentSearch)}
-                  className="inline-flex items-center gap-2 px-3 py-2 text-sm bg-muted/50 hover:bg-muted border border-border/50 hover:border-border rounded-full transition-all duration-200 hover:shadow-sm group"
+                  className="inline-flex items-center gap-3 px-3 py-2 text-body-s bg-muted/50 hover:bg-muted/70 border border-border/50 hover:border-border rounded-full transition-all duration-200 hover:shadow-sm group"
                   aria-label={`Select ${recentSearch.location.name}`}
                 >
                   <Icon name="Clock" size={14} className="text-muted-foreground group-hover:text-foreground" />
                   <span className="text-foreground group-hover:text-foreground">
                     {recentSearch.location.name}
                   </span>
-                  <span className="text-xs text-muted-foreground group-hover:text-muted-foreground">
+                  <span className="text-caption text-muted-foreground group-hover:text-muted-foreground">
                     {formatRelativeTime(recentSearch.timestamp)}
                   </span>
                 </button>
@@ -193,7 +202,7 @@ export function InlineSearch({ className, placeholder = 'Search for a place...' 
       {/* Search Results Dropdown */}
       {showResults && (
         <div className="absolute top-full left-0 right-0 mt-2 z-[100]">
-          <Command className="glass-strong border border-border/20 rounded-lg shadow-xl backdrop-blur-xl isolate">
+          <Command className="glass-strong bg-background/80 border border-border/50 rounded-md shadow-xl isolate">
             <CommandList className="max-h-[300px]">
               {isLoading && query.length >= 2 && (
                 <CommandEmpty className="py-6 text-center">
@@ -209,7 +218,7 @@ export function InlineSearch({ className, placeholder = 'Search for a place...' 
                   <div className="flex flex-col items-center gap-2">
                     <Icon name="MagnifyingGlass" size={24} color="muted" />
                     <span className="text-muted-foreground">No locations found</span>
-                    <span className="text-xs text-muted-foreground">Try a different search term</span>
+                    <span className="text-caption text-muted-foreground">Try a different search term</span>
                   </div>
                 </CommandEmpty>
               )}
@@ -221,20 +230,35 @@ export function InlineSearch({ className, placeholder = 'Search for a place...' 
                       key={`${result.id}-${result.latitude}-${result.longitude}`}
                       value={`${result.name} ${result.admin1 || ''} ${result.country}`.toLowerCase()}
                       onSelect={() => handleLocationSelect(result)}
-                      className="cursor-pointer hover:bg-accent/80 focus:bg-accent/80 data-[selected=true]:bg-accent/80 relative z-10"
+                      className="cursor-pointer hover:bg-muted/50 focus:bg-muted/50 data-[selected=true]:bg-muted/50 relative z-10"
                     >
                       <div className="flex items-center gap-3 w-full">
                         <Icon name="MapPin" size={16} color="muted" />
                         <div className="flex-1 min-w-0">
-                          <div className="font-medium text-foreground truncate">
+                          <div className="text-body-s font-medium text-foreground truncate">
                             {result.name}
                           </div>
-                          <div className="text-xs text-muted-foreground truncate">
+                          <div className="text-caption text-muted-foreground truncate">
                             {[result.admin1, result.country].filter(Boolean).join(', ')}
                           </div>
                         </div>
-                        <div className="text-xs text-muted-foreground font-mono">
-                          {result.latitude.toFixed(2)}, {result.longitude.toFixed(2)}
+                        <div className="flex items-center gap-3">
+                          <div className="text-caption text-muted-foreground font-mono">
+                            {result.latitude.toFixed(2)}, {result.longitude.toFixed(2)}
+                          </div>
+                          {showCompareButton && onCompareLocation && (
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                const location = geocodingResultToLocation(result);
+                                onCompareLocation(location);
+                              }}
+                              className="p-1 text-muted-foreground hover:text-primary hover:bg-primary/10 rounded transition-colors"
+                              aria-label={`Add ${result.name} to comparison`}
+                            >
+                              <Icon name="Plus" size={14} />
+                            </button>
+                          )}
                         </div>
                       </div>
                     </CommandItem>
@@ -247,7 +271,7 @@ export function InlineSearch({ className, placeholder = 'Search for a place...' 
                   <div className="flex flex-col items-center gap-2">
                     <Icon name="Keyboard" size={24} color="muted" />
                     <span className="text-muted-foreground">Keep typing...</span>
-                    <span className="text-xs text-muted-foreground">Enter at least 2 characters</span>
+                    <span className="text-caption text-muted-foreground">Enter at least 2 characters</span>
                   </div>
                 </CommandEmpty>
               )}

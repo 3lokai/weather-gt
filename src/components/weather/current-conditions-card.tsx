@@ -146,10 +146,12 @@ export function CurrentConditionsCard({
           <Icon 
             name="Heart" 
             size={32} 
+            weight={isFavorited ? "fill" : "regular"}
+            withDuotone={false}
             className={cn(
               "size-8 transition-all duration-200",
-              isFavorited ? "fill-red-500 text-red-500" : "text-muted-foreground"
-            )} 
+              isFavorited ? "text-red-500" : "text-muted-foreground"
+            )}
           />
         </Button>
         <Button
@@ -158,7 +160,13 @@ export function CurrentConditionsCard({
           aria-label="Share weather"
           onClick={handleShare}
         >
-          <Icon name="Share" size={32} className="size-8" />
+          <Icon 
+            name="Share" 
+            size={32} 
+            withDuotone={true}
+            color="muted"
+            className="size-8 transition-all duration-200"
+          />
         </Button>
       </div>
 
@@ -166,17 +174,17 @@ export function CurrentConditionsCard({
         {/* Left Side - Location and Time Information */}
         <div className="flex-1 space-y-2">
           {/* Location Name */}
-          <h2 className="text-2xl md:text-3xl font-bold text-foreground leading-tight">
+          <h2 className="text-h2 md:text-h1 font-bold text-foreground leading-tight">
             {location.name}
           </h2>
           
           {/* Country/Admin */}
-          <p className="text-lg text-muted-foreground">
+          <p className="text-body-m text-muted-foreground">
             {[location.admin1, location.country].filter(Boolean).join(', ')}
           </p>
           
           {/* Date and Time */}
-          <p className="text-base text-muted-foreground">
+          <p className="text-body-s text-muted-foreground">
             {formattedDateTime}
           </p>
         </div>
@@ -213,7 +221,7 @@ export function CurrentConditionsCard({
 
           {/* Weather Condition */}
           <p 
-            className="text-lg font-medium text-muted-foreground capitalize text-center md:text-right"
+            className="text-body-m font-medium text-muted-foreground capitalize text-center md:text-right"
             aria-label={`Weather condition: ${condition}`}
           >
             {condition}
@@ -228,7 +236,7 @@ export function CurrentConditionsCard({
               <LottiePrecipitationProbability
                 value={conditions.precipitation_probability}
                 duration={180}
-                className="text-base"
+                className="text-body-s"
                 showLottie={true}
                 lottieSize={20}
               />

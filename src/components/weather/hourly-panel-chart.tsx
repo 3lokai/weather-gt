@@ -405,9 +405,8 @@ export function HourlyPanelChart({
     <Card className={cn("p-6", className)}>
       <div className="mb-4">
         <div className="flex items-center justify-between">
-          <h3 className="text-lg font-semibold">Hourly Forecast</h3>
           {currentHourIndex !== null && (
-            <div className="flex items-center gap-2 text-sm text-primary">
+            <div className="flex items-center gap-2 text-body-s text-primary">
               <div className="w-2 h-2 bg-primary rounded-full animate-pulse" />
               <span className="font-medium">Current Hour</span>
             </div>

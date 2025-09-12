@@ -43,25 +43,50 @@ export function SettingsDropdown({
   // Default trigger content - gear icon sized to match header components
   const defaultTrigger = variant === 'icon' ? (
     <Button
-      variant="outline"
+      variant="ghost"
       size="icon"
-      className={cn("h-16 w-16", className)}
+      className={cn(
+        "h-16 w-16 transition-all duration-200",
+        "text-muted-foreground hover:text-primary hover:bg-primary/10 dark:hover:bg-primary/20",
+        "active:text-primary/80 active:bg-primary/20 dark:active:bg-primary/30",
+        className
+      )}
       aria-label="Open settings"
     >
-      <Icon name="Gear" size={24} color="primary" className="size-10" />
+      <Icon 
+        name="Gear" 
+        size={24} 
+        color="primary" 
+        withDuotone={true} 
+        className="size-10 transition-all duration-200 text-muted-foreground group-hover:text-primary group-active:text-primary/80" 
+      />
     </Button>
   ) : (
     <Button
       variant="outline"
       className={cn(
-        "flex items-center space-x-2 h-10 px-3 text-body-s",
+        "flex items-center space-x-2 h-10 px-3 text-body-s transition-all duration-200",
+        "text-muted-foreground hover:text-primary hover:border-primary/50",
+        "active:text-primary/80 active:border-primary/70",
         className
       )}
       aria-label="Open settings"
     >
-      <Icon name="Gear" size={24} color="primary" className="size-6" />
+      <Icon 
+        name="Gear" 
+        size={24} 
+        color="primary" 
+        withDuotone={true} 
+        className="size-6 transition-all duration-200 text-muted-foreground group-hover:text-primary group-active:text-primary/80" 
+      />
       <span>Settings</span>
-      <Icon name="CaretDown" size={18} color="muted" className="h-4 w-4" />
+      <Icon 
+        name="CaretDown" 
+        size={18} 
+        color="muted" 
+        withDuotone={true} 
+        className="h-4 w-4 transition-all duration-200 text-muted-foreground group-hover:text-primary group-active:text-primary/80" 
+      />
     </Button>
   );
 
@@ -72,13 +97,13 @@ export function SettingsDropdown({
       </DropdownMenuTrigger>
       
       <DropdownMenuContent 
-        className="w-[420px] max-h-[80vh] overflow-y-auto"
+        className="w-[420px] max-h-[80vh] overflow-y-auto glass-strong bg-background/80 border-border/50"
         align="end"
         sideOffset={8}
       >
         <DropdownMenuLabel className="px-6 py-4 text-body-l font-display">
           <div className="flex items-center space-x-2">
-            <Icon name="Gear" size={20} color="primary" className="h-8 w-8" />
+            <Icon name="Gear" size={20} color="primary" withDuotone={true} className="h-8 w-8" />
             <span>Settings</span>
           </div>
         </DropdownMenuLabel>

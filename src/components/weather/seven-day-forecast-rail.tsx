@@ -39,7 +39,6 @@ export function SevenDayForecastRail({
   };
   
   const mappedSelectedIndex = getMappedSelectedIndex();
-  console.log('🎨 SevenDayForecastRail - selectedDayIndex:', selectedDayIndex, 'mappedSelectedIndex:', mappedSelectedIndex);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(false);
@@ -120,7 +119,7 @@ export function SevenDayForecastRail({
             variant="ghost"
             size="sm"
             className={cn(
-              "absolute left-0 top-1/2 -translate-y-1/2 z-10 h-8 w-8 p-0",
+              "absolute left-0 top-1/2 -translate-y-1/2 z-10 h-16 w-16 p-0",
               "bg-background/80 backdrop-blur-sm border border-border/50",
               "hover:bg-background/90 hover:border-border",
               "transition-all duration-200",
@@ -130,7 +129,7 @@ export function SevenDayForecastRail({
             disabled={!canScrollLeft}
             aria-label="Scroll left to see previous days"
           >
-            <Icon name="CaretLeft" size={16} color="foreground" />
+            <Icon name="CaretLeft" size={48} color="foreground" />
           </Button>
         )}
 
@@ -140,7 +139,7 @@ export function SevenDayForecastRail({
             variant="ghost"
             size="sm"
             className={cn(
-              "absolute right-0 top-1/2 -translate-y-1/2 z-10 h-8 w-8 p-0",
+              "absolute right-0 top-1/2 -translate-y-1/2 z-10 h-16 w-16 p-0",
               "bg-background/80 backdrop-blur-sm border border-border/50",
               "hover:bg-background/90 hover:border-border",
               "transition-all duration-200",
@@ -150,7 +149,7 @@ export function SevenDayForecastRail({
             disabled={!canScrollRight}
             aria-label="Scroll right to see more days"
           >
-            <Icon name="CaretRight" size={16} color="foreground" />
+            <Icon name="CaretRight" size={48} color="foreground" />
           </Button>
         )}
 
@@ -158,8 +157,8 @@ export function SevenDayForecastRail({
         <div 
           ref={scrollContainerRef}
           className={cn(
-            "flex gap-3 overflow-x-auto py-2",
-            showNavigationArrows ? "px-10" : "px-0"
+            "flex gap-3 overflow-x-auto py-3",
+            showNavigationArrows ? "px-12" : "px-0"
           )}
           style={{
             scrollbarWidth: 'none',
@@ -177,7 +176,6 @@ export function SevenDayForecastRail({
               isSelected={mappedSelectedIndex === index}
               isToday={isToday(dayData.time)}
               onSelect={(newIndex) => {
-                console.log('🎯 Day selected - newIndex:', newIndex);
                 // Map the API data index to selectedDayIndex
                 // Index 0-1: Past days (historical data) - default to today
                 // Index 2: Today (selectedDayIndex: 0)
@@ -185,14 +183,11 @@ export function SevenDayForecastRail({
                 // Index 4: Day after tomorrow (selectedDayIndex: 2)
                 // etc.
                 if (newIndex === 2) {
-                  console.log('Setting selectedDayIndex to: 0 (today)');
                   setSelectedDayIndex(0); // Today
                 } else if (newIndex > 2) {
                   const dayIndex = newIndex - 2;
-                  console.log('Setting selectedDayIndex to:', dayIndex, '(future day)');
                   setSelectedDayIndex(dayIndex); // Future days
                 } else {
-                  console.log('Setting selectedDayIndex to: 0 (past day -> today)');
                   setSelectedDayIndex(0); // Past days default to today
                 }
               }}
@@ -208,16 +203,16 @@ export function SevenDayForecastRail({
         {showScrollIndicators && (
           <>
             {/* Left gradient fade */}
-            <div className="absolute left-0 top-2 bottom-2 w-8 bg-gradient-to-r from-background to-transparent pointer-events-none" />
+            <div className="absolute left-0 top-3 bottom-3 w-12 bg-gradient-to-r from-background to-transparent pointer-events-none" />
             
             {/* Right gradient fade */}
-            <div className="absolute right-0 top-2 bottom-2 w-8 bg-gradient-to-l from-background to-transparent pointer-events-none" />
+            <div className="absolute right-0 top-3 bottom-3 w-12 bg-gradient-to-l from-background to-transparent pointer-events-none" />
           </>
         )}
       </div>
 
       {/* Scroll hint for mobile */}
-      <div className="text-xs text-muted-foreground text-center mt-2 md:hidden">
+      <div className="text-caption text-muted-foreground text-center mt-3 md:hidden">
         ← Swipe or use arrows to see more days →
       </div>
     </div>

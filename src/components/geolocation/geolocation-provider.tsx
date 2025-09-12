@@ -103,11 +103,11 @@ export function GeolocationProvider({ children, className }: GeolocationProvider
         />
       )}
 
-      {/* Main content with top padding when banner is visible */}
+      {/* Main content with bottom padding when banner is visible */}
       <div 
         className={cn(
           "transition-all duration-300",
-          (showBanner || showFallback) && "pt-20"
+          (showBanner || showFallback) && "pb-20"
         )}
       >
         {children}
