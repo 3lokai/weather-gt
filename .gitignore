@@ -245,13 +245,6 @@ temp/
 # Storybook build outputs
 storybook-static
 
-# BMAD Core
-.bmad-core/
-
-# IDE and Editor specific
-.claude/
-.cursor/
-
 # Temporary files
 *.tmp
 *.temp

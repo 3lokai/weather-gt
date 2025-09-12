@@ -46,20 +46,16 @@ export function WeatherDataProvider({ children }: WeatherDataProviderProps) {
   const isError = weatherError || airQualityError || pollenError;
   const error = weatherErrorMessage || airQualityErrorMessage || pollenErrorMessage;
 
-  // Only render children if we have a selected location
-  if (!selectedLocation) {
-    return null;
-  }
-
+  // Always render children, but pass null weather when no location is selected
   return (
     <>
       {children({
-        weather,
-        airQuality,
-        pollen,
-        isLoading,
-        isError,
-        error,
+        weather: selectedLocation ? weather : null,
+        airQuality: selectedLocation ? airQuality : null,
+        pollen: selectedLocation ? pollen : null,
+        isLoading: selectedLocation ? isLoading : false,
+        isError: selectedLocation ? isError : false,
+        error: selectedLocation ? error : null,
         selectedDayIndex,
       })}
     </>

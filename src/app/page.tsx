@@ -17,6 +17,7 @@ import { useWeatherStore } from "@/lib/store/weather-store";
 import { useAirQuality } from "@/hooks/use-air-quality";
 import { usePollen } from "@/hooks/use-pollen";
 import { URLStateProvider } from "@/components/providers/url-state-provider";
+import { SparklesText } from "@/components/magicui/sparkles-text";
 
 export default function AppPage() {
   // Get selected location from store
@@ -60,7 +61,7 @@ export default function AppPage() {
           <section className="text-center mb-12 max-w-4xl mx-auto">
             {/* Hero Headline */}
             <h2 className="text-display sm:text-temp-s font-display text-foreground mb-8 sm:mb-10">
-              How&apos;s the sky looking today?
+              How&apos;s the <SparklesText>sky</SparklesText> looking today?
             </h2>
             
             {/* Search Interface */}
@@ -69,20 +70,7 @@ export default function AppPage() {
             </div>
           </section>
 
-          {/* Weather Content - Always show current conditions card */}
-          <div className="max-w-7xl mx-auto">
-            <section className="mb-8 lg:mb-10">
-              <RealWeatherConditions 
-                weather={null}
-                isLoading={false}
-                isError={false}
-                error={null}
-                selectedDayIndex={0}
-              />
-            </section>
-          </div>
-
-          {/* Weather Data Provider - Only renders additional content when location is selected */}
+          {/* Weather Data Provider - Only renders content when location is selected */}
           <WeatherDataProvider>
             {({ weather, isLoading, isError, error, selectedDayIndex }) => (
               <URLStateProvider weather={weather}>
@@ -90,6 +78,16 @@ export default function AppPage() {
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12 max-w-7xl mx-auto">
                   {/* Main Content Area - Left Column (Desktop) / Full Width (Mobile) */}
                   <div className="lg:col-span-2 space-y-8 lg:space-y-10">
+                    {/* Current Weather Card */}
+                    <section>
+                      <RealWeatherConditions 
+                        weather={weather}
+                        isLoading={isLoading}
+                        isError={isError}
+                        error={error}
+                        selectedDayIndex={selectedDayIndex}
+                      />
+                    </section>
                     {/* Metrics Grid */}
                     <section>
                       <MetricsGrid 

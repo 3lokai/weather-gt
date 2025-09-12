@@ -8,18 +8,36 @@ import { getWeatherForecast } from '@/lib/api/open-meteo';
 import WeatherLiquidEther from '@/components/background/weather-liquid-ether';
 
 export default function ComparePage() {
-  const { units, favorites, addFavorite, removeFavorite } = useWeatherStore();
+  const { units, favorites, addFavorite, removeFavorite, selectedLocation } = useWeatherStore();
   const [selectedLocations, setSelectedLocations] = useState<Location[]>([]);
   const [comparisonData, setComparisonData] = useState<ComparisonLocation[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [removedFromStore, setRemovedFromStore] = useState<Set<string>>(new Set());
 
-  // Load initial locations from favorites (up to 4)
+  // Load initial locations from store (selected location + favorites)
   useEffect(() => {
-    if (favorites.length > 0 && selectedLocations.length === 0) {
-      const initialLocations = favorites.slice(0, 4);
-      setSelectedLocations(initialLocations);
+    if (selectedLocations.length === 0) {
+      const initialLocations: Location[] = [];
+      
+      // Add current selected location if available and not manually removed
+      if (selectedLocation && !removedFromStore.has(selectedLocation.id)) {
+        initialLocations.push(selectedLocation);
+      }
+      
+      // Add favorites (up to 3 more to keep total at 4)
+      const remainingSlots = 4 - initialLocations.length;
+      if (remainingSlots > 0 && favorites.length > 0) {
+        const favoriteLocations = favorites
+          .filter(fav => !initialLocations.some(loc => loc.id === fav.id) && !removedFromStore.has(fav.id)) // Don't duplicate selected location or add removed ones
+          .slice(0, remainingSlots);
+        initialLocations.push(...favoriteLocations);
+      }
+      
+      if (initialLocations.length > 0) {
+        setSelectedLocations(initialLocations);
+      }
     }
-  }, [favorites, selectedLocations.length]);
+  }, [selectedLocation, favorites, selectedLocations.length, removedFromStore]);
 
   // Fetch weather data for selected locations
   useEffect(() => {
@@ -83,6 +101,11 @@ export default function ComparePage() {
 
   const handleRemoveLocation = (locationId: string) => {
     setSelectedLocations(prev => prev.filter(loc => loc.id !== locationId));
+    
+    // Track if this location came from the store (selectedLocation or favorites)
+    if (selectedLocation?.id === locationId || favorites.some(fav => fav.id === locationId)) {
+      setRemovedFromStore(prev => new Set(prev).add(locationId));
+    }
   };
 
   const handleAddToFavorites = (location: Location) => {
@@ -134,13 +157,13 @@ export default function ComparePage() {
             <div className="max-w-2xl mx-auto">
               <div className="text-center mb-6">
                 <h2 className="text-h3 font-semibold text-foreground mb-3">
-                  Search to Add Locations
+                  Search to Add Locations (Up to 4)
                 </h2>
               </div>
               <InlineSearch
                 placeholder="Search for a location to compare..."
-                showCompareButton={true}
-                onCompareLocation={handleAddLocation}
+                showCompareButton={false}
+                onLocationSelect={handleAddLocation}
               />
             </div>
 
@@ -169,8 +192,19 @@ export default function ComparePage() {
                   Start Comparing Weather
                 </h2>
                 <p className="text-body-md text-muted-foreground mb-8">
-                  Add locations from your favorites or recent searches to compare weather conditions.
+                  Add locations from your favorites, recent searches, or current location to compare weather conditions.
                 </p>
+                <div className="text-caption text-muted-foreground">
+                  {!selectedLocation && favorites.length === 0 && (
+                    <span>Select a location on the main page or add favorites to get started.</span>
+                  )}
+                  {selectedLocation && favorites.length === 0 && (
+                    <span>Your current location will appear here automatically.</span>
+                  )}
+                  {!selectedLocation && favorites.length > 0 && (
+                    <span>Your favorite locations will appear here automatically.</span>
+                  )}
+                </div>
               </div>
             )}
           </div>

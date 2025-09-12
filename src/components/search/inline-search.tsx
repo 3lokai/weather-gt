@@ -95,13 +95,16 @@ interface InlineSearchProps {
   showCompareButton?: boolean;
   /** Callback when compare button is clicked */
   onCompareLocation?: (location: any) => void;
+  /** Custom callback when location is selected (overrides default store behavior) */
+  onLocationSelect?: (location: any) => void;
 }
 
 export function InlineSearch({ 
   className, 
   placeholder = 'Search for a place...',
   showCompareButton = false,
-  onCompareLocation
+  onCompareLocation,
+  onLocationSelect
 }: InlineSearchProps) {
   const [query, setQuery] = useState('');
   const [isOpen, setIsOpen] = useState(false);
@@ -195,33 +198,44 @@ export function InlineSearch({
   // Handle location selection
   const handleLocationSelect = useCallback(async (result: any) => {
     const location = geocodingResultToLocation(result);
-    setSelectedLocation(location);
     
-    // Prefetch weather data for selected location
-    try {
-      await getWeatherForecast(result.latitude, result.longitude, units);
-    } catch (error) {
-      console.warn('Failed to prefetch weather data:', error);
+    // Use custom callback if provided, otherwise use default store behavior
+    if (onLocationSelect) {
+      onLocationSelect(location);
+    } else {
+      setSelectedLocation(location);
+      
+      // Prefetch weather data for selected location
+      try {
+        await getWeatherForecast(result.latitude, result.longitude, units);
+      } catch (error) {
+        console.warn('Failed to prefetch weather data:', error);
+      }
     }
     
     setIsOpen(false);
     setQuery('');
-  }, [setSelectedLocation, units]);
+  }, [setSelectedLocation, units, onLocationSelect]);
 
   // Handle recent search selection
   const handleRecentSearchSelect = useCallback(async (recentSearch: any) => {
-    setSelectedLocation(recentSearch.location);
-    
-    // Prefetch weather data for selected location
-    try {
-      await getWeatherForecast(recentSearch.location.latitude, recentSearch.location.longitude, units);
-    } catch (error) {
-      console.warn('Failed to prefetch weather data:', error);
+    // Use custom callback if provided, otherwise use default store behavior
+    if (onLocationSelect) {
+      onLocationSelect(recentSearch.location);
+    } else {
+      setSelectedLocation(recentSearch.location);
+      
+      // Prefetch weather data for selected location
+      try {
+        await getWeatherForecast(recentSearch.location.latitude, recentSearch.location.longitude, units);
+      } catch (error) {
+        console.warn('Failed to prefetch weather data:', error);
+      }
     }
     
     setIsOpen(false);
     setQuery('');
-  }, [setSelectedLocation, units]);
+  }, [setSelectedLocation, units, onLocationSelect]);
 
   // Voice search handlers
   const handleVoiceSearchStart = useCallback(() => {
