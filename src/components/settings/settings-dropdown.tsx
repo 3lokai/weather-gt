@@ -150,7 +150,7 @@ export function useUnitFormatters() {
     },
     formatPrecipitation: (value: number, precision = 1) => {
       const rounded = Math.round(value * Math.pow(10, precision)) / Math.pow(10, precision);
-      const unit = units.precipitation === 'in' ? 'in' : 'mm';
+      const unit = units.precipitation === 'inch' ? 'in' : 'mm';
       return `${rounded} ${unit}`;
     },
     formatPressure: (value: number, precision = 0) => {

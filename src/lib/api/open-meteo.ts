@@ -74,10 +74,10 @@ export interface AirQualityData {
   time: string[];
   pm2_5: number[];
   pm10: number[];
-  o3: number[];
-  no2: number[];
-  so2: number[];
-  co: number[];
+  ozone: number[];
+  nitrogen_dioxide: number[];
+  sulphur_dioxide: number[];
+  carbon_monoxide: number[];
   european_aqi: number[];
   us_aqi: number[];
 }
@@ -118,6 +118,65 @@ export async function searchLocations(query: string): Promise<GeocodingResult[]>
   return data.results || [];
 }
 
+// Reverse geocoding - get location name from coordinates using Nominatim (OpenStreetMap)
+export async function reverseGeocode(latitude: number, longitude: number): Promise<GeocodingResult | null> {
+  try {
+    console.log('🔄 Reverse geocoding request:', { latitude, longitude });
+    
+    const params = new URLSearchParams({
+      lat: latitude.toString(),
+      lon: longitude.toString(),
+      format: 'json',
+      addressdetails: '1',
+      'accept-language': 'en',
+    });
+
+    const url = `https://nominatim.openstreetmap.org/reverse?${params}`;
+    console.log('🌐 Reverse geocoding URL:', url);
+
+    const response = await fetch(url, {
+      headers: {
+        'User-Agent': 'WeatherApp/1.0'
+      }
+    });
+    
+    console.log('📡 Reverse geocoding response status:', response.status);
+    
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error('❌ Reverse geocoding API error:', response.status, errorText);
+      throw new Error(`Reverse geocoding API error: ${response.status} - ${errorText}`);
+    }
+    
+    const data = await response.json();
+    console.log('📄 Reverse geocoding response data:', data);
+    
+    if (data && data.display_name) {
+      // Convert Nominatim response to our GeocodingResult format
+      const result: GeocodingResult = {
+        id: 0, // Nominatim doesn't provide ID
+        name: data.address?.city || data.address?.town || data.address?.village || data.address?.hamlet || 'Unknown',
+        country: data.address?.country || '',
+        admin1: data.address?.state || data.address?.county || '',
+        latitude: parseFloat(data.lat),
+        longitude: parseFloat(data.lon),
+        timezone: 'UTC', // Nominatim doesn't provide timezone
+        country_code: data.address?.country_code?.toUpperCase() || '',
+        admin1_id: undefined
+      };
+      
+      console.log('✅ Reverse geocoding success:', result);
+      return result;
+    }
+    
+    console.log('⚠️ Reverse geocoding returned no results');
+    return null;
+  } catch (error) {
+    console.error('❌ Reverse geocoding failed:', error);
+    return null;
+  }
+}
+
 // Weather Forecast API
 export async function getWeatherForecast(
   latitude: number,
@@ -125,7 +184,7 @@ export async function getWeatherForecast(
   units: {
     temperature: 'celsius' | 'fahrenheit';
     windSpeed: 'kmh' | 'mph';
-    precipitation: 'mm' | 'in';
+    precipitation: 'mm' | 'inch';
     pressure: 'hPa' | 'inHg';
   }
 ): Promise<WeatherForecast> {
@@ -231,10 +290,10 @@ export async function getAirQuality(
     hourly: [
       'pm2_5',
       'pm10',
-      'o3',
-      'no2',
-      'so2',
-      'co',
+      'ozone',
+      'nitrogen_dioxide',
+      'sulphur_dioxide',
+      'carbon_monoxide',
       'european_aqi',
       'us_aqi'
     ].join(','),

@@ -75,7 +75,7 @@ const metricConfigs: MetricConfig[] = [
     tooltip: 'Amount of precipitation (rain, snow, etc.) in the last hour',
     formatter: (value, units) => {
       const rounded = Math.round(value * 10) / 10;
-      const unit = units.precipitation === 'in' ? 'in' : 'mm';
+      const unit = units.precipitation === 'inch' ? 'in' : 'mm';
       return `${rounded} ${unit}`;
     },
     animatedComponent: LottiePrecipitation

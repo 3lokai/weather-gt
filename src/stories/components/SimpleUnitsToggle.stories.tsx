@@ -170,7 +170,7 @@ export const ImperialSystem: Story = {
         setUnits({
           temperature: 'fahrenheit',
           windSpeed: 'mph',
-          precipitation: 'in',
+          precipitation: 'inch',
           pressure: 'inHg',
           timeFormat: '12h',
         });

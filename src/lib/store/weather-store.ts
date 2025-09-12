@@ -16,7 +16,7 @@ export interface Location {
 export interface Units {
   temperature: 'celsius' | 'fahrenheit';
   windSpeed: 'kmh' | 'mph';
-  precipitation: 'mm' | 'in';
+  precipitation: 'mm' | 'inch';
   pressure: 'hPa' | 'inHg';
   timeFormat: '12h' | '24h';
 }
@@ -118,6 +118,14 @@ export const useWeatherStore = create<WeatherState>()(
         units: state.units,
         selectedLocation: state.selectedLocation,
       }),
+      migrate: (persistedState: any, version: number) => {
+        // Migration for precipitation unit fix (E4-00 hotfix)
+        if (persistedState?.units?.precipitation === 'in') {
+          persistedState.units.precipitation = 'inch';
+        }
+        return persistedState;
+      },
+      version: 1,
     }
   )
 );

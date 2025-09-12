@@ -4,20 +4,30 @@ This directory contains the user stories for Epic E4 (Personalization), which fo
 
 ## Story Overview
 
+### E4-00 (P0) HOTFIX: API Validation Errors
+- **Status**: ✅ COMPLETED
+- **Description**: CRITICAL: Fix API validation errors for precipitation unit and air quality variables
+- **Dependencies**: None - Blocking issue
+
 ### E4-01 (P0) Geolocation First Visit
 - **Status**: Draft
 - **Description**: Ask permission; load local forecast; fallback to search
 - **Dependencies**: E1-02, E1-03
 
 ### E4-02 (P1) Favorites Drawer
-- **Status**: Not Started
+- **Status**: Draft
 - **Description**: Add/remove, reorder (drag), dedupe, quick switch; local persistence
 - **Dependencies**: E1-01, state store
 
 ### E4-03 (P1) Compare Grid
-- **Status**: Not Started
+- **Status**: Draft
 - **Description**: 2–4 locations in responsive grid; linked hover on sparklines
 - **Dependencies**: E1-04, E1-05, charts
+
+### E4-04 (P0) Home Page Layout Alignment
+- **Status**: Draft
+- **Description**: Restructure home page to match design specifications, replacing demo sections with production layout
+- **Dependencies**: E1-01, E1-02, E1-03, E1-04, E1-05, E4-01
 
 ## Epic Dependencies
 
@@ -29,9 +39,11 @@ All dependencies are met and Epic 4 is ready to begin.
 
 ## Implementation Order
 
-1. **E4-01** (P0) - Start with geolocation as it provides immediate user value
-2. **E4-02** (P1) - Favorites functionality builds on search (E1-01)
-3. **E4-03** (P1) - Compare grid requires both daily and hourly data
+1. **E4-00** (P0) - ✅ COMPLETED - Critical API validation hotfix
+2. **E4-01** (P0) - Start with geolocation as it provides immediate user value
+3. **E4-04** (P0) - Home page layout alignment for launch readiness
+4. **E4-02** (P1) - Favorites functionality builds on search (E1-01)
+5. **E4-03** (P1) - Compare grid requires both daily and hourly data
 
 ## Notes
 

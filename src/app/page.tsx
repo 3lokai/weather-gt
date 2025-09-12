@@ -7,6 +7,7 @@ import { UnitsSheetDemo } from "@/components/settings/units-sheet-demo";
 import { SettingsDropdown } from "@/components/settings/settings-dropdown";
 import { SearchProvider } from "@/components/search";
 import { InlineSearch } from "@/components/search/inline-search";
+import { GeolocationProvider } from "@/components/geolocation";
 import { CurrentConditionsCard, CurrentConditionsDemo, MetricsGridDemo, SevenDayForecastDemo, HourlyPanelChartDemo, PollenPanelDemo, AirQualityPanelDemo, RealWeatherConditions } from "@/components/weather";
 import { useWeatherStore } from "@/lib/store/weather-store";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -28,6 +29,7 @@ export default function HomePage() {
 
   return (
     <SearchProvider>
+    <GeolocationProvider>
     <div className="min-h-screen relative bg-background transition-colors duration-300">
       {/* Weather-themed liquid ether background */}
       <div className="fixed inset-0 z-0 pointer-events-none">
@@ -423,6 +425,7 @@ export default function HomePage() {
       </main>
       </div>
     </div>
+    </GeolocationProvider>
     </SearchProvider>
   );
 }
