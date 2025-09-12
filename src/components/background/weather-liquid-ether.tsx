@@ -108,8 +108,8 @@ export default function WeatherLiquidEther({
   style = {},
   mouseForce = 20,
   cursorSize = 100,
-  isViscous = false,
-  viscous = 30,
+  isViscous = true,
+  viscous = 50,
   iterationsViscous = 32,
   iterationsPoisson = 32,
   dt = 0.014,
@@ -117,11 +117,11 @@ export default function WeatherLiquidEther({
   resolution = 0.5,
   isBounce = false,
   autoDemo = true,
-  autoSpeed = 0.5,
+  autoSpeed = 0.4,
   autoIntensity = 2.2,
   takeoverDuration = 0.25,
   autoResumeDelay = 3000,
-  autoRampDuration = 0.6
+  autoRampDuration = 0.4
 }: WeatherLiquidEtherProps): React.ReactElement {
   // Get weather condition and theme group
   const { themeGroup } = getWeatherCondition(weatherCode, isDay);

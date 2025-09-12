@@ -37,3 +37,6 @@ P2 (Nice to have for demo)
 - `src/lib/weather-conditions/` - Weather condition mapping
 - `src/hooks/use-reduced-motion.ts` - Reduced motion preference hook
 - `src/styles/particles.css` - Particle animation styles
+
+## Status
+Done

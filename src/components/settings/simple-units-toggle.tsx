@@ -74,6 +74,7 @@ export function SimpleUnitsToggle({
     }
   };
 
+
   const isMetric = units.temperature === 'celsius' && 
                    units.windSpeed === 'kmh' && 
                    units.precipitation === 'mm' && 
@@ -150,6 +151,7 @@ export function SimpleUnitsToggle({
           </button>
         </div>
       </div>
+
     </div>
   );
 }

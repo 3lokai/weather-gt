@@ -36,3 +36,6 @@ P0 (Must have for demo)
 - `src/lib/api/open-meteo.ts` - Hourly weather data structure
 - `src/lib/store/weather-store.ts` - Selected day index state
 - `src/components/weather/` - Hourly chart components (to be created)
+
+## Status
+Done

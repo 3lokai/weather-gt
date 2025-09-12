@@ -5,7 +5,6 @@ import { CompareGrid, type ComparisonLocation } from '@/components/compare';
 import { InlineSearch } from '@/components/search/inline-search';
 import { useWeatherStore, type Location } from '@/lib/store/weather-store';
 import { getWeatherForecast } from '@/lib/api/open-meteo';
-import { CurrentWeather, DailyWeather } from '@/lib/api/open-meteo';
 import WeatherLiquidEther from '@/components/background/weather-liquid-ether';
 
 export default function ComparePage() {
@@ -150,7 +149,7 @@ export default function ComparePage() {
               <div>
                 <div className="text-center mb-8">
                   <h2 className="text-h3 font-semibold text-foreground">
-                    Weather Comparison
+                    Which one do you prefer?
                   </h2>
                 </div>
                 <CompareGrid

@@ -1,6 +1,79 @@
 'use client';
 
 import * as React from 'react';
+
+// Web Speech API types
+declare global {
+  interface Window {
+    SpeechRecognition: typeof SpeechRecognition;
+    webkitSpeechRecognition: typeof SpeechRecognition;
+  }
+}
+
+interface SpeechRecognition extends EventTarget {
+  continuous: boolean;
+  interimResults: boolean;
+  lang: string;
+  maxAlternatives: number;
+  serviceURI: string;
+  grammars: SpeechGrammarList;
+  start(): void;
+  stop(): void;
+  abort(): void;
+  onstart: ((this: SpeechRecognition, ev: Event) => any) | null;
+  onresult: ((this: SpeechRecognition, ev: SpeechRecognitionEvent) => any) | null;
+  onend: ((this: SpeechRecognition, ev: Event) => any) | null;
+  onerror: ((this: SpeechRecognition, ev: SpeechRecognitionErrorEvent) => any) | null;
+  onnomatch: ((this: SpeechRecognition, ev: SpeechRecognitionEvent) => any) | null;
+  onsoundstart: ((this: SpeechRecognition, ev: Event) => any) | null;
+  onsoundend: ((this: SpeechRecognition, ev: Event) => any) | null;
+  onspeechstart: ((this: SpeechRecognition, ev: Event) => any) | null;
+  onspeechend: ((this: SpeechRecognition, ev: Event) => any) | null;
+  onaudiostart: ((this: SpeechRecognition, ev: Event) => any) | null;
+  onaudioend: ((this: SpeechRecognition, ev: Event) => any) | null;
+}
+
+interface SpeechRecognitionEvent extends Event {
+  results: SpeechRecognitionResultList;
+}
+
+interface SpeechRecognitionResultList {
+  [index: number]: SpeechRecognitionResult;
+  length: number;
+}
+
+interface SpeechRecognitionResult {
+  [index: number]: SpeechRecognitionAlternative;
+  length: number;
+  isFinal: boolean;
+}
+
+interface SpeechRecognitionAlternative {
+  transcript: string;
+  confidence: number;
+}
+
+interface SpeechRecognitionErrorEvent extends Event {
+  error: string;
+  message: string;
+}
+
+interface SpeechGrammarList {
+  length: number;
+  item(index: number): SpeechGrammar;
+  addFromURI(src: string, weight?: number): void;
+  addFromString(string: string, weight?: number): void;
+}
+
+interface SpeechGrammar {
+  src: string;
+  weight: number;
+}
+
+declare const SpeechRecognition: {
+  prototype: SpeechRecognition;
+  new(): SpeechRecognition;
+};
 import { useState, useCallback, useRef, useEffect } from 'react';
 import { useWeatherStore } from '@/lib/store/weather-store';
 import { useGeocodingSearch, geocodingResultToLocation } from '@/hooks/use-geocoding-search';
@@ -32,6 +105,9 @@ export function InlineSearch({
 }: InlineSearchProps) {
   const [query, setQuery] = useState('');
   const [isOpen, setIsOpen] = useState(false);
+  const [isRecording, setIsRecording] = useState(false);
+  const [isListening, setIsListening] = useState(false);
+  const [speechSupported, setSpeechSupported] = useState(false);
   const { 
     setSelectedLocation, 
     units, 
@@ -40,11 +116,81 @@ export function InlineSearch({
     clearRecentSearches 
   } = useWeatherStore();
   const containerRef = useRef<HTMLDivElement>(null);
+  const recognitionRef = useRef<SpeechRecognition | null>(null);
   
   const { results, isLoading, isEmpty } = useGeocodingSearch({ 
     query,
     enabled: isOpen && query.length >= 2
   });
+
+  // Feature detection for speech recognition
+  useEffect(() => {
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (SpeechRecognition) {
+      setSpeechSupported(true);
+      recognitionRef.current = new SpeechRecognition();
+      recognitionRef.current.continuous = false;
+      recognitionRef.current.interimResults = true;
+      recognitionRef.current.lang = 'en-US';
+      recognitionRef.current.maxAlternatives = 1;
+      
+      recognitionRef.current.onstart = () => {
+        setIsListening(true);
+      };
+      
+      recognitionRef.current.onresult = (event: SpeechRecognitionEvent) => {
+        // Get the most recent result
+        const lastResult = event.results[event.results.length - 1];
+        const transcript = lastResult[0].transcript;
+        
+        // Only process final results to avoid flickering
+        if (lastResult.isFinal && transcript.trim()) {
+          setQuery(transcript.trim());
+          setIsOpen(true);
+        }
+      };
+      
+      recognitionRef.current.onend = () => {
+        setIsListening(false);
+        setIsRecording(false);
+      };
+      
+      recognitionRef.current.onerror = (event: SpeechRecognitionErrorEvent) => {
+        console.warn('Speech recognition error:', event.error, event.message);
+        setIsListening(false);
+        setIsRecording(false);
+        
+        // Handle specific error types
+        switch (event.error) {
+          case 'no-speech':
+            console.warn('No speech detected');
+            break;
+          case 'audio-capture':
+            console.warn('Audio capture failed - microphone may be in use');
+            break;
+          case 'not-allowed':
+            console.warn('Microphone permission denied');
+            break;
+          case 'network':
+            console.warn('Network error during speech recognition');
+            break;
+          case 'service-not-allowed':
+            console.warn('Speech recognition service not allowed');
+            break;
+          default:
+            console.warn('Unknown speech recognition error:', event.error);
+        }
+      };
+    }
+    
+    // Cleanup function
+    return () => {
+      if (recognitionRef.current) {
+        recognitionRef.current.stop();
+        recognitionRef.current = null;
+      }
+    };
+  }, []);
 
   // Handle location selection
   const handleLocationSelect = useCallback(async (result: any) => {
@@ -76,6 +222,25 @@ export function InlineSearch({
     setIsOpen(false);
     setQuery('');
   }, [setSelectedLocation, units]);
+
+  // Voice search handlers
+  const handleVoiceSearchStart = useCallback(() => {
+    if (recognitionRef.current && !isListening) {
+      setIsRecording(true);
+      try {
+        recognitionRef.current.start();
+      } catch (error) {
+        console.warn('Failed to start speech recognition:', error);
+        setIsRecording(false);
+      }
+    }
+  }, [isListening]);
+
+  const handleVoiceSearchStop = useCallback(() => {
+    if (recognitionRef.current && isListening) {
+      recognitionRef.current.stop();
+    }
+  }, [isListening]);
 
   // Format relative time
   const formatRelativeTime = (timestamp: number) => {
@@ -145,6 +310,32 @@ export function InlineSearch({
           )}
         </div>
 
+        {/* Voice Search Button */}
+        {speechSupported && (
+          <div className="absolute inset-y-0 end-0 flex items-center justify-center pe-5">
+            <button
+              onMouseDown={handleVoiceSearchStart}
+              onMouseUp={handleVoiceSearchStop}
+              onMouseLeave={handleVoiceSearchStop}
+              onTouchStart={handleVoiceSearchStart}
+              onTouchEnd={handleVoiceSearchStop}
+              className={`flex items-center justify-center w-8 h-8 rounded-full transition-all duration-200 ${
+                isRecording || isListening
+                  ? 'bg-red-500 text-white animate-pulse'
+                  : 'text-muted-foreground hover:text-primary hover:bg-primary/10'
+              }`}
+              aria-label={isRecording ? 'Recording... Release to stop' : 'Hold to record voice search'}
+              type="button"
+            >
+              <Icon 
+                name={isRecording || isListening ? "MicrophoneSlash" : "Microphone"} 
+                size={16} 
+                className={isRecording || isListening ? 'animate-pulse' : ''}
+              />
+            </button>
+          </div>
+        )}
+
         {/* Clear Button */}
         {query && (
           <button
@@ -153,7 +344,9 @@ export function InlineSearch({
               setQuery('');
               setIsOpen(false);
             }}
-            className="absolute inset-y-0 end-0 flex h-full w-16 items-center justify-center rounded-e-md text-muted-foreground hover:text-foreground focus-visible:ring-2 focus-visible:ring-primary/50 transition-colors outline-none"
+            className={`absolute inset-y-0 flex h-full w-16 items-center justify-center rounded-e-md text-muted-foreground hover:text-foreground focus-visible:ring-2 focus-visible:ring-primary/50 transition-colors outline-none ${
+              speechSupported ? 'end-16' : 'end-0'
+            }`}
             aria-label="Clear search"
             type="button"
           >

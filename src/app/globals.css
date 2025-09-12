@@ -10,12 +10,12 @@
 /* === WEATHER APP DESIGN SYSTEM === */
 @theme {
   /* Core Colors - Light Theme (OKLCH Color Space) */
-  --background: oklch(0.9200 0.0100 280.0000);
-  --foreground: oklch(0.1500 0.0200 280.0000);
-  --card: oklch(0.9000 0.0150 280.0000);
-  --card-foreground: oklch(0.1500 0.0200 280.0000);
-  --popover: oklch(0.9100 0.0120 280.0000);
-  --popover-foreground: oklch(0.1500 0.0200 280.0000);
+  --background: oklch(0.9200 0.0100 300.0000);
+  --foreground: oklch(0.1500 0.0200 300.0000);
+  --card: oklch(0.9000 0.0150 300.0000);
+  --card-foreground: oklch(0.1500 0.0200 300.0000);
+  --popover: oklch(0.9100 0.0120 300.0000);
+  --popover-foreground: oklch(0.1500 0.0200 300.0000);
 
   /* Primary Colors - Blue System (Light Theme) */
   --primary: oklch(0.4500 0.1800 264.0000);
@@ -60,22 +60,22 @@
   --accent-foreground: oklch(0.9800 0.0100 264.0000);
 
   /* Neutral Colors (Light Theme) */
-  --muted: oklch(0.8600 0.0200 280.0000);
-  --muted-foreground: oklch(0.3500 0.0400 280.0000);
-  --subtle: oklch(0.8800 0.0250 280.0000);
-  --subtle-foreground: oklch(0.3000 0.0500 280.0000);
+  --muted: oklch(0.8600 0.0200 300.0000);
+  --muted-foreground: oklch(0.3500 0.0400 300.0000);
+  --subtle: oklch(0.8800 0.0250 300.0000);
+  --subtle-foreground: oklch(0.3000 0.0500 300.0000);
 
-  /* Gray Scale (Warm-tinted Light Theme) */
-  --gray-50: oklch(0.9200 0.0100 280.0000);
-  --gray-100: oklch(0.8900 0.0150 280.0000);
-  --gray-200: oklch(0.8400 0.0200 280.0000);
-  --gray-300: oklch(0.7500 0.0250 280.0000);
-  --gray-400: oklch(0.6000 0.0200 280.0000);
-  --gray-500: oklch(0.4500 0.0200 280.0000);
-  --gray-600: oklch(0.3500 0.0250 280.0000);
-  --gray-700: oklch(0.2500 0.0300 280.0000);
-  --gray-800: oklch(0.1800 0.0350 280.0000);
-  --gray-900: oklch(0.1200 0.0250 280.0000);
+  /* Gray Scale (Neutral-tinted Light Theme) */
+  --gray-50: oklch(0.9200 0.0100 300.0000);
+  --gray-100: oklch(0.8900 0.0150 300.0000);
+  --gray-200: oklch(0.8400 0.0200 300.0000);
+  --gray-300: oklch(0.7500 0.0250 300.0000);
+  --gray-400: oklch(0.6000 0.0200 300.0000);
+  --gray-500: oklch(0.4500 0.0200 300.0000);
+  --gray-600: oklch(0.3500 0.0250 300.0000);
+  --gray-700: oklch(0.2500 0.0300 300.0000);
+  --gray-800: oklch(0.1800 0.0350 300.0000);
+  --gray-900: oklch(0.1200 0.0250 300.0000);
 
   /* Semantic Colors (Light Theme) */
   --success: oklch(0.6000 0.1500 142.5000);
@@ -88,13 +88,13 @@
   --info-foreground: oklch(0.9800 0.0100 264.0000);
 
   /* UI Elements (Light Theme) */
-  --border: oklch(0.8000 0.0300 280.0000);
-  --input: oklch(0.8900 0.0200 280.0000);
+  --border: oklch(0.8000 0.0300 300.0000);
+  --input: oklch(0.8900 0.0200 300.0000);
   --ring: oklch(0.4500 0.1800 264.0000);
 
   /* Weather-specific gradients (Light Theme) */
   --gradient-primary: linear-gradient(135deg, oklch(0.4500 0.1800 264.0000) 0%, oklch(0.4200 0.1600 300.0000) 100%);
-  --gradient-card: linear-gradient(135deg, oklch(0.9000 0.0200 280.0000) 0%, oklch(0.8800 0.0300 290.0000) 100%);
+  --gradient-card: linear-gradient(135deg, oklch(0.9000 0.0200 300.0000) 0%, oklch(0.8800 0.0300 310.0000) 100%);
   --gradient-accent: linear-gradient(135deg, oklch(0.7500 0.1800 65.0000) 0%, oklch(0.8000 0.1600 50.0000) 100%);
 
   /* Typography */
@@ -254,35 +254,6 @@
   --gray-900: oklch(0.9600 0.0075 264.0000);
 }
 
-/* Weather condition themes - Override accent colors based on weather */
-.theme--clear-day   { 
-  @theme { --accent: oklch(0.8600 0.1400 85.0000); }    /* warm amber */
-  transition: all 0.3s ease;
-}
-.theme--clear-night { 
-  @theme { --accent: oklch(0.7500 0.1000 85.0000); }    /* dimmed amber */
-  transition: all 0.3s ease;
-}
-.theme--rain        { 
-  @theme { --accent: oklch(0.7000 0.1200 250.0000); }   /* blue */
-  transition: all 0.3s ease;
-}
-.theme--snow        { 
-  @theme { --accent: oklch(0.8500 0.0800 250.0000); }   /* crisp icy blue */
-  transition: all 0.3s ease;
-}
-.theme--cloudy      { 
-  @theme { --accent: oklch(0.7200 0.0600 260.0000); }   /* neutral slate */
-  transition: all 0.3s ease;
-}
-.theme--fog         { 
-  @theme { --accent: oklch(0.7200 0.0600 260.0000); }   /* neutral slate */
-  transition: all 0.3s ease;
-}
-.theme--thunder     { 
-  @theme { --accent: oklch(0.7400 0.1500 300.0000); }   /* violet */
-  transition: all 0.3s ease;
-}
 
 /* Skeleton shimmer animation */
 @keyframes shimmer {
@@ -309,6 +280,41 @@
   .reduced-motion [class*="animate-shimmer"] {
     animation: none !important;
   }
+}
+
+/* User preference-based reduced motion (from settings) */
+.reduced-motion * {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+}
+
+.reduced-motion .liquid-ether-container {
+  animation: none !important;
+}
+
+.reduced-motion [class*="animate-shimmer"] {
+  animation: none !important;
+}
+
+/* Disable hover animations when reduced motion is enabled */
+.reduced-motion button:hover {
+  transform: none !important;
+  scale: none !important;
+}
+
+.reduced-motion [class*="hover:scale"]:hover {
+  transform: none !important;
+  scale: none !important;
+}
+
+/* Disable transform animations */
+.reduced-motion [class*="transform"] {
+  transform: none !important;
+}
+
+.reduced-motion [class*="transition-transform"] {
+  transition: none !important;
 }
 
 /* Base surfaces */

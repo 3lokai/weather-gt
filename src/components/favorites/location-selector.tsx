@@ -72,6 +72,7 @@ export function LocationSelector({ className }: LocationSelectorProps) {
             className
           )}
           aria-label="Select location from favorites"
+          data-favorites-trigger="true"
         >
           <div className="text-right">
             {selectedLocation ? (
@@ -86,10 +87,10 @@ export function LocationSelector({ className }: LocationSelectorProps) {
             ) : (
               <>
                 <div className="text-body-m font-medium text-muted-foreground">
-                  Select Location
+                  Favourite Locations
                 </div>
                 <div className="text-body-s text-muted-foreground">
-                  Choose a location
+                  Quick Select here
                 </div>
               </>
             )}

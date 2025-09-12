@@ -3,6 +3,9 @@ import { DM_Sans, Bricolage_Grotesque } from "next/font/google";
 import { QueryProvider } from "@/lib/providers/query-provider";
 import { ThemeProvider } from "@/lib/providers/theme-provider";
 import { CacheInvalidationProvider } from "@/components/providers/cache-invalidation-provider";
+import { ReducedMotionProvider } from "@/components/providers/reduced-motion-provider";
+import { KeyboardShortcutsProvider } from "@/components/providers/keyboard-shortcuts-provider";
+import { SearchProvider } from "@/components/search/search-provider";
 import { Toaster } from "@/components/ui/sonner";
 import { Header } from "@/components/layout/header";
 import "./globals.css";
@@ -42,9 +45,15 @@ export default function RootLayout({
         <ThemeProvider>
           <QueryProvider>
             <CacheInvalidationProvider>
-              <Header />
-              {children}
-              <Toaster />
+              <ReducedMotionProvider>
+                <KeyboardShortcutsProvider>
+                  <SearchProvider>
+                    <Header />
+                    {children}
+                    <Toaster />
+                  </SearchProvider>
+                </KeyboardShortcutsProvider>
+              </ReducedMotionProvider>
             </CacheInvalidationProvider>
           </QueryProvider>
         </ThemeProvider>

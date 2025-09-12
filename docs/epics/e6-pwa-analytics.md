@@ -9,10 +9,12 @@ Progressive Web App features and privacy-focused analytics implementation.
 
 ### E6-01 (P0) PWA Baseline
 
-**Desc**: Manifest, icons, SW (next‑pwa), offline page.
+**Desc**: Manifest, icons, SW (next‑pwa), offline page. **Bundled with E7-03 Offline/Network UX for complete offline experience.**
 **Acceptance**
 
 * Installable on Chromium + Android; offline shows cached last‑good per location.
+* Clear visual indicators for cached vs live data.
+* Simple network status banner for offline detection.
   **Deps**: Build pipeline.
 
 ### E6-02 (P1) Analytics Events (Privacy‑light)
@@ -26,4 +28,5 @@ Progressive Web App features and privacy-focused analytics implementation.
 ---
 
 ## Dependencies
-- **E6-01 → E7-03/E7-07** (PWA before offline UX & demo mode)
+- **E6-01 + E7-03** (Bundled together for complete offline experience)
+- **E6-01 → E7-07** (PWA before demo mode)

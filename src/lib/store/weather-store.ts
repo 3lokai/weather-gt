@@ -21,6 +21,11 @@ export interface Units {
   timeFormat: '12h' | '24h';
 }
 
+export interface AccessibilitySettings {
+  reducedMotion: boolean;
+  keyboardShortcuts: boolean;
+}
+
 // ThemeColors interface removed - themes now managed by next-themes
 
 export interface RecentSearch {
@@ -44,6 +49,7 @@ export interface WeatherState {
   
   // Settings
   units: Units;
+  accessibility: AccessibilitySettings;
   
   // Actions
   setSelectedLocation: (location: Location | null) => void;
@@ -54,6 +60,7 @@ export interface WeatherState {
   addRecentSearch: (location: Location) => void;
   clearRecentSearches: () => void;
   setUnits: (units: Partial<Units>) => void;
+  setAccessibility: (accessibility: Partial<AccessibilitySettings>) => void;
   setAirQualityData: (data: AirQualityData | null) => void;
   setPollenData: (data: PollenData | null) => void;
   
@@ -72,6 +79,11 @@ const defaultUnits: Units = {
   timeFormat: '12h',
 };
 
+const defaultAccessibility: AccessibilitySettings = {
+  reducedMotion: false,
+  keyboardShortcuts: true,
+};
+
 export const useWeatherStore = create<WeatherState>()(
   persist(
     (set, get) => ({
@@ -83,6 +95,7 @@ export const useWeatherStore = create<WeatherState>()(
       airQualityData: null,
       pollenData: null,
       units: defaultUnits,
+      accessibility: defaultAccessibility,
       onUnitsChange: undefined,
       onLocationChange: undefined,
 
@@ -148,6 +161,11 @@ export const useWeatherStore = create<WeatherState>()(
         onUnitsChange?.();
       },
       
+      setAccessibility: (newAccessibility) => {
+        const { accessibility } = get();
+        set({ accessibility: { ...accessibility, ...newAccessibility } });
+      },
+      
       setAirQualityData: (data) => set({ airQualityData: data }),
       setPollenData: (data) => set({ pollenData: data }),
       
@@ -161,6 +179,7 @@ export const useWeatherStore = create<WeatherState>()(
         favorites: state.favorites,
         recentSearches: state.recentSearches,
         units: state.units,
+        accessibility: state.accessibility,
         selectedLocation: state.selectedLocation,
       }),
       migrate: (persistedState: any, version: number) => {
@@ -172,9 +191,17 @@ export const useWeatherStore = create<WeatherState>()(
         if (version < 2 && !persistedState?.recentSearches) {
           persistedState.recentSearches = [];
         }
+        // Migration for E7-01: Add accessibility settings if not present
+        if (version < 3 && !persistedState?.accessibility) {
+          persistedState.accessibility = defaultAccessibility;
+        }
+        // Migration for E7-04: Add keyboard shortcuts setting if not present
+        if (version < 4 && persistedState?.accessibility && !('keyboardShortcuts' in persistedState.accessibility)) {
+          persistedState.accessibility.keyboardShortcuts = true;
+        }
         return persistedState;
       },
-      version: 2,
+      version: 4,
     }
   )
 );

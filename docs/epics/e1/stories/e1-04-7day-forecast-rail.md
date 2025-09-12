@@ -33,3 +33,6 @@ P0 (Must have for demo)
 - `src/lib/api/open-meteo.ts` - Daily weather data structure
 - `src/lib/store/weather-store.ts` - Selected day index state
 - `src/components/weather/` - Daily forecast components (to be created)
+
+## Status
+Done

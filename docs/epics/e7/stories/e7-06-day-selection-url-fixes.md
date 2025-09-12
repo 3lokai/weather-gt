@@ -165,4 +165,4 @@ Claude Sonnet 4
   - All day selection and URL state functionality now works as expected
 
 ## Status
-Ready for Review
+Done

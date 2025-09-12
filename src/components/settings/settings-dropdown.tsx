@@ -32,7 +32,7 @@ export function SettingsDropdown({
   variant = 'button',
   children
 }: SettingsDropdownProps) {
-  const { units } = useWeatherStore();
+  const { units, accessibility, setAccessibility } = useWeatherStore();
 
   // Check if current units are metric for display purposes
   const isMetric = units.temperature === 'celsius' && 
@@ -140,6 +140,84 @@ export function SettingsDropdown({
             <div className="flex justify-between">
               <span>Time Format:</span>
               <span className="font-medium">{units.timeFormat === '24h' ? '24h' : '12h'}</span>
+            </div>
+          </div>
+        </DropdownMenuGroup>
+        
+        <DropdownMenuSeparator />
+        
+        {/* Accessibility Settings */}
+        <DropdownMenuGroup>
+          <DropdownMenuLabel className="px-6 py-3 text-body-m font-display">Accessibility</DropdownMenuLabel>
+          <div className="px-6 pb-4 space-y-4">
+            {/* Keyboard Shortcuts Toggle */}
+            <div className="flex items-center justify-between w-full">
+              <div className="flex items-center gap-2">
+                <Icon name="Keyboard" size={18} color="muted" withDuotone={true} />
+                <span className="text-body-s font-medium text-foreground">
+                  Keyboard Shortcuts
+                </span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="text-body-s font-medium text-muted-foreground">
+                  {accessibility.keyboardShortcuts ? 'On' : 'Off'}
+                </span>
+                <button
+                  onClick={() => setAccessibility({ keyboardShortcuts: !accessibility.keyboardShortcuts })}
+                  className={cn(
+                    "relative inline-flex items-center rounded-full transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2",
+                    "hover:scale-105 active:scale-95",
+                    "h-7 w-12",
+                    accessibility.keyboardShortcuts 
+                      ? 'bg-primary hover:bg-primary/90 active:bg-primary/80' 
+                      : 'bg-muted-foreground/20 hover:bg-muted-foreground/30 active:bg-muted-foreground/40'
+                  )}
+                  aria-label={`Keyboard shortcuts: ${accessibility.keyboardShortcuts ? 'enabled' : 'disabled'}. Click to toggle.`}
+                >
+                  <span
+                    className={cn(
+                      "inline-block rounded-full bg-background shadow transform transition-transform",
+                      "h-5 w-5",
+                      accessibility.keyboardShortcuts ? 'translate-x-5' : 'translate-x-0.5'
+                    )}
+                  />
+                </button>
+              </div>
+            </div>
+
+            {/* Reduced Motion Toggle */}
+            <div className="flex items-center justify-between w-full">
+              <div className="flex items-center gap-2">
+                <Icon name="EyeSlash" size={18} color="muted" withDuotone={true} />
+                <span className="text-body-s font-medium text-foreground">
+                  Reduced Motion
+                </span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="text-body-s font-medium text-muted-foreground">
+                  {accessibility.reducedMotion ? 'On' : 'Off'}
+                </span>
+                <button
+                  onClick={() => setAccessibility({ reducedMotion: !accessibility.reducedMotion })}
+                  className={cn(
+                    "relative inline-flex items-center rounded-full transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2",
+                    "hover:scale-105 active:scale-95",
+                    "h-7 w-12",
+                    accessibility.reducedMotion 
+                      ? 'bg-primary hover:bg-primary/90 active:bg-primary/80' 
+                      : 'bg-muted-foreground/20 hover:bg-muted-foreground/30 active:bg-muted-foreground/40'
+                  )}
+                  aria-label={`Reduced motion: ${accessibility.reducedMotion ? 'enabled' : 'disabled'}. Click to toggle.`}
+                >
+                  <span
+                    className={cn(
+                      "inline-block rounded-full bg-background shadow transform transition-transform",
+                      "h-5 w-5",
+                      accessibility.reducedMotion ? 'translate-x-5' : 'translate-x-0.5'
+                    )}
+                  />
+                </button>
+              </div>
             </div>
           </div>
         </DropdownMenuGroup>

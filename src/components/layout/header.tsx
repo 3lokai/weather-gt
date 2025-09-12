@@ -5,6 +5,7 @@ import { LottieWeatherIcon } from "@/components/icons/lottie-weather-icon";
 import { ThemeToggle } from "@/components/theme-toggle/theme-toggle";
 import { SettingsDropdown } from "@/components/settings/settings-dropdown";
 import { LocationSelector } from "@/components/favorites/location-selector";
+import { KeyboardShortcutsSheet } from "@/components/ui/keyboard-shortcuts-sheet";
 import { useWeatherStore } from "@/lib/store/weather-store";
 import { cn } from "@/lib/utils";
 
@@ -54,6 +55,7 @@ export function Header() {
           <div className="flex items-center gap-3 sm:gap-4">
             {/* Location Selector */}
             <LocationSelector />
+            <KeyboardShortcutsSheet />
             <SettingsDropdown variant="icon" />
             <ThemeToggle />
           </div>

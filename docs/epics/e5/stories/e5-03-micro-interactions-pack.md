@@ -3,6 +3,8 @@
 ## Description
 Number flip on unit change, card hover lift/shine, toast choreography.
 
+**COMPLETED**: All micro-interactions implemented via `LottieMetric` component with superior functionality including smooth number transitions, hover effects, and motion preference support.
+
 ## Acceptance Criteria
 
 * Motion timings: 120–250ms; prefers‑reduced‑motion honored.
@@ -198,4 +200,4 @@ This story implements a collection of micro-interactions that enhance the user e
 *To be updated by Dev Agent*
 
 ## Status
-Draft
+Done
