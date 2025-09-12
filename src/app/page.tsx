@@ -17,6 +17,7 @@ import { useWeatherStore } from "@/lib/store/weather-store";
 import { useAirQuality } from "@/hooks/use-air-quality";
 import { usePollen } from "@/hooks/use-pollen";
 import { URLStateProvider } from "@/components/providers/url-state-provider";
+import { Suspense } from "react";
 import { SparklesText } from "@/components/magicui/sparkles-text";
 
 export default function AppPage() {
@@ -73,7 +74,8 @@ export default function AppPage() {
           {/* Weather Data Provider - Only renders content when location is selected */}
           <WeatherDataProvider>
             {({ weather, isLoading, isError, error, selectedDayIndex }) => (
-              <URLStateProvider weather={weather}>
+              <Suspense fallback={<div>Loading...</div>}>
+                <URLStateProvider weather={weather}>
                 {/* Weather Content - Responsive Grid Layout */}
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12 max-w-7xl mx-auto">
                   {/* Main Content Area - Left Column (Desktop) / Full Width (Mobile) */}
@@ -177,7 +179,8 @@ export default function AppPage() {
                     </section>
                   </div>
                 </div>
-              </URLStateProvider>
+                </URLStateProvider>
+              </Suspense>
             )}
           </WeatherDataProvider>
         </main>
