@@ -3,7 +3,6 @@
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import Lottie from 'lottie-react';
-import errorAnimation from '/public/404-Animation.json';
 import { useEffect } from 'react';
 
 interface ErrorProps {
@@ -45,7 +44,7 @@ export default function Error({ error, reset }: ErrorProps) {
           <div className="flex justify-center">
             <div className="w-80 h-80">
               <Lottie
-                animationData={errorAnimation}
+                animationData={require('/404-Animation.json')}
                 loop={true}
                 autoplay={true}
                 aria-label="Error animation"
