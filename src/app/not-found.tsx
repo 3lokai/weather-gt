@@ -3,6 +3,7 @@
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import Lottie from 'lottie-react';
+import satelliteAnimation from '@/lib/animations/satellite.json';
 
 export default function NotFound() {
   const router = useRouter();
@@ -29,7 +30,7 @@ export default function NotFound() {
           <div className="flex justify-center">
             <div className="w-64 h-64">
               <Lottie
-                animationData={require('/S Satellite.json')}
+                animationData={satelliteAnimation}
                 loop={true}
                 autoplay={true}
                 aria-label="Satellite searching animation"
