@@ -91,13 +91,13 @@ export const BannerIcon = ({
 export type BannerTitleProps = HTMLAttributes<HTMLParagraphElement>;
 
 export const BannerTitle = ({ className, ...props }: BannerTitleProps) => (
-  <p className={cn('flex-1 text-sm font-medium', className)} {...props} />
+  <p className={cn('flex-1 text-base font-semibold', className)} {...props} />
 );
 
 export type BannerDescriptionProps = HTMLAttributes<HTMLParagraphElement>;
 
 export const BannerDescription = ({ className, ...props }: BannerDescriptionProps) => (
-  <p className={cn('flex-1 text-xs text-muted-foreground mt-1', className)} {...props} />
+  <p className={cn('flex-1 text-sm text-muted-foreground mt-1', className)} {...props} />
 );
 
 export type BannerActionProps = ComponentProps<typeof Button>;

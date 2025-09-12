@@ -23,7 +23,12 @@ export function GeolocationProvider({ children, className }: GeolocationProvider
 
   // Show fallback when permission is denied or after banner is dismissed
   useEffect(() => {
-    if (bannerDismissed && !position && !showFallback && permissionStatus !== 'granted') {
+    // Only show fallback if:
+    // 1. Banner was dismissed
+    // 2. We don't already have a position
+    // 3. Permission is explicitly denied (not just 'prompt' or 'unknown')
+    // 4. We're not already showing fallback
+    if (bannerDismissed && !position && !showFallback && permissionStatus === 'denied') {
       const timer = setTimeout(() => {
         setShowFallback(true);
       }, 500); // Small delay for smooth transition
@@ -48,10 +53,17 @@ export function GeolocationProvider({ children, className }: GeolocationProvider
     setShowFallback(true);
   };
 
-  // Handle banner dismiss
+  // Handle banner dismiss (close button)
   const handleBannerDismiss = () => {
     setBannerDismissed(true);
     setShowBanner(false);
+  };
+
+  // Handle maybe later (don't show fallback immediately)
+  const handleMaybeLater = () => {
+    setBannerDismissed(true);
+    setShowBanner(false);
+    // Don't set showFallback - let user manually search if they want
   };
 
   // Handle fallback search click
@@ -92,6 +104,7 @@ export function GeolocationProvider({ children, className }: GeolocationProvider
           onLocationGranted={handleLocationGranted}
           onLocationDenied={handleLocationDenied}
           onDismiss={handleBannerDismiss}
+          onMaybeLater={handleMaybeLater}
         />
       )}
 

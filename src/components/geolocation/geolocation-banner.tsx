@@ -11,13 +11,15 @@ interface GeolocationBannerProps {
   onLocationGranted?: () => void;
   onLocationDenied?: () => void;
   onDismiss?: () => void;
+  onMaybeLater?: () => void;
 }
 
 export function GeolocationBanner({ 
   className,
   onLocationGranted,
   onLocationDenied,
-  onDismiss
+  onDismiss,
+  onMaybeLater
 }: GeolocationBannerProps) {
   const [isDismissed, setIsDismissed] = useState(false);
   
@@ -32,11 +34,12 @@ export function GeolocationBanner({
 
   // Handle location request
   const handleAllowLocation = async () => {
-  
     try {
-      const result = await requestLocation();
-         onLocationGranted?.();
+      await requestLocation();
+      // Only call onLocationGranted after successful location request
+      onLocationGranted?.();
     } catch (error) {
+      console.error('Location request failed:', error);
       onLocationDenied?.();
     }
   };
@@ -50,7 +53,7 @@ export function GeolocationBanner({
   // Handle maybe later
   const handleMaybeLater = () => {
     setIsDismissed(true);
-    onDismiss?.();
+    onMaybeLater?.();
   };
 
   // Don't render if dismissed

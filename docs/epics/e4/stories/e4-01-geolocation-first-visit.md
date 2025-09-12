@@ -208,5 +208,23 @@ Claude Sonnet 4 (UX Expert - Sally)
 - **Improved**: Updated messaging to be more appropriate for "always show" behavior
 - **Added**: Console debugging logs for better development experience
 
+**2024-01-12 - Bug Fix: Fallback Message Issue**
+- **Fixed**: Resolved issue where fallback message was shown even after location was successfully shared
+- **Root Cause**: Banner was calling onLocationGranted before waiting for the async location request to complete
+- **Solution**: Added proper await for requestLocation() and improved fallback logic to only show when permission is explicitly denied
+- **Enhanced**: Separated "Maybe Later" and "Close" button behaviors to prevent unwanted fallback prompts
+
+**2024-01-12 - UI Consistency: Bottom Positioning**
+- **Fixed**: Moved geolocation fallback message from top to bottom of screen for consistency
+- **Updated**: Changed fallback positioning from `fixed top-0` to `fixed bottom-0`
+- **Enhanced**: Updated animation from `slide-in-from-top-2` to `slide-in-from-bottom-2`
+- **Result**: All geolocation messages now appear at the bottom of the screen for better UX consistency
+
+**2024-01-12 - Typography Enhancement: Banner Font Sizes**
+- **Improved**: Increased banner title font size from `text-sm` (14px) to `text-base` (16px)
+- **Enhanced**: Increased banner description font size from `text-xs` (12px) to `text-sm` (14px)
+- **Updated**: Changed banner title font weight from `font-medium` to `font-semibold` for better hierarchy
+- **Result**: Banner text now matches the site's typography scale and is more readable
+
 ## Status
 Done

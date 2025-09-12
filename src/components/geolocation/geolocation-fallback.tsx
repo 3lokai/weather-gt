@@ -35,7 +35,7 @@ export function GeolocationFallback({
   return (
     <Banner
       className={cn(
-        "fixed top-0 left-0 right-0 z-[60] animate-in slide-in-from-top-2 duration-300",
+        "fixed bottom-0 left-0 right-0 z-[60] animate-in slide-in-from-bottom-2 duration-300",
         className
       )}
       onClose={handleDismiss}
