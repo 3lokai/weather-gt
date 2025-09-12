@@ -37,6 +37,8 @@ const eslintConfig = [...compat.extends("next/core-web-vitals", "next/typescript
     // Allow unused imports during development
     "unused-imports/no-unused-imports": "off",
     "unused-imports/no-unused-vars": "off",
+    // Allow unescaped entities like apostrophes in text content
+    "react/no-unescaped-entities": "off",
   },
 }];
 
