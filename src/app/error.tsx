@@ -3,7 +3,7 @@
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import Lottie from 'lottie-react';
-import errorAnimation from '/public/404 Animation.json';
+import errorAnimation from '/public/404-Animation.json';
 import { useEffect } from 'react';
 
 interface ErrorProps {
