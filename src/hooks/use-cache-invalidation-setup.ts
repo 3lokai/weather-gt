@@ -9,8 +9,8 @@ export function useCacheInvalidationSetup() {
   const { invalidateUnitsQueries, invalidateLocationQueries } = useQueryInvalidation();
 
   // Use refs to store the latest callback functions
-  const handleUnitsChangeRef = useRef<(() => void) | undefined>();
-  const handleLocationChangeRef = useRef<(() => void) | undefined>();
+  const handleUnitsChangeRef = useRef<(() => void) | undefined>(undefined);
+  const handleLocationChangeRef = useRef<(() => void) | undefined>(undefined);
 
   // Update refs when callbacks change
   handleUnitsChangeRef.current = useCallback(() => {

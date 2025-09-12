@@ -114,7 +114,6 @@ export function CurrentConditionsDemo() {
                   <Button
                     key={condition}
                     variant={selectedCondition === condition ? "default" : "outline"}
-                    size="sm"
                     onClick={() => setSelectedCondition(condition)}
                     className="capitalize"
                   >
@@ -131,7 +130,6 @@ export function CurrentConditionsDemo() {
                   <Button
                     key={location.id}
                     variant={displayLocation.id === location.id ? "default" : "outline"}
-                    size="sm"
                     onClick={() => setSelectedLocation(location)}
                   >
                     {location.name}
@@ -145,14 +143,12 @@ export function CurrentConditionsDemo() {
               <div className="flex gap-2">
                 <Button
                   variant={!showHeroBackground ? "default" : "outline"}
-                  size="sm"
                   onClick={() => setShowHeroBackground(false)}
                 >
                   Off
                 </Button>
                 <Button
                   variant={showHeroBackground ? "default" : "outline"}
-                  size="sm"
                   onClick={() => setShowHeroBackground(true)}
                 >
                   On
@@ -175,7 +171,6 @@ export function CurrentConditionsDemo() {
                 <CurrentConditionsCard
                   conditions={displayConditions}
                   location={displayLocation}
-                  size="sm"
                   showHeroBackground={showHeroBackground}
                 />
               </div>
@@ -184,7 +179,6 @@ export function CurrentConditionsDemo() {
                 <CurrentConditionsCard
                   conditions={displayConditions}
                   location={displayLocation}
-                  size="md"
                   showHeroBackground={showHeroBackground}
                 />
               </div>
@@ -193,7 +187,6 @@ export function CurrentConditionsDemo() {
                 <CurrentConditionsCard
                   conditions={displayConditions}
                   location={displayLocation}
-                  size="lg"
                   showHeroBackground={showHeroBackground}
                 />
               </div>
@@ -209,8 +202,6 @@ export function CurrentConditionsDemo() {
                 <CurrentConditionsCard
                   conditions={displayConditions}
                   location={displayLocation}
-                  size="md"
-                  showApparentTemp={false}
                   showHeroBackground={showHeroBackground}
                 />
               </div>
@@ -219,7 +210,6 @@ export function CurrentConditionsDemo() {
                 <CurrentConditionsCard
                   conditions={displayConditions}
                   location={displayLocation}
-                  size="md"
                   className="border-primary shadow-primary/20"
                   showHeroBackground={showHeroBackground}
                 />

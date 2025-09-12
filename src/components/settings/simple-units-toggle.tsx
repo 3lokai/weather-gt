@@ -60,7 +60,7 @@ export function SimpleUnitsToggle({
       setUnits({
         temperature: 'fahrenheit',
         windSpeed: 'mph',
-        precipitation: 'inch',
+        precipitation: 'in',
         pressure: 'inHg'
       });
     } else {

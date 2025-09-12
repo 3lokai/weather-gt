@@ -22,15 +22,6 @@ const meta: Meta<typeof CurrentConditionsCard> = {
       control: 'object',
       description: 'Location information for display',
     },
-    size: {
-      control: 'select',
-      options: ['sm', 'md', 'lg'],
-      description: 'Size variant for the card',
-    },
-    showApparentTemp: {
-      control: 'boolean',
-      description: 'Show apparent temperature (feels like)',
-    },
     showHeroBackground: {
       control: 'boolean',
       description: 'Enable weather hero background',
@@ -113,14 +104,12 @@ export const Default: Story = {
   args: {
     conditions: clearConditions,
     location: mockWeatherData.bangalore.location,
-    size: 'md',
-    showApparentTemp: true,
     showHeroBackground: false,
   },
   parameters: {
     docs: {
       description: {
-        story: 'Default current conditions card with clear weather and apparent temperature.',
+        story: 'Default current conditions card with clear weather and new two-column layout.',
       },
     },
   },
@@ -130,14 +119,12 @@ export const ClearWeather: Story = {
   args: {
     conditions: clearConditions,
     location: mockWeatherData.bangalore.location,
-    size: 'md',
-    showApparentTemp: true,
     showHeroBackground: false,
   },
   parameters: {
     docs: {
       description: {
-        story: 'Current conditions card showing clear weather conditions.',
+        story: 'Current conditions card showing clear weather conditions with new layout.',
       },
     },
   },
@@ -147,14 +134,12 @@ export const RainWeather: Story = {
   args: {
     conditions: rainConditions,
     location: mockWeatherData.london.location,
-    size: 'md',
-    showApparentTemp: true,
     showHeroBackground: false,
   },
   parameters: {
     docs: {
       description: {
-        story: 'Current conditions card showing rainy weather with precipitation probability.',
+        story: 'Current conditions card showing rainy weather with precipitation probability and new layout.',
       },
     },
   },
@@ -164,14 +149,12 @@ export const SnowWeather: Story = {
   args: {
     conditions: snowConditions,
     location: mockWeatherData.reykjavik.location,
-    size: 'md',
-    showApparentTemp: true,
     showHeroBackground: false,
   },
   parameters: {
     docs: {
       description: {
-        story: 'Current conditions card showing snowy weather conditions.',
+        story: 'Current conditions card showing snowy weather conditions with new layout.',
       },
     },
   },
@@ -181,14 +164,12 @@ export const ThunderWeather: Story = {
   args: {
     conditions: thunderConditions,
     location: mockWeatherData.miami.location,
-    size: 'md',
-    showApparentTemp: true,
     showHeroBackground: false,
   },
   parameters: {
     docs: {
       description: {
-        story: 'Current conditions card showing thunderstorm weather at night.',
+        story: 'Current conditions card showing thunderstorm weather at night with new layout.',
       },
     },
   },
@@ -198,76 +179,22 @@ export const CloudyWeather: Story = {
   args: {
     conditions: cloudyConditions,
     location: mockWeatherData.bangalore.location,
-    size: 'md',
-    showApparentTemp: true,
     showHeroBackground: false,
   },
   parameters: {
     docs: {
       description: {
-        story: 'Current conditions card showing cloudy weather conditions.',
+        story: 'Current conditions card showing cloudy weather conditions with new layout.',
       },
     },
   },
 };
 
-export const SmallSize: Story = {
-  args: {
-    conditions: clearConditions,
-    location: mockWeatherData.bangalore.location,
-    size: 'sm',
-    showApparentTemp: true,
-    showHeroBackground: false,
-  },
-  parameters: {
-    docs: {
-      description: {
-        story: 'Small size variant of the current conditions card.',
-      },
-    },
-  },
-};
-
-export const LargeSize: Story = {
-  args: {
-    conditions: clearConditions,
-    location: mockWeatherData.bangalore.location,
-    size: 'lg',
-    showApparentTemp: true,
-    showHeroBackground: false,
-  },
-  parameters: {
-    docs: {
-      description: {
-        story: 'Large size variant of the current conditions card.',
-      },
-    },
-  },
-};
-
-export const WithoutApparentTemp: Story = {
-  args: {
-    conditions: clearConditions,
-    location: mockWeatherData.bangalore.location,
-    size: 'md',
-    showApparentTemp: false,
-    showHeroBackground: false,
-  },
-  parameters: {
-    docs: {
-      description: {
-        story: 'Current conditions card without apparent temperature display.',
-      },
-    },
-  },
-};
 
 export const WithHeroBackground: Story = {
   args: {
     conditions: clearConditions,
     location: mockWeatherData.bangalore.location,
-    size: 'md',
-    showApparentTemp: true,
     showHeroBackground: true,
     heroBackgroundOpacity: 0.4,
   },
@@ -284,8 +211,6 @@ export const HeroBackgroundRain: Story = {
   args: {
     conditions: rainConditions,
     location: mockWeatherData.london.location,
-    size: 'md',
-    showApparentTemp: true,
     showHeroBackground: true,
     heroBackgroundOpacity: 0.6,
   },
@@ -302,8 +227,6 @@ export const LightTheme: Story = {
   args: {
     conditions: clearConditions,
     location: mockWeatherData.bangalore.location,
-    size: 'md',
-    showApparentTemp: true,
     showHeroBackground: false,
   },
   parameters: {
@@ -322,8 +245,6 @@ export const DarkTheme: Story = {
   args: {
     conditions: clearConditions,
     location: mockWeatherData.bangalore.location,
-    size: 'md',
-    showApparentTemp: true,
     showHeroBackground: false,
   },
   parameters: {
@@ -342,8 +263,6 @@ export const Mobile: Story = {
   args: {
     conditions: clearConditions,
     location: mockWeatherData.bangalore.location,
-    size: 'md',
-    showApparentTemp: true,
     showHeroBackground: false,
   },
   parameters: {
@@ -362,8 +281,6 @@ export const Tablet: Story = {
   args: {
     conditions: clearConditions,
     location: mockWeatherData.bangalore.location,
-    size: 'md',
-    showApparentTemp: true,
     showHeroBackground: false,
   },
   parameters: {
@@ -382,8 +299,6 @@ export const Desktop: Story = {
   args: {
     conditions: clearConditions,
     location: mockWeatherData.bangalore.location,
-    size: 'md',
-    showApparentTemp: true,
     showHeroBackground: false,
   },
   parameters: {

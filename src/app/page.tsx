@@ -150,7 +150,6 @@ export default function HomePage() {
                       longitude: 0,
                       timezone: 'UTC'
                     }}
-                    size="sm"
                     className="glass-hover"
                   />
                 </div>

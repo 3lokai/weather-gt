@@ -221,11 +221,11 @@ function HourlyListItem({ data, isActive, onClick }: {
       </div>
       
       {/* Weather Icon */}
-      <div className="w-10 h-10 flex items-center justify-center">
+      <div className="w-16 h-16 flex items-center justify-center">
         <LottieWeatherIcon 
           code={data.weatherCode} 
           isDay={data.isDay}
-          size={28}
+          size={48}
           className="text-foreground"
         />
       </div>
@@ -345,31 +345,7 @@ export function HourlyPanelChart({
   return (
     <Card className={cn("p-6", className)}>
       <div className="mb-4">
-        <h3 className="text-lg font-semibold mb-2">Hourly Forecast</h3>
-        <div className="flex gap-2">
-          <button
-            onClick={() => onViewModeChange?.('chart')}
-            className={cn(
-              "px-3 py-1 rounded-md text-sm font-medium transition-colors",
-              viewMode === 'chart' 
-                ? "bg-primary text-primary-foreground" 
-                : "bg-muted text-muted-foreground hover:bg-muted/80"
-            )}
-          >
-            Chart View
-          </button>
-          <button
-            onClick={() => onViewModeChange?.('list')}
-            className={cn(
-              "px-3 py-1 rounded-md text-sm font-medium transition-colors",
-              viewMode === 'list' 
-                ? "bg-primary text-primary-foreground" 
-                : "bg-muted text-muted-foreground hover:bg-muted/80"
-            )}
-          >
-            List View
-          </button>
-        </div>
+        <h3 className="text-lg font-semibold">Hourly Forecast</h3>
       </div>
       
       {viewMode === 'chart' ? (
@@ -428,7 +404,7 @@ export function HourlyPanelChart({
           </ResponsiveContainer>
         </div>
       ) : (
-        <div className="space-y-1 max-h-96 overflow-y-auto">
+        <div className={cn("space-y-1 overflow-y-auto", className?.includes('flex-1') ? "flex-1" : "max-h-96")}>
           {processedData.map((data, index) => (
             <HourlyListItem
               key={data.time}
@@ -439,22 +415,6 @@ export function HourlyPanelChart({
           ))}
         </div>
       )}
-      
-      {/* Legend */}
-      <div className="mt-4 flex items-center justify-center gap-6 text-sm text-muted-foreground">
-        <div className="flex items-center gap-2">
-          <div className="w-3 h-3 bg-primary rounded-full" />
-          <span>Temperature</span>
-        </div>
-        <div className="flex items-center gap-2">
-          <div className="w-3 h-3 bg-blue-200 rounded-full" />
-          <span>Cold</span>
-        </div>
-        <div className="flex items-center gap-2">
-          <div className="w-3 h-3 bg-orange-200 rounded-full" />
-          <span>Hot</span>
-        </div>
-      </div>
     </Card>
   );
 }

@@ -16,7 +16,7 @@ export interface Location {
 export interface Units {
   temperature: 'celsius' | 'fahrenheit';
   windSpeed: 'kmh' | 'mph';
-  precipitation: 'mm' | 'inch';
+  precipitation: 'mm' | 'in';
   pressure: 'hPa' | 'inHg';
   timeFormat: '12h' | '24h';
 }

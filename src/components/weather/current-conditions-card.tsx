@@ -1,11 +1,14 @@
 'use client';
 
 import { useRef } from 'react';
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import { LottieWeatherIcon } from "@/components/icons/lottie-weather-icon";
 import { LottieTemperature, LottiePrecipitationProbability } from "@/components/common/lottie-metric";
+import { Icon } from "@/components/icons/phosphor-icon";
 import { getWeatherCondition } from "@/lib/api/open-meteo";
 import { useWeatherStore, type Location } from "@/lib/store/weather-store";
+import { formatDateTime } from "@/lib/utils/units";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 
@@ -24,10 +27,6 @@ export interface CurrentConditionsCardProps {
   location: Location;
   /** Additional CSS classes */
   className?: string;
-  /** Size variant for the card */
-  size?: 'sm' | 'md' | 'lg';
-  /** Show apparent temperature */
-  showApparentTemp?: boolean;
   /** Enable weather hero background */
   showHeroBackground?: boolean;
   /** Hero background opacity (0-1) */
@@ -38,8 +37,6 @@ export function CurrentConditionsCard({
   conditions,
   location,
   className,
-  size = 'md',
-  showApparentTemp = true,
   showHeroBackground = false,
   heroBackgroundOpacity = 0.4
 }: CurrentConditionsCardProps) {
@@ -66,39 +63,16 @@ export function CurrentConditionsCard({
     return `${loc.name}, ${loc.country}`;
   };
 
-  // Size-based styling with responsive aspect ratios
-  const sizeStyles = {
-    sm: {
-      card: "py-4 aspect-square md:aspect-[16/9]",
-      icon: 64,
-      tempSize: "text-4xl",
-      locationSize: "text-sm",
-      conditionSize: "text-xs"
-    },
-    md: {
-      card: "py-6 aspect-square md:aspect-[16/9]", 
-      icon: 96,
-      tempSize: "text-6xl",
-      locationSize: "text-base",
-      conditionSize: "text-sm"
-    },
-    lg: {
-      card: "py-8 aspect-square md:aspect-[16/9]",
-      icon: 128,
-      tempSize: "text-8xl",
-      locationSize: "text-lg", 
-      conditionSize: "text-base"
-    }
-  };
-
-  const styles = sizeStyles[size];
+  // Get current date and time
+  const currentDateTime = new Date();
+  const formattedDateTime = formatDateTime(currentDateTime, units.timeFormat);
 
   return (
     <Card
       ref={cardRef}
       className={cn(
-        "relative overflow-hidden transition-all duration-300 hover:shadow-lg flex flex-col",
-        styles.card,
+        "relative overflow-hidden transition-all duration-300 hover:shadow-lg",
+        "p-6 min-h-[200px] md:min-h-[240px]",
         className
       )}
       role="region"
@@ -129,102 +103,107 @@ export function CurrentConditionsCard({
           />
         </div>
       )}
-      <CardHeader className="relative z-10 text-center space-y-1 md:space-y-2">
-        {/* Location */}
-        <div 
-          className={cn(
-            "font-medium text-muted-foreground",
-            styles.locationSize
-          )}
-          aria-label={`Location: ${formatLocation(location)}`}
+
+      {/* Action Buttons - Top Right */}
+      <div className="absolute top-4 right-4 z-20 flex gap-2">
+        <Button
+          variant="ghost"
+          className="h-16 w-16 text-muted-foreground hover:text-orange-500 hover:bg-orange-50 dark:hover:bg-orange-950/20 active:text-red-500 active:bg-red-50 dark:active:bg-red-950/20 transition-all duration-200"
+          aria-label="Add to favorites"
+          onClick={() => {
+            // TODO: Implement favorites functionality in E4-02
+            console.log('Heart clicked - favorites functionality to be implemented');
+          }}
         >
-          {formatLocation(location)}
-        </div>
-      </CardHeader>
-
-      <CardContent className="relative z-10 text-center space-y-2 md:space-y-4 flex-1 flex flex-col justify-center">
-        {/* Weather Icon */}
-        <div className="flex justify-center">
-          <LottieWeatherIcon
-            code={conditions.weather_code}
-            isDay={conditions.is_day}
-            size={styles.icon}
-            className="drop-shadow-lg"
-            enhancedStyling={showHeroBackground}
-            customFilter={showHeroBackground ? 'drop-shadow(0 6px 12px rgba(0,0,0,0.15))' : undefined}
-            aria-hidden="true"
-          />
-        </div>
-
-        {/* Current Temperature */}
-        <div 
-          className={cn(
-            "font-bold text-foreground leading-none",
-            styles.tempSize
-          )}
-          aria-label={`Current temperature: ${formatTemperature(conditions.temperature_2m)}`}
+          <Icon name="Heart" size={32} className="size-8" />
+        </Button>
+        <Button
+          variant="ghost"
+          className="h-16 w-16 text-muted-foreground hover:text-blue-500 hover:bg-blue-50 dark:hover:bg-blue-950/20 active:text-blue-600 active:bg-blue-100 dark:active:bg-blue-900/30 transition-all duration-200"
+          aria-label="Share weather"
+          onClick={() => {
+            // TODO: Implement share functionality in E7-02
+            console.log('Share clicked - share functionality to be implemented');
+          }}
         >
-          <LottieTemperature
-            value={conditions.temperature_2m}
-            unit={units.temperature}
-            duration={180}
-            className="inline-block"
-            showLottie={true}
-            lottieSize={32}
-          />
+          <Icon name="Share" size={32} className="size-8" />
+        </Button>
+      </div>
+
+      <CardContent className="relative z-10 h-full flex flex-col md:flex-row md:items-center md:justify-between gap-6 md:gap-8">
+        {/* Left Side - Location and Time Information */}
+        <div className="flex-1 space-y-2">
+          {/* Location Name */}
+          <h2 className="text-2xl md:text-3xl font-bold text-foreground leading-tight">
+            {location.name}
+          </h2>
+          
+          {/* Country/Admin */}
+          <p className="text-lg text-muted-foreground">
+            {[location.admin1, location.country].filter(Boolean).join(', ')}
+          </p>
+          
+          {/* Date and Time */}
+          <p className="text-base text-muted-foreground">
+            {formattedDateTime}
+          </p>
         </div>
 
-        {/* Weather Condition */}
-        <div 
-          className={cn(
-            "font-medium text-muted-foreground capitalize",
-            styles.conditionSize
-          )}
-          aria-label={`Weather condition: ${condition}`}
-        >
-          {condition}
-        </div>
-
-        {/* Apparent Temperature */}
-        {showApparentTemp && (
-          <div 
-            className={cn(
-              "text-muted-foreground",
-              size === 'sm' ? 'text-xs' : 'text-sm'
-            )}
-            aria-label={`Feels like ${formatTemperature(conditions.apparent_temperature)}`}
-          >
-            Feels like{' '}
-            <LottieTemperature
-              value={conditions.apparent_temperature}
-              unit={units.temperature}
-              duration={180}
-              className="inline-block"
-              showLottie={true}
-              lottieSize={20}
+        {/* Right Side - Weather Visual and Temperature */}
+        <div className="flex flex-col items-center md:items-end space-y-3">
+          {/* Weather Icon */}
+          <div className="flex justify-center">
+            <LottieWeatherIcon
+              code={conditions.weather_code}
+              isDay={conditions.is_day}
+              size={150}
+              className="drop-shadow-lg"
+              enhancedStyling={showHeroBackground}
+              customFilter={showHeroBackground ? 'drop-shadow(0 6px 12px rgba(0,0,0,0.15))' : undefined}
+              aria-hidden="true"
             />
           </div>
-        )}
 
-        {/* Precipitation Probability */}
-        {conditions.precipitation_probability !== undefined && conditions.precipitation_probability > 0 && (
+          {/* Temperature */}
           <div 
-            className={cn(
-              "text-blue-600 dark:text-blue-400 font-medium",
-              size === 'sm' ? 'text-xs' : 'text-sm'
-            )}
-            aria-label={`${Math.round(conditions.precipitation_probability)}% chance of precipitation`}
+            className="flex justify-center md:justify-end"
+            aria-label={`Current temperature: ${formatTemperature(conditions.temperature_2m)}`}
           >
-            <LottiePrecipitationProbability
-              value={conditions.precipitation_probability}
+            <LottieTemperature
+              value={conditions.temperature_2m}
+              unit={units.temperature}
               duration={180}
-              className="inline-block"
+              className="text-4xl md:text-5xl font-bold text-foreground leading-none"
               showLottie={true}
-              lottieSize={20}
-            />{' '}
-            chance of rain
+              lottieSize={24}
+            />
           </div>
-        )}
+
+          {/* Weather Condition */}
+          <p 
+            className="text-lg font-medium text-muted-foreground capitalize text-center md:text-right"
+            aria-label={`Weather condition: ${condition}`}
+          >
+            {condition}
+          </p>
+
+          {/* Chance of Rain */}
+          {conditions.precipitation_probability !== undefined && conditions.precipitation_probability > 0 && (
+            <div 
+              className="flex justify-center md:justify-end text-blue-600 dark:text-blue-400 font-medium"
+              aria-label={`${Math.round(conditions.precipitation_probability)}% chance of precipitation`}
+            >
+              <LottiePrecipitationProbability
+                value={conditions.precipitation_probability}
+                duration={180}
+                className="text-base"
+                showLottie={true}
+                lottieSize={20}
+              />
+              <span className="ml-2">chance of rain</span>
+            </div>
+          )}
+        </div>
       </CardContent>
     </Card>
   );

@@ -12,13 +12,21 @@ import {
   MetricsGrid, 
   SevenDayForecastRail, 
   HourlyPanelChart,
+  AirQualityPanel,
+  PollenPanel,
   WeatherDataProvider
 } from "@/components/weather";
 import { useWeatherStore } from "@/lib/store/weather-store";
+import { useAirQuality } from "@/hooks/use-air-quality";
+import { usePollen } from "@/hooks/use-pollen";
 
 export default function AppPage() {
   // Get selected location from store
   const { selectedLocation } = useWeatherStore();
+  
+  // Fetch air quality and pollen data
+  const { airQuality, isLoading: airQualityLoading, error: airQualityError } = useAirQuality();
+  const { pollen, isLoading: pollenLoading, error: pollenError } = usePollen();
 
   return (
     <SearchProvider>
@@ -98,79 +106,112 @@ export default function AppPage() {
         {/* Main Content - Responsive Layout */}
         <main className="container mx-auto px-4 py-8 sm:py-12 pointer-events-auto">
           {/* Hero Section with Search */}
-          <section className="text-center mb-12 max-w-4xl mx-auto">
+          <section className="text-center mb-16 max-w-4xl mx-auto">
             {/* Hero Headline */}
-            <h2 className="text-display sm:text-temp-s font-display text-foreground mb-6 sm:mb-8">
+            <h2 className="text-display sm:text-temp-s font-display text-foreground mb-8 sm:mb-10">
               How&apos;s the sky looking today?
             </h2>
             
             {/* Search Interface */}
-            <div className="max-w-2xl mx-auto mb-8">
+            <div className="max-w-2xl mx-auto mb-12">
               <InlineSearch placeholder="Search for a place..." />
             </div>
-
-            {/* Subtitle */}
-            <p className="text-h4 text-muted-foreground max-w-2xl mx-auto">
-              {selectedLocation ? 
-                `Current conditions and forecast for ${selectedLocation.name}` :
-                'Get detailed weather information for any city worldwide'
-              }
-            </p>
           </section>
 
-          {/* Weather Content - Responsive Grid Layout */}
-          <WeatherDataProvider>
-            {({ weather, isLoading, isError, error }) => (
-              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8 max-w-7xl mx-auto">
-                {/* Main Content Area - Left Column (Desktop) / Full Width (Mobile) */}
-                <div className="lg:col-span-2 space-y-6 lg:space-y-8">
-                  {/* Current Weather Card */}
-                  <section>
-                    <RealWeatherConditions />
-                  </section>
+           {/* Weather Content - Responsive Grid Layout */}
+           <WeatherDataProvider>
+             {({ weather, isLoading, isError, error }) => (
+               <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8 max-w-7xl mx-auto">
+                 {/* Main Content Area - Left Column (Desktop) / Full Width (Mobile) */}
+                 <div className="lg:col-span-2 space-y-6 lg:space-y-8">
+                   {/* Current Weather Card */}
+                   <section>
+                     <RealWeatherConditions />
+                   </section>
 
-                  {/* Metrics Grid */}
-                  <section>
-                    <MetricsGrid 
-                      weather={weather?.current} 
-                      hourlyWeather={weather?.hourly}
-                      isLoading={isLoading}
-                      error={error}
-                    />
-                  </section>
+                   {/* Metrics Grid */}
+                   <section>
+                     <MetricsGrid 
+                       weather={weather?.current} 
+                       hourlyWeather={weather?.hourly}
+                       isLoading={isLoading}
+                       error={error}
+                       size="lg"
+                     />
+                   </section>
 
-                  {/* Daily Forecast */}
-                  <section>
-                    <SevenDayForecastRail 
-                      dailyData={weather?.daily ? weather.daily.time.map((time: string, index: number) => ({
-                        time,
-                        weather_code: weather.daily.weather_code[index],
-                        temperature_2m_max: weather.daily.temperature_2m_max[index],
-                        temperature_2m_min: weather.daily.temperature_2m_min[index],
-                        precipitation_probability_max: weather.daily.precipitation_probability_max[index],
-                        is_day: true // Daily forecasts are typically shown as day conditions
-                      })) : []}
-                    />
-                  </section>
-                </div>
-
-                {/* Hourly Forecast Sidebar - Right Column (Desktop) / Full Width (Mobile) */}
-                <div className="lg:col-span-1">
-                  <section className="lg:sticky lg:top-8">
-                    {weather?.hourly && (
-                      <HourlyPanelChart 
-                        hourlyData={weather.hourly}
-                        selectedDayIndex={0}
-                        temperatureUnit="celsius"
-                        timeFormat="12h"
-                        viewMode="list"
+                    {/* Daily Forecast */}
+                    <section className="space-y-4">
+                      <div className="flex items-center justify-between">
+                        <h2 className="text-xl font-semibold text-foreground">
+                          Daily Forecast
+                        </h2>
+                      </div>
+                      <SevenDayForecastRail 
+                        dailyData={weather?.daily ? weather.daily.time.map((time: string, index: number) => ({
+                          time,
+                          weather_code: weather.daily.weather_code[index],
+                          temperature_2m_max: weather.daily.temperature_2m_max[index],
+                          temperature_2m_min: weather.daily.temperature_2m_min[index],
+                          precipitation_probability_max: weather.daily.precipitation_probability_max[index],
+                          is_day: true // Daily forecasts are typically shown as day conditions
+                        })) : []}
                       />
-                    )}
-                  </section>
-                </div>
-              </div>
-            )}
-          </WeatherDataProvider>
+                    </section>
+
+                    {/* Air Quality Index */}
+                    <section className="space-y-4">
+                      <div className="flex items-center justify-between">
+                        <h2 className="text-xl font-semibold text-foreground">
+                          Air Quality
+                        </h2>
+                      </div>
+                      <AirQualityPanel 
+                        airQuality={airQuality || null}
+                        isLoading={airQualityLoading}
+                        error={airQualityError}
+                        size="sm"
+                        layout="grid"
+                      />
+                    </section>
+
+                    {/* Pollen Information */}
+                    <section className="space-y-4">
+                      <div className="flex items-center justify-between">
+                        <h2 className="text-xl font-semibold text-foreground">
+                          Pollen Count
+                        </h2>
+                      </div>
+                      <PollenPanel 
+                        pollen={pollen || null}
+                        isLoading={pollenLoading}
+                        error={pollenError}
+                        size="sm"
+                        layout="grid"
+                      />
+                    </section>
+                 </div>
+
+                 {/* Hourly Forecast Sidebar - Right Column (Desktop) / Full Width (Mobile) */}
+                 <div className="lg:col-span-1 lg:flex lg:flex-col">
+                   <section className="lg:sticky lg:top-8 lg:flex-1 lg:flex lg:flex-col lg:max-h-[600px]">
+                     {weather?.hourly && (
+                       <div className="lg:h-full lg:flex lg:flex-col">
+                         <HourlyPanelChart 
+                           hourlyData={weather.hourly}
+                           selectedDayIndex={0}
+                           temperatureUnit="celsius"
+                           timeFormat="12h"
+                           viewMode="list"
+                           className="lg:flex-1 lg:max-h-[900px]"
+                         />
+                       </div>
+                     )}
+                   </section>
+                 </div>
+               </div>
+             )}
+           </WeatherDataProvider>
         </main>
       </div>
     </div>

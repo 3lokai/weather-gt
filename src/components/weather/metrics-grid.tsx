@@ -1,11 +1,13 @@
 'use client';
 
+import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { LottieTemperature, LottieWindSpeed, LottiePrecipitation, LottiePressure, LottieCloudCover, LottiePrecipitationProbability, LottieHumidity, LottieUVIndex, LottieVisibility } from "@/components/common/lottie-metric";
 import { useWeatherStore } from "@/lib/store/weather-store";
 import { cn } from "@/lib/utils";
 import { CurrentWeather, HourlyWeather } from "@/lib/api/open-meteo";
 import { calculatePressureTrend, formatTrendDisplay, getTrendColorClass } from "@/lib/utils/trend-calculator";
+import { CaretDown } from "@phosphor-icons/react";
 
 export interface MetricsGridProps {
   /** Current weather data containing all metrics */
@@ -175,6 +177,7 @@ export function MetricsGrid({
   showExtendedMetrics = false
 }: MetricsGridProps) {
   const { units } = useWeatherStore();
+  const [isExtendedVisible, setIsExtendedVisible] = useState(showExtendedMetrics);
 
   // Size-based styling
   const sizeStyles = {
@@ -209,7 +212,7 @@ export function MetricsGrid({
     if (!metric.isExtended) return true;
     
     // Show extended metrics only if enabled
-    if (!showExtendedMetrics) return false;
+    if (!isExtendedVisible) return false;
     
     // Check conditional display for metrics like wind gusts
     if (metric.conditionalDisplay && weather) {
@@ -408,6 +411,31 @@ export function MetricsGrid({
           </Card>
         );
       })}
+      
+      {/* Toggle button for extended metrics */}
+      {metricConfigs.some(metric => metric.isExtended) && (
+        <div className="col-span-full flex justify-end mt-2">
+          <button
+            onClick={() => setIsExtendedVisible(!isExtendedVisible)}
+            className={cn(
+              "flex items-center gap-1 px-3 py-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors rounded-md hover:bg-muted/50",
+              "focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+            )}
+            aria-label={isExtendedVisible ? "Hide additional metrics" : "Show additional metrics"}
+          >
+            <span className="text-xs">
+              {isExtendedVisible ? "Show less" : "Show more"}
+            </span>
+            <CaretDown 
+              size={12} 
+              className={cn(
+                "transition-transform duration-200",
+                isExtendedVisible ? "rotate-180" : "rotate-0"
+              )}
+            />
+          </button>
+        </div>
+      )}
     </div>
   );
 }

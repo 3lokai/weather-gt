@@ -80,7 +80,6 @@ export function RealWeatherConditions() {
               precipitation_probability: weather.current.precipitation_probability,
             }}
             location={selectedLocation}
-            size="lg"
             className="glass-clear glass-hover"
             showHeroBackground={true}
             heroBackgroundOpacity={0.6}

@@ -184,7 +184,7 @@ export async function getWeatherForecast(
   units: {
     temperature: 'celsius' | 'fahrenheit';
     windSpeed: 'kmh' | 'mph';
-    precipitation: 'mm' | 'inch';
+    precipitation: 'mm' | 'in';
     pressure: 'hPa' | 'inHg';
   }
 ): Promise<WeatherForecast> {
