@@ -39,13 +39,6 @@ Final polish, demo features, and quality gates for production readiness.
 * Accessible; can be disabled in Settings.
   **Deps**: Relevant features.
 
-### E7-05 (P1) Storybook Mini
-
-**Desc**: 5–6 key components documented with props and states.
-**Acceptance**
-
-* Snapshots for tokens, cards, daily chips, hourly chart, search.
-  **Deps**: Components exist.
 
 ### E7-06 (P0) Quality Gates
 

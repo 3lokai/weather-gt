@@ -237,7 +237,7 @@ export async function getWeatherForecast(
     timeformat: 'iso8601',
     timezone: 'auto',
     forecast_days: '7',
-    past_days: '0',
+    past_days: '2',
   });
 
   const response = await fetch(`${FORECAST_BASE_URL}/forecast?${params}`);

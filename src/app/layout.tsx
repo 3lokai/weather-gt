@@ -3,6 +3,7 @@ import { DM_Sans, Bricolage_Grotesque } from "next/font/google";
 import { QueryProvider } from "@/lib/providers/query-provider";
 import { ThemeProvider } from "@/lib/providers/theme-provider";
 import { CacheInvalidationProvider } from "@/components/providers/cache-invalidation-provider";
+import { Toaster } from "@/components/ui/sonner";
 import "./globals.css";
 
 const dmSans = DM_Sans({
@@ -41,6 +42,7 @@ export default function RootLayout({
           <QueryProvider>
             <CacheInvalidationProvider>
               {children}
+              <Toaster />
             </CacheInvalidationProvider>
           </QueryProvider>
         </ThemeProvider>

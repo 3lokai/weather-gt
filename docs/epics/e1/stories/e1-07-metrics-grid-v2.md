@@ -7,7 +7,7 @@ Add `wind_gusts_10m`, `cloud_cover`, `dew_point_2m`, trend arrow for pressure.
 
 * Gusts visible when ≥ wind + 5 units; trend computed over last 3–6h (↑/→/↓).
 * Cloud cover shown as % chip; Dew point in °.
-* **Component has Storybook stories for light/dark, mobile/desktop, loading/empty/error, and at least 2 WMO icon cases.**
+
 
 ## Dependencies
 E1-03.

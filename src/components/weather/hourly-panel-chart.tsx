@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useState, useCallback } from 'react';
+import { useMemo, useState, useCallback, useEffect, useRef } from 'react';
 import { 
   ComposedChart, 
   Line, 
@@ -17,6 +17,7 @@ import { useWeatherStore } from '@/lib/store/weather-store';
 import { type HourlyWeather } from '@/lib/api/open-meteo';
 import { getWeatherCondition } from '@/lib/api/open-meteo';
 import { cn } from '@/lib/utils';
+import { mapSelectedDayToHourlyIndices } from '@/lib/utils/weather-data-mapping';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Icon } from '@/components/icons/phosphor-icon';
@@ -37,6 +38,8 @@ export interface HourlyPanelChartProps {
   viewMode?: 'chart' | 'list';
   /** Callback when view mode changes */
   onViewModeChange?: (mode: 'chart' | 'list') => void;
+  /** Current time for highlighting current hour */
+  currentTime?: Date;
 }
 
 export interface HourlyDataPoint {
@@ -199,7 +202,7 @@ function ComfortBands({ data }: { data: HourlyDataPoint[] }) {
 
 // List view item component
 function HourlyListItem({ data, isActive, onClick }: { 
-  data: HourlyDataPoint; 
+  data: HourlyDataPoint & { isCurrentHour: boolean }; 
   isActive: boolean; 
   onClick: () => void;
 }) {
@@ -211,13 +214,22 @@ function HourlyListItem({ data, isActive, onClick }: {
       className={cn(
         "flex items-center gap-4 p-4 rounded-lg transition-all duration-200 w-full text-left",
         "hover:bg-muted/50 focus:bg-muted/50 focus:outline-none focus:ring-2 focus:ring-primary/20",
-        isActive && "bg-primary/10 ring-2 ring-primary/20"
+        isActive && "bg-primary/10 ring-2 ring-primary/20",
+        data.isCurrentHour && "bg-primary/10 border-2 border-primary/50 shadow-lg shadow-primary/20 ring-2 ring-primary/30"
       )}
-      aria-label={`Weather at ${data.hour}: ${data.temperature}°, ${condition}`}
+      aria-label={`Weather at ${data.hour}: ${data.temperature}°, ${condition}${data.isCurrentHour ? ' (current hour)' : ''}`}
     >
       {/* Time */}
-      <div className="w-16 text-sm font-medium text-muted-foreground">
-        {data.hour}
+      <div className="w-20 text-sm font-medium whitespace-nowrap flex items-center gap-2">
+        {data.isCurrentHour && (
+          <div className="w-2 h-2 bg-primary rounded-full animate-pulse" />
+        )}
+        <span className={cn(
+          "text-muted-foreground",
+          data.isCurrentHour && "text-primary font-semibold"
+        )}>
+          {data.hour}
+        </span>
       </div>
       
       {/* Weather Icon */}
@@ -255,23 +267,34 @@ export function HourlyPanelChart({
   timeFormat,
   className,
   viewMode = 'chart',
-  onViewModeChange
+  onViewModeChange,
+  currentTime = new Date()
 }: HourlyPanelChartProps) {
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const [currentHourIndex, setCurrentHourIndex] = useState<number | null>(null);
+  const listRef = useRef<HTMLDivElement>(null);
   
   // Process hourly data for the selected day
   const processedData = useMemo(() => {
     if (!hourlyData || !hourlyData.time || !Array.isArray(hourlyData.time)) return [];
     
-    // Get 24 hours starting from the selected day
-    const startIndex = selectedDayIndex * 24;
-    const endIndex = startIndex + 24;
+    // Get the correct hourly data indices for the selected day
+    const { startIndex, endIndex } = mapSelectedDayToHourlyIndices(
+      selectedDayIndex,
+      currentTime,
+      hourlyData.time
+    );
     
     // Ensure we don't go beyond available data
     if (startIndex >= hourlyData.time.length) return [];
     
     const dayData = hourlyData.time.slice(startIndex, endIndex);
+    
+    // Find current hour index within the selected day's data
+    const currentHour = currentTime.getHours();
+    const currentDate = currentTime.toDateString();
+    let foundCurrentHourIndex: number | null = null;
     
     return dayData.map((time, index) => {
       const actualIndex = startIndex + index;
@@ -288,6 +311,15 @@ export function HourlyPanelChart({
       const precipitation = hourlyData.precipitation?.[actualIndex] || 0;
       const precipitationProbability = hourlyData.precipitation_probability?.[actualIndex] || 0;
       const weatherCode = hourlyData.weather_code?.[actualIndex] || 0;
+      
+      // Check if this is the current hour (only for today)
+      const isCurrentHour = selectedDayIndex === 0 && 
+                           date.toDateString() === currentDate && 
+                           date.getHours() === currentHour;
+      
+      if (isCurrentHour) {
+        foundCurrentHourIndex = index;
+      }
       
       // Determine comfort level
       let comfortLevel: 'cold' | 'pleasant' | 'hot' = 'pleasant';
@@ -309,10 +341,37 @@ export function HourlyPanelChart({
         precipitationProbability: Math.round(precipitationProbability),
         weatherCode,
         isDay,
-        comfortLevel
-      } as HourlyDataPoint;
-    }).filter(Boolean) as HourlyDataPoint[];
-  }, [hourlyData, selectedDayIndex, timeFormat]);
+        comfortLevel,
+        isCurrentHour
+      } as HourlyDataPoint & { isCurrentHour: boolean };
+    }).filter(Boolean) as (HourlyDataPoint & { isCurrentHour: boolean })[];
+  }, [hourlyData, selectedDayIndex, timeFormat, currentTime]);
+  
+  // Set current hour index when data changes
+  useEffect(() => {
+    const currentIndex = processedData.findIndex(item => item.isCurrentHour);
+    setCurrentHourIndex(currentIndex >= 0 ? currentIndex : null);
+  }, [processedData]);
+  
+  // Auto-scroll to current hour when in list view
+  useEffect(() => {
+    if (viewMode === 'list' && currentHourIndex !== null && listRef.current) {
+      const listElement = listRef.current;
+      const currentHourElement = listElement.children[currentHourIndex] as HTMLElement;
+      
+      if (currentHourElement) {
+        // Scroll to center the current hour in the viewport
+        const listRect = listElement.getBoundingClientRect();
+        const elementRect = currentHourElement.getBoundingClientRect();
+        const scrollTop = listElement.scrollTop + elementRect.top - listRect.top - (listRect.height / 2) + (elementRect.height / 2);
+        
+        listElement.scrollTo({
+          top: scrollTop,
+          behavior: 'smooth'
+        });
+      }
+    }
+  }, [viewMode, currentHourIndex]);
   
   // Chart event handlers
   const handleMouseMove = useCallback((data: any) => {
@@ -345,7 +404,15 @@ export function HourlyPanelChart({
   return (
     <Card className={cn("p-6", className)}>
       <div className="mb-4">
-        <h3 className="text-lg font-semibold">Hourly Forecast</h3>
+        <div className="flex items-center justify-between">
+          <h3 className="text-lg font-semibold">Hourly Forecast</h3>
+          {currentHourIndex !== null && (
+            <div className="flex items-center gap-2 text-sm text-primary">
+              <div className="w-2 h-2 bg-primary rounded-full animate-pulse" />
+              <span className="font-medium">Current Hour</span>
+            </div>
+          )}
+        </div>
       </div>
       
       {viewMode === 'chart' ? (
@@ -363,6 +430,19 @@ export function HourlyPanelChart({
               
               {/* Comfort bands */}
               <ComfortBands data={processedData} />
+              
+              {/* Current hour indicator line */}
+              {currentHourIndex !== null && (
+                <ReferenceArea
+                  x1={currentHourIndex - 0.4}
+                  x2={currentHourIndex + 0.4}
+                  fill="var(--primary)"
+                  fillOpacity={0.2}
+                  stroke="var(--primary)"
+                  strokeWidth={2}
+                  strokeDasharray="4 4"
+                />
+              )}
               
               <XAxis 
                 dataKey="hour" 
@@ -397,14 +477,31 @@ export function HourlyPanelChart({
                 dataKey="temperature"
                 stroke="var(--primary)"
                 strokeWidth={3}
-                dot={<CustomDot />}
+                dot={(props) => {
+                  const { cx, cy, payload, index } = props;
+                  const isCurrentHour = payload?.isCurrentHour;
+                  return (
+                    <circle
+                      cx={cx}
+                      cy={cy}
+                      r={isCurrentHour ? 8 : 3}
+                      fill={isCurrentHour ? "var(--primary)" : "var(--primary)"}
+                      stroke="var(--background)"
+                      strokeWidth={isCurrentHour ? 3 : 1}
+                      className={isCurrentHour ? "animate-pulse drop-shadow-lg" : "opacity-60 hover:opacity-100 transition-opacity"}
+                    />
+                  );
+                }}
                 activeDot={{ r: 6, stroke: "var(--background)", strokeWidth: 2, fill: "var(--primary)" }}
               />
             </ComposedChart>
           </ResponsiveContainer>
         </div>
       ) : (
-        <div className={cn("space-y-1 overflow-y-auto", className?.includes('flex-1') ? "flex-1" : "max-h-96")}>
+        <div 
+          ref={listRef}
+          className={cn("space-y-1 overflow-y-auto p-1", className?.includes('flex-1') ? "flex-1" : "max-h-96")}
+        >
           {processedData.map((data, index) => (
             <HourlyListItem
               key={data.time}

@@ -77,6 +77,7 @@ export function DailyForecastChip({
         isSelected 
           ? "border-primary bg-primary/5 shadow-md" 
           : "border-border hover:border-primary/50",
+        isToday && !isSelected && "border-primary/40 bg-primary/3",
         className
       )}
       onClick={() => onSelect(dayIndex)}
@@ -101,7 +102,10 @@ export function DailyForecastChip({
     >
       <div className="p-3 text-center space-y-2">
         {/* Day Name */}
-        <div className="text-sm font-medium text-muted-foreground">
+        <div className={cn(
+          "text-sm font-medium",
+          isToday ? "text-primary font-semibold" : "text-muted-foreground"
+        )}>
           {formatDayName(data.time, isToday)}
         </div>
 

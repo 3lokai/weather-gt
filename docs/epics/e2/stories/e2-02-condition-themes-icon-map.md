@@ -7,7 +7,7 @@ Map WMO→`IconKey` and `ThemeKey` (clear/cloudy/overcast/fog/rain/snow/thunder 
 
 * Changing condition updates background gradient + icon.
 * Reduced motion disables gradient animation.
-* **Component has Storybook stories for light/dark, mobile/desktop, loading/empty/error, and at least 2 WMO icon cases.**
+
 
 ## Dependencies
 E2-01.

@@ -20,7 +20,7 @@ export interface PollenPanelProps {
   /** Additional CSS classes */
   className?: string;
   /** Size variant for the panel */
-  size?: 'sm' | 'md' | 'lg';
+  size?: 'sm' | 'lg';
   /** Show tooltips for metrics */
   showTooltips?: boolean;
   /** Layout variant */
@@ -60,7 +60,7 @@ export function PollenPanel({
   isLoading = false,
   error = null,
   className,
-  size = 'md',
+  size = 'sm',
   showTooltips = true,
   layout = 'grid',
 }: PollenPanelProps) {
@@ -73,14 +73,6 @@ export function PollenPanel({
       value: "text-sm font-semibold",
       gap: "gap-2",
       title: "text-sm",
-    },
-    md: {
-      card: "p-4",
-      icon: "text-xl",
-      label: "text-sm",
-      value: "text-base font-semibold",
-      gap: "gap-3",
-      title: "text-base",
     },
     lg: {
       card: "p-6",

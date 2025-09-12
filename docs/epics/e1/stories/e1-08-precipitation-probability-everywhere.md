@@ -6,7 +6,6 @@ Add PoP to current badge, daily chips, hourly tooltip.
 ## Acceptance Criteria
 
 * ✅ PoP shown as %; when missing regionally, UI gracefully hides.
-* ⚠️ **Component has Storybook stories for light/dark, mobile/desktop, loading/empty/error, and at least 2 WMO icon cases.** (Storybook not currently configured in project)
 
 ## Dependencies
 E1-05.
@@ -55,11 +54,9 @@ P1 (Strongly desired)
 - **Current Conditions Demo**: Updated with realistic PoP values for different weather scenarios
 - **Interactive Examples**: Multiple weather conditions with varying precipitation probabilities
 
-### Storybook Stories
-- **Status**: Storybook is not currently configured in this project
-- **Alternative**: Comprehensive demo sections have been added to the home page showcasing all PoP functionality
+### Demo Coverage
+- **Status**: Comprehensive demo sections have been added to the home page showcasing all PoP functionality
 - **Coverage**: Demo includes light/dark themes, mobile/desktop responsive design, and multiple WMO weather conditions
-- **Note**: If Storybook is added to the project in the future, stories should be created for the precipitation probability components
 
 ## Related Files
 - `src/lib/api/open-meteo.ts` - Precipitation probability data (already included in API)

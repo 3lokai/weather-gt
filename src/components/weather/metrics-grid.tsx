@@ -1,12 +1,13 @@
 'use client';
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { LottieTemperature, LottieWindSpeed, LottiePrecipitation, LottiePressure, LottieCloudCover, LottiePrecipitationProbability, LottieHumidity, LottieUVIndex, LottieVisibility } from "@/components/common/lottie-metric";
 import { useWeatherStore } from "@/lib/store/weather-store";
 import { cn } from "@/lib/utils";
-import { CurrentWeather, HourlyWeather } from "@/lib/api/open-meteo";
+import { CurrentWeather, HourlyWeather, DailyWeather } from "@/lib/api/open-meteo";
 import { calculatePressureTrend, formatTrendDisplay, getTrendColorClass } from "@/lib/utils/trend-calculator";
+import { mapSelectedDayToApiIndex, createCurrentWeatherFromDaily } from "@/lib/utils/weather-data-mapping";
 import { CaretDown } from "@phosphor-icons/react";
 
 export interface MetricsGridProps {
@@ -14,6 +15,10 @@ export interface MetricsGridProps {
   weather: CurrentWeather | null;
   /** Hourly weather data for trend calculations */
   hourlyWeather?: HourlyWeather | null;
+  /** Daily weather data for selected day metrics */
+  dailyWeather?: DailyWeather | null;
+  /** Selected day index (0 = today, 1+ = future days) */
+  selectedDayIndex?: number;
   /** Loading state */
   isLoading?: boolean;
   /** Error state */
@@ -21,7 +26,7 @@ export interface MetricsGridProps {
   /** Additional CSS classes */
   className?: string;
   /** Size variant for the grid */
-  size?: 'sm' | 'md' | 'lg';
+  size?: 'sm' | 'lg';
   /** Show tooltips for metrics */
   showTooltips?: boolean;
   /** Layout variant */
@@ -168,16 +173,36 @@ function getUnitForMetric(key: keyof CurrentWeather, units: any) {
 export function MetricsGrid({
   weather,
   hourlyWeather = null,
+  dailyWeather = null,
+  selectedDayIndex = 0,
   isLoading = false,
   error = null,
   className,
-  size = 'md',
+  size = 'lg',
   showTooltips = true,
   layout = 'grid',
   showExtendedMetrics = false
 }: MetricsGridProps) {
   const { units } = useWeatherStore();
   const [isExtendedVisible, setIsExtendedVisible] = useState(showExtendedMetrics);
+
+  // Get weather data for the selected day
+  const selectedDayWeather = useMemo(() => {
+    if (selectedDayIndex === 0) {
+      // Use current weather for today
+      return weather;
+    } else {
+      // Use daily forecast data for future days
+      const apiDayIndex = mapSelectedDayToApiIndex(selectedDayIndex);
+      
+      if (dailyWeather && apiDayIndex < dailyWeather.time.length) {
+        // Create a CurrentWeather-like object from daily data
+        return createCurrentWeatherFromDaily(dailyWeather, apiDayIndex);
+      }
+      // Fallback to current weather if day index is out of bounds
+      return weather;
+    }
+  }, [weather, dailyWeather, selectedDayIndex]);
 
   // Size-based styling
   const sizeStyles = {
@@ -187,13 +212,6 @@ export function MetricsGrid({
       label: "text-xs",
       value: "text-sm font-semibold",
       gap: "gap-2"
-    },
-    md: {
-      card: "p-4",
-      icon: "text-xl",
-      label: "text-sm",
-      value: "text-base font-semibold",
-      gap: "gap-3"
     },
     lg: {
       card: "p-6",
@@ -215,8 +233,8 @@ export function MetricsGrid({
     if (!isExtendedVisible) return false;
     
     // Check conditional display for metrics like wind gusts
-    if (metric.conditionalDisplay && weather) {
-      return metric.conditionalDisplay(weather, units);
+    if (metric.conditionalDisplay && selectedDayWeather) {
+      return metric.conditionalDisplay(selectedDayWeather, units);
     }
     
     return true;
@@ -303,7 +321,7 @@ export function MetricsGrid({
   }
 
   // Handle loading state
-  if (isLoading || !weather) {
+  if (isLoading || !selectedDayWeather) {
     return (
       <div 
         className={cn(layoutClasses, className)}
@@ -324,10 +342,10 @@ export function MetricsGrid({
       aria-label="Weather metrics"
     >
       {visibleMetrics.map((metric) => {
-        const value = weather[metric.key] as number;
+        const value = selectedDayWeather[metric.key] as number;
         const formattedValue = metric.formatter(value, units);
         const AnimatedComponent = metric.animatedComponent;
-        const trendDisplay = metric.trendDisplay?.(weather, hourlyWeather, units);
+        const trendDisplay = metric.trendDisplay?.(selectedDayWeather, hourlyWeather, units);
         
         return (
           <Card
@@ -350,7 +368,7 @@ export function MetricsGrid({
                     duration={180}
                     className="inline-block"
                     showLottie={true}
-                    lottieSize={40}
+                    lottieSize={60}
                     showText={false}
                   />
                 )}

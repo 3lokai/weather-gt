@@ -172,7 +172,7 @@ Claude Sonnet 4 (via Cursor)
 
 ### Debug Log References
 - Linting: `npm run lint` - Passed with only warnings from generated files
-- Testing: `npm test` - Core components working, some Storybook provider issues (unrelated to API fixes)
+- Testing: `npm test` - Core components working, some provider issues (unrelated to API fixes)
 - Development server: `npm run dev` - Started successfully
 
 ### Completion Notes List

@@ -30,7 +30,7 @@ export interface AirQualityPanelProps {
   /** Additional CSS classes */
   className?: string;
   /** Size variant for the panel */
-  size?: 'sm' | 'md' | 'lg';
+  size?: 'sm' | 'lg';
   /** Show tooltips for metrics */
   showTooltips?: boolean;
   /** Layout variant */
@@ -97,7 +97,7 @@ export function AirQualityPanel({
   isLoading = false,
   error = null,
   className,
-  size = 'md',
+  size = 'sm',
   showTooltips = true,
   layout = 'grid',
   showAQI = true,
@@ -111,14 +111,6 @@ export function AirQualityPanel({
       value: "text-sm font-semibold",
       gap: "gap-2",
       title: "text-sm",
-    },
-    md: {
-      card: "p-4",
-      icon: "text-xl",
-      label: "text-sm",
-      value: "text-base font-semibold",
-      gap: "gap-3",
-      title: "text-base",
     },
     lg: {
       card: "p-6",
@@ -134,7 +126,7 @@ export function AirQualityPanel({
 
   // Layout classes
   const layoutClasses = layout === 'grid' 
-    ? `grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 ${styles.gap}`
+    ? `grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 ${styles.gap}`
     : `flex flex-col ${styles.gap}`;
 
   // Loading skeleton component
@@ -284,20 +276,34 @@ export function AirQualityPanel({
             tabIndex={0}
           >
             <CardContent className="flex items-center justify-between space-x-3">
-              {/* Lottie Animation as Icon */}
-              <div className="flex-shrink-0">
-                <metric.lottieComponent
-                  value={metricData.value}
-                  duration={180}
-                  className="inline-block"
-                  showLottie={true}
-                  lottieSize={40}
-                  showText={false}
-                />
+              {/* Left Column: Lottie Animation and Metric Label */}
+              <div className="flex flex-col items-center space-y-2">
+                {/* Lottie Animation as Icon */}
+                <div className="flex-shrink-0">
+                  <metric.lottieComponent
+                    value={metricData.value}
+                    duration={180}
+                    className="inline-block"
+                    showLottie={true}
+                    lottieSize={40}
+                    showText={false}
+                  />
+                </div>
+
+                {/* Metric Type (PM2.5, O3, etc.) below Lottie */}
+                <div 
+                  className={cn(
+                    "text-muted-foreground font-medium text-center",
+                    styles.label
+                  )}
+                  aria-label={`Metric: ${metric.label}`}
+                >
+                  {metric.label}
+                </div>
               </div>
 
-              {/* Value and label on the right */}
-              <div className="flex flex-col items-end text-right flex-1">
+              {/* Right Column: Value and Badge */}
+              <div className="flex flex-col items-end text-right flex-1 space-y-1">
                 {/* Value with unit */}
                 <div 
                   className={cn(
@@ -309,21 +315,10 @@ export function AirQualityPanel({
                   {formatAirQualityValue(metricData.value, metric.unit)}
                 </div>
 
-                {/* Metric Type (PM2.5, O3, etc.) */}
-                <div 
-                  className={cn(
-                    "text-muted-foreground font-medium",
-                    styles.label
-                  )}
-                  aria-label={`Metric: ${metric.label}`}
-                >
-                  {metric.label}
-                </div>
-
                 {/* Severity Badge */}
                 <Badge
                   className={cn(
-                    "text-xs font-medium mt-1",
+                    "text-xs font-medium",
                     colorClasses.background,
                     colorClasses.text,
                     colorClasses.border

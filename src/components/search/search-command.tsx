@@ -7,6 +7,7 @@ import { useGeocodingSearch, geocodingResultToLocation } from '@/hooks/use-geoco
 import { usePrefetchWeatherForecast } from '@/hooks/use-weather-forecast';
 import { useOptimisticWeather } from '@/hooks/use-optimistic-weather';
 import { Icon } from '@/components/icons/phosphor-icon';
+import { cn } from '@/lib/utils';
 import {
   CommandDialog,
   CommandInput,
@@ -23,7 +24,7 @@ interface SearchCommandProps {
 
 export function SearchCommand({ open, onOpenChange }: SearchCommandProps) {
   const [query, setQuery] = useState('');
-  const { setSelectedLocation } = useWeatherStore();
+  const { setSelectedLocation, favorites, addFavorite, removeFavorite } = useWeatherStore();
   const { prefetchWeather } = usePrefetchWeatherForecast();
   const { setOptimisticWeather } = useOptimisticWeather();
   
@@ -52,6 +53,19 @@ export function SearchCommand({ open, onOpenChange }: SearchCommandProps) {
     onOpenChange(false);
     setQuery('');
   }, [setSelectedLocation, prefetchWeather, setOptimisticWeather, onOpenChange]);
+
+  // Handle favorite toggle
+  const handleFavoriteToggle = useCallback((result: any, event: React.MouseEvent) => {
+    event.stopPropagation();
+    const location = geocodingResultToLocation(result);
+    const isFavorited = favorites.some(fav => fav.id === location.id);
+    
+    if (isFavorited) {
+      removeFavorite(location.id);
+    } else {
+      addFavorite(location);
+    }
+  }, [favorites, addFavorite, removeFavorite]);
 
   // Clear query when dialog closes and manage focus
   useEffect(() => {
@@ -124,33 +138,59 @@ export function SearchCommand({ open, onOpenChange }: SearchCommandProps) {
 
         {results.length > 0 && (
           <CommandGroup heading="Locations" role="group" aria-label="Search results">
-            {results.map((result, index) => (
-              <CommandItem
-                key={`${result.id}-${result.latitude}-${result.longitude}`}
-                value={`${result.name} ${result.admin1 || ''} ${result.country}`.toLowerCase()}
-                onSelect={() => handleLocationSelect(result)}
-                className="cursor-pointer glass-hover"
-                role="option"
-                id={`location-${result.id}`}
-                aria-selected={index === 0}
-                aria-label={`${result.name}, ${[result.admin1, result.country].filter(Boolean).join(', ')}`}
-              >
-                <div className="flex items-center gap-3 w-full">
-                  <Icon name="MapPin" size={16} color="muted" aria-hidden="true" />
-                  <div className="flex-1 min-w-0">
-                    <div className="font-medium text-foreground truncate">
-                      {result.name}
+            {results.map((result, index) => {
+              const location = geocodingResultToLocation(result);
+              const isFavorited = favorites.some(fav => fav.id === location.id);
+              
+              return (
+                <CommandItem
+                  key={`${result.id}-${result.latitude}-${result.longitude}`}
+                  value={`${result.name} ${result.admin1 || ''} ${result.country}`.toLowerCase()}
+                  onSelect={() => handleLocationSelect(result)}
+                  className="cursor-pointer glass-hover group"
+                  role="option"
+                  id={`location-${result.id}`}
+                  aria-selected={index === 0}
+                  aria-label={`${result.name}, ${[result.admin1, result.country].filter(Boolean).join(', ')}`}
+                >
+                  <div className="flex items-center gap-3 w-full">
+                    <Icon name="MapPin" size={16} color="muted" aria-hidden="true" />
+                    <div className="flex-1 min-w-0">
+                      <div className="font-medium text-foreground truncate">
+                        {result.name}
+                      </div>
+                      <div className="text-xs text-muted-foreground truncate">
+                        {[result.admin1, result.country].filter(Boolean).join(', ')}
+                      </div>
                     </div>
-                    <div className="text-xs text-muted-foreground truncate">
-                      {[result.admin1, result.country].filter(Boolean).join(', ')}
+                    <div className="flex items-center gap-2">
+                      <div className="text-xs text-muted-foreground font-mono" aria-label={`Coordinates: ${result.latitude.toFixed(2)}, ${result.longitude.toFixed(2)}`}>
+                        {result.latitude.toFixed(2)}, {result.longitude.toFixed(2)}
+                      </div>
+                      <button
+                        onClick={(e) => handleFavoriteToggle(result, e)}
+                        className={cn(
+                          "p-1 rounded-full transition-all duration-200 opacity-0 group-hover:opacity-100",
+                          isFavorited 
+                            ? "text-red-500 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-950/20" 
+                            : "text-muted-foreground hover:text-orange-500 hover:bg-orange-50 dark:hover:bg-orange-950/20"
+                        )}
+                        aria-label={isFavorited ? `Remove ${result.name} from favorites` : `Add ${result.name} to favorites`}
+                      >
+                        <Icon 
+                          name="Heart" 
+                          size={16} 
+                          className={cn(
+                            "transition-all duration-200",
+                            isFavorited && "fill-current"
+                          )} 
+                        />
+                      </button>
                     </div>
                   </div>
-                  <div className="text-xs text-muted-foreground font-mono" aria-label={`Coordinates: ${result.latitude.toFixed(2)}, ${result.longitude.toFixed(2)}`}>
-                    {result.latitude.toFixed(2)}, {result.longitude.toFixed(2)}
-                  </div>
-                </div>
-              </CommandItem>
-            ))}
+                </CommandItem>
+              );
+            })}
           </CommandGroup>
         )}
 

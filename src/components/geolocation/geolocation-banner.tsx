@@ -21,8 +21,6 @@ export function GeolocationBanner({
 }: GeolocationBannerProps) {
   const [isDismissed, setIsDismissed] = useState(false);
   
-  console.log('🎨 GeolocationBanner: Component rendered', { isDismissed });
-  
   const {
     isLoading,
     error,
@@ -34,15 +32,11 @@ export function GeolocationBanner({
 
   // Handle location request
   const handleAllowLocation = async () => {
-    console.log('🎯 Banner: Starting location request...');
+  
     try {
       const result = await requestLocation();
-      console.log('✅ Banner: Location request successful, result:', result);
-      console.log('✅ Banner: Calling onLocationGranted');
-      onLocationGranted?.();
+         onLocationGranted?.();
     } catch (error) {
-      console.log('❌ Banner: Location request failed, error:', error);
-      console.log('❌ Banner: Calling onLocationDenied');
       onLocationDenied?.();
     }
   };
@@ -61,11 +55,9 @@ export function GeolocationBanner({
 
   // Don't render if dismissed
   if (isDismissed) {
-    console.log('🎨 GeolocationBanner: Not rendering because dismissed');
     return null;
   }
 
-  console.log('🎨 GeolocationBanner: Rendering banner');
 
   return (
     <Banner

@@ -10,7 +10,7 @@ so that **I can understand and use the design system consistently across all com
 
 ## Context
 
-This story creates the foundational documentation for our design system using Storybook's MDX format. It provides interactive documentation for design tokens, typography, spacing, and other foundational elements that all components will use.
+This story creates the foundational documentation for our design system. It provides interactive documentation for design tokens, typography, spacing, and other foundational elements that all components will use.
 
 ## Acceptance Criteria
 
@@ -183,8 +183,8 @@ src/stories/foundations/
 - [x] Interactive playground updates correctly
 - [x] Export/import functionality works
 - [x] All MDX pages build without errors
-- [x] Storybook builds successfully with all documentation
-- [x] CSS variables properly loaded in Storybook environment
+- [x] Documentation builds successfully
+- [x] CSS variables properly loaded in documentation environment
 
 ## Definition of Done
 
@@ -200,7 +200,6 @@ src/stories/foundations/
 ## Dependencies
 
 - **E2-01**: OKLCH Token System (must be complete)
-- **E2-04**: Storybook Foundations (must be complete)
 - **app/globals.css**: Tailwind v4 token definitions
 
 ## Notes
@@ -215,7 +214,7 @@ The documentation should be comprehensive enough that new team members can under
 Claude Sonnet 4 (via Cursor)
 
 ### Debug Log References
-- Storybook v9.1.5 successfully building with MDX documentation
+- Documentation successfully building with MDX pages
 - All MDX pages created and functional
 - Interactive components working correctly
 - Token values extracted from globals.css @theme definitions
@@ -236,7 +235,7 @@ Claude Sonnet 4 (via Cursor)
   - Visual parity spacing scale (2/4/6/8/12/16/24/32...)
 - All components follow accessibility best practices
 - Documentation is ready for component story development
-- Storybook builds successfully with all enhanced features
+- Documentation builds successfully with all enhanced features
 
 ### File List
 **Created Files:**
@@ -259,7 +258,7 @@ Claude Sonnet 4 (via Cursor)
   - Created 5 MDX documentation pages covering all design tokens
   - Built 8 interactive components for live token examples
   - Added accessibility guidelines and usage examples
-  - Integrated with existing Storybook setup
+  - Integrated with existing documentation setup
   - All documentation follows design system patterns
   - **Enhanced with weather-specific features:**
     - Added weather condition themes documentation
@@ -267,5 +266,5 @@ Claude Sonnet 4 (via Cursor)
     - Added weather-specific typography classes
     - Created atmospheric blur background effects
     - Enhanced spacing scale with visual parity system
-    - Fixed Storybook CSS variable loading issues
+    - Fixed CSS variable loading issues
     - Updated all testing checkboxes to reflect completed work

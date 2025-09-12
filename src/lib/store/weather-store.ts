@@ -23,11 +23,18 @@ export interface Units {
 
 // ThemeColors interface removed - themes now managed by next-themes
 
+export interface RecentSearch {
+  id: string;
+  location: Location;
+  timestamp: number;
+}
+
 export interface WeatherState {
   // Core state
   selectedLocation: Location | null;
   selectedDayIndex: number;
   favorites: Location[];
+  recentSearches: RecentSearch[];
   
   // Air quality data
   airQualityData: AirQualityData | null;
@@ -43,6 +50,9 @@ export interface WeatherState {
   setSelectedDayIndex: (index: number) => void;
   addFavorite: (location: Location) => void;
   removeFavorite: (locationId: string) => void;
+  reorderFavorites: (fromIndex: number, toIndex: number) => void;
+  addRecentSearch: (location: Location) => void;
+  clearRecentSearches: () => void;
   setUnits: (units: Partial<Units>) => void;
   setAirQualityData: (data: AirQualityData | null) => void;
   setPollenData: (data: PollenData | null) => void;
@@ -69,6 +79,7 @@ export const useWeatherStore = create<WeatherState>()(
       selectedLocation: null,
       selectedDayIndex: 0,
       favorites: [],
+      recentSearches: [],
       airQualityData: null,
       pollenData: null,
       units: defaultUnits,
@@ -78,6 +89,11 @@ export const useWeatherStore = create<WeatherState>()(
       // Actions
       setSelectedLocation: (location) => {
         set({ selectedLocation: location });
+        // Add to recent searches when location changes
+        if (location) {
+          const { addRecentSearch } = get();
+          addRecentSearch(location);
+        }
         // Trigger cache invalidation callback
         const { onLocationChange } = get();
         onLocationChange?.();
@@ -94,6 +110,34 @@ export const useWeatherStore = create<WeatherState>()(
       removeFavorite: (locationId) => {
         const { favorites } = get();
         set({ favorites: favorites.filter(fav => fav.id !== locationId) });
+      },
+
+      reorderFavorites: (fromIndex, toIndex) => {
+        const { favorites } = get();
+        const newFavorites = [...favorites];
+        const [movedItem] = newFavorites.splice(fromIndex, 1);
+        newFavorites.splice(toIndex, 0, movedItem);
+        set({ favorites: newFavorites });
+      },
+
+      addRecentSearch: (location) => {
+        const { recentSearches } = get();
+        const now = Date.now();
+        const newSearch: RecentSearch = {
+          id: `${location.id}-${now}`,
+          location,
+          timestamp: now
+        };
+        
+        // Remove existing entry for this location and add new one at the beginning
+        const filteredSearches = recentSearches.filter(search => search.location.id !== location.id);
+        const updatedSearches = [newSearch, ...filteredSearches].slice(0, 10); // Keep only last 10
+        
+        set({ recentSearches: updatedSearches });
+      },
+
+      clearRecentSearches: () => {
+        set({ recentSearches: [] });
       },
       
       setUnits: (newUnits) => {
@@ -115,6 +159,7 @@ export const useWeatherStore = create<WeatherState>()(
       name: 'weather-store',
       partialize: (state) => ({
         favorites: state.favorites,
+        recentSearches: state.recentSearches,
         units: state.units,
         selectedLocation: state.selectedLocation,
       }),
@@ -123,9 +168,13 @@ export const useWeatherStore = create<WeatherState>()(
         if (persistedState?.units?.precipitation === 'in') {
           persistedState.units.precipitation = 'inch';
         }
+        // Migration for E4-02: Add recentSearches if not present
+        if (version < 2 && !persistedState?.recentSearches) {
+          persistedState.recentSearches = [];
+        }
         return persistedState;
       },
-      version: 1,
+      version: 2,
     }
   )
 );

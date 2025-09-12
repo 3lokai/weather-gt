@@ -6,7 +6,7 @@ Grass/Tree/Weed indices with severity chips.
 ## Acceptance Criteria
 
 * Handles region‑unsupported cases with empty states.
-* **Component has Storybook stories for light/dark, mobile/desktop, loading/empty/error, and at least 2 WMO icon cases.**
+
 
 ## Dependencies
 None
@@ -38,7 +38,6 @@ P1 (Strongly desired)
 - `src/lib/utils/pollen.ts` - Pollen utility functions
 - `src/lib/utils/pollen-transform.ts` - Data transformation utilities
 - `src/hooks/use-pollen.ts` - Pollen data fetching hook
-- `src/stories/components/PollenPanel.stories.tsx` - Storybook stories
 - `src/app/pollen-demo/page.tsx` - Demo page
 
 ## Implementation Status
@@ -51,7 +50,6 @@ P1 (Strongly desired)
 4. **Loading States** - Skeleton loading states for better UX
 5. **Error Handling** - Graceful error states with user-friendly messages
 6. **Accessibility** - Full ARIA support, keyboard navigation, and screen reader compatibility
-7. **Storybook Stories** - Comprehensive stories covering all states and variants
 8. **Responsive Design** - Works on mobile, tablet, and desktop
 9. **Theme Support** - Light and dark theme compatibility
 10. **Type Safety** - Full TypeScript support with proper type definitions

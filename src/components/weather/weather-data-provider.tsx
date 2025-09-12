@@ -14,11 +14,12 @@ interface WeatherDataProviderProps {
     isLoading: boolean;
     isError: boolean;
     error: string | null;
+    selectedDayIndex: number;
   }) => ReactNode;
 }
 
 export function WeatherDataProvider({ children }: WeatherDataProviderProps) {
-  const { selectedLocation } = useWeatherStore();
+  const { selectedLocation, selectedDayIndex } = useWeatherStore();
   
   const {
     weather,
@@ -59,6 +60,7 @@ export function WeatherDataProvider({ children }: WeatherDataProviderProps) {
         isLoading,
         isError,
         error,
+        selectedDayIndex,
       })}
     </>
   );

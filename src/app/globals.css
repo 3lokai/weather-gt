@@ -683,3 +683,64 @@ html, body {
     @apply bg-background text-foreground;
   }
 }
+
+/* === THEMED SCROLLBARS === */
+@layer utilities {
+  /* Glass-themed scrollbar for all overflow elements */
+  .overflow-y-auto::-webkit-scrollbar,
+  .overflow-x-auto::-webkit-scrollbar,
+  .overflow-auto::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  
+  .overflow-y-auto::-webkit-scrollbar-track,
+  .overflow-x-auto::-webkit-scrollbar-track,
+  .overflow-auto::-webkit-scrollbar-track {
+    background: oklch(from var(--card) l c h / 0.1);
+    border-radius: 8px;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
+  
+  .overflow-y-auto::-webkit-scrollbar-thumb,
+  .overflow-x-auto::-webkit-scrollbar-thumb,
+  .overflow-auto::-webkit-scrollbar-thumb {
+    background: oklch(from var(--primary) l c h / 0.4);
+    border-radius: 8px;
+    border: 2px solid transparent;
+    background-clip: content-box;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .overflow-y-auto::-webkit-scrollbar-thumb:hover,
+  .overflow-x-auto::-webkit-scrollbar-thumb:hover,
+  .overflow-auto::-webkit-scrollbar-thumb:hover {
+    background: oklch(from var(--primary) l c h / 0.6);
+    background-clip: content-box;
+    transform: scale(1.1);
+  }
+  
+  .overflow-y-auto::-webkit-scrollbar-thumb:active,
+  .overflow-x-auto::-webkit-scrollbar-thumb:active,
+  .overflow-auto::-webkit-scrollbar-thumb:active {
+    background: oklch(from var(--primary) l c h / 0.8);
+    background-clip: content-box;
+  }
+  
+  .overflow-y-auto::-webkit-scrollbar-corner,
+  .overflow-x-auto::-webkit-scrollbar-corner,
+  .overflow-auto::-webkit-scrollbar-corner {
+    background: transparent;
+  }
+
+  /* Firefox scrollbar */
+  .overflow-y-auto,
+  .overflow-x-auto,
+  .overflow-auto {
+    scrollbar-width: thin;
+    scrollbar-color: oklch(from var(--primary) l c h / 0.4) transparent;
+  }
+}

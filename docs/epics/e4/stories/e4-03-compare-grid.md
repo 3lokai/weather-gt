@@ -1,11 +1,14 @@
 # E4-03 (P1) Compare Grid
 
 ## Description
-2–4 locations in responsive grid; linked hover on sparklines.
+2–4 locations in responsive grid with synchronized mini sparklines for visual pattern comparison and decision-making.
 
 ## Acceptance Criteria
 
-* Each card shows current, mini 7‑day hi/lo, PoP; hover syncs time index.
+* Each card shows current conditions, core metrics, and mini 7-day temperature/precipitation sparklines
+* Synchronized hover interactions across all cards highlight same time period
+* Visual pattern recognition enables quick weather trend comparison
+* Responsive design adapts graph complexity based on screen size
 
 ## Dependencies
 E1-04 (daily forecast), E1-05 (hourly data), charts
@@ -27,7 +30,7 @@ so that **I can easily compare weather conditions across different places and ma
 
 ## Context
 
-This story implements a location comparison feature that displays 2-4 locations in a responsive grid layout. Each location card shows current conditions, a mini 7-day forecast, and precipitation probability. The feature includes synchronized hover interactions on sparklines to compare data across locations at the same time index.
+This story implements a location comparison feature that displays 2-4 locations in a responsive grid layout. Each location card shows current conditions, core weather metrics, and mini sparkline graphs for 7-day temperature and precipitation trends. The feature includes synchronized hover interactions on sparklines to enable visual pattern comparison across locations at the same time index, supporting quick decision-making for travel and activity planning.
 
 ## Dev Notes
 
@@ -41,8 +44,9 @@ This story implements a location comparison feature that displays 2-4 locations 
 
 **Location Cards:**
 - Current weather conditions (temperature, condition, icon)
-- Mini 7-day forecast with high/low temperatures
-- Precipitation probability indicators
+- Core metrics (feels like, wind, humidity, pressure)
+- Mini 7-day temperature sparkline with high/low trends
+- Mini 7-day precipitation sparkline with probability trends
 - Location name and country
 - Quick action buttons (favorite, remove from comparison)
 
@@ -51,6 +55,8 @@ This story implements a location comparison feature that displays 2-4 locations 
 - Visual feedback showing which time period is being compared
 - Smooth animations for synchronized data updates
 - Touch-friendly interactions for mobile devices
+- Visual connection lines or shared highlight colors between cards
+- Unified tooltip showing all locations' data for selected day
 
 **Data Management:**
 - Fetch weather data for multiple locations in parallel
@@ -61,8 +67,9 @@ This story implements a location comparison feature that displays 2-4 locations 
 **Integration Points:**
 - Connect with favorites system for quick location selection
 - Use existing search functionality to add locations
-- Leverage existing chart components for sparklines
+- Leverage existing Recharts components from HourlyPanelChart for sparklines
 - Integrate with weather data fetching system
+- Use existing metrics grid patterns for core weather data display
 
 ### Design Considerations
 
@@ -75,10 +82,11 @@ This story implements a location comparison feature that displays 2-4 locations 
 
 **Card Content:**
 - Prominent current temperature and condition
-- Compact 7-day forecast with essential data
-- Clear precipitation probability indicators
+- Core metrics (feels like, wind, humidity, pressure) in compact format
+- Mini temperature sparkline showing 7-day high/low trends
+- Mini precipitation sparkline showing rain probability trends
 - Subtle location identification
-- Consistent visual hierarchy
+- Consistent visual hierarchy with clear metric prioritization
 
 **Synchronized Hover:**
 - Highlighted time index across all cards
@@ -87,10 +95,12 @@ This story implements a location comparison feature that displays 2-4 locations 
 - Accessible alternative for keyboard users
 
 **Performance Optimization:**
-- Lazy load comparison data
+- Lazy load comparison data and sparkline graphs
 - Efficient re-rendering on hover interactions
 - Debounced hover events to prevent excessive updates
-- Optimized chart rendering for multiple locations
+- Optimized chart rendering for multiple locations using existing Recharts setup
+- Progressive loading: core metrics first, graphs second
+- Pre-computed sparkline data for faster rendering
 
 ### Accessibility Requirements
 
@@ -107,10 +117,11 @@ This story implements a location comparison feature that displays 2-4 locations 
 - Clear focus indicators
 
 **Screen Reader Support:**
-- Descriptive labels for all data points
-- Clear comparison context
+- Descriptive labels for all data points and sparkline trends
+- Clear comparison context with data table alternatives for graphs
 - Instructions for synchronized interactions
 - Alternative text for weather icons
+- Trend descriptions for sparklines (e.g., "Temperature rising over next 3 days")
 
 ## Tasks / Subtasks
 
@@ -122,21 +133,25 @@ This story implements a location comparison feature that displays 2-4 locations 
 
 - [ ] **Task 2: Location Card Component**
   - [ ] Create comparison card with current conditions
-  - [ ] Add mini 7-day forecast display
-  - [ ] Implement precipitation probability indicators
+  - [ ] Add core metrics display (feels like, wind, humidity, pressure)
+  - [ ] Implement mini temperature sparkline (7-day high/low trends)
+  - [ ] Implement mini precipitation sparkline (7-day probability trends)
   - [ ] Add location identification and action buttons
 
 - [ ] **Task 3: Synchronized Hover System**
   - [ ] Implement hover detection on sparklines
-  - [ ] Create synchronized time index updates
-  - [ ] Add visual feedback for active time period
+  - [ ] Create synchronized time index updates across all cards
+  - [ ] Add visual feedback for active time period (highlight colors/connecting lines)
   - [ ] Implement smooth animations for data updates
+  - [ ] Add unified tooltip showing all locations' data for selected day
 
 - [ ] **Task 4: Data Management**
   - [ ] Implement parallel data fetching for multiple locations
-  - [ ] Add efficient caching for comparison data
+  - [ ] Add efficient caching for comparison data and sparkline data
   - [ ] Handle loading states for individual locations
   - [ ] Implement error handling for failed location data
+  - [ ] Pre-compute sparkline data for faster rendering
+  - [ ] Implement progressive loading (core metrics first, graphs second)
 
 - [ ] **Task 5: Location Management**
   - [ ] Add interface for selecting comparison locations
@@ -145,11 +160,12 @@ This story implements a location comparison feature that displays 2-4 locations 
   - [ ] Add validation for maximum 4 locations
 
 - [ ] **Task 6: Integration and Testing**
-  - [ ] Integrate with existing weather components
+  - [ ] Integrate with existing weather components and Recharts from HourlyPanelChart
   - [ ] Connect with search and favorites functionality
-  - [ ] Add unit tests for comparison logic
-  - [ ] Add component tests for grid and cards
-  - [ ] Add E2E tests for complete comparison flow
+  - [ ] Add unit tests for comparison logic and sparkline data processing
+  - [ ] Add component tests for grid, cards, and synchronized interactions
+  - [ ] Add E2E tests for complete comparison flow including graph interactions
+  - [ ] Add accessibility tests for screen reader support and keyboard navigation
 
 ## Testing
 
@@ -158,24 +174,32 @@ This story implements a location comparison feature that displays 2-4 locations 
 - Synchronized hover logic
 - Location validation (max 4 locations)
 - Data fetching and caching
+- Sparkline data processing and trend calculations
+- Progressive loading logic
 
 ### Component Tests
 - Grid layout responsiveness
-- Card rendering with different data
-- Hover interactions and synchronization
+- Card rendering with different data and sparklines
+- Hover interactions and synchronization across cards
 - Loading and error states
+- Sparkline rendering and interaction
+- Progressive loading behavior
 
 ### E2E Tests
 - Complete comparison workflow
 - Adding/removing locations
 - Synchronized interactions across devices
 - Performance with multiple locations
+- Sparkline hover synchronization
+- Visual pattern comparison effectiveness
 
 ### Accessibility Tests
 - Screen reader compatibility
 - Keyboard navigation
 - Focus management
 - ARIA pattern compliance
+- Data table alternatives for sparklines
+- Trend descriptions for visual patterns
 
 ## File List
 *This section will be updated by the Dev Agent during implementation*

@@ -23,7 +23,13 @@ interface InlineSearchProps {
 export function InlineSearch({ className, placeholder = 'Search for a place...' }: InlineSearchProps) {
   const [query, setQuery] = useState('');
   const [isOpen, setIsOpen] = useState(false);
-  const { setSelectedLocation, units, selectedLocation } = useWeatherStore();
+  const { 
+    setSelectedLocation, 
+    units, 
+    selectedLocation, 
+    recentSearches, 
+    clearRecentSearches 
+  } = useWeatherStore();
   const containerRef = useRef<HTMLDivElement>(null);
   
   const { results, isLoading, isEmpty } = useGeocodingSearch({ 
@@ -47,6 +53,36 @@ export function InlineSearch({ className, placeholder = 'Search for a place...' 
     setQuery('');
   }, [setSelectedLocation, units]);
 
+  // Handle recent search selection
+  const handleRecentSearchSelect = useCallback(async (recentSearch: any) => {
+    setSelectedLocation(recentSearch.location);
+    
+    // Prefetch weather data for selected location
+    try {
+      await getWeatherForecast(recentSearch.location.latitude, recentSearch.location.longitude, units);
+    } catch (error) {
+      console.warn('Failed to prefetch weather data:', error);
+    }
+    
+    setIsOpen(false);
+    setQuery('');
+  }, [setSelectedLocation, units]);
+
+  // Format relative time
+  const formatRelativeTime = (timestamp: number) => {
+    const now = Date.now();
+    const diff = now - timestamp;
+    const minutes = Math.floor(diff / (1000 * 60));
+    const hours = Math.floor(diff / (1000 * 60 * 60));
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+
+    if (minutes < 1) return 'Just now';
+    if (minutes < 60) return `${minutes}m ago`;
+    if (hours < 24) return `${hours}h ago`;
+    if (days < 7) return `${days}d ago`;
+    return new Date(timestamp).toLocaleDateString();
+  };
+
   // Handle clicks outside to close
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -61,6 +97,9 @@ export function InlineSearch({ className, placeholder = 'Search for a place...' 
 
   // Show results when we have query or loading
   const showResults = isOpen && (query.length >= 2 || isLoading);
+  
+  // Show recent searches as pills when focused and no query
+  const showRecentPills = isOpen && query.length === 0 && recentSearches.length > 0;
 
   return (
     <div ref={containerRef} className={`relative w-full ${className}`}>
@@ -114,7 +153,44 @@ export function InlineSearch({ className, placeholder = 'Search for a place...' 
         )}
       </div>
 
-      {/* Inline Results Dropdown */}
+      {/* Recent Searches Pills */}
+      {showRecentPills && (
+        <div className="absolute top-full left-0 right-0 mt-3 z-[100]">
+          <div className="glass-strong border border-border/20 rounded-lg shadow-xl backdrop-blur-xl p-4">
+            <div className="flex items-center justify-between mb-3">
+              <h3 className="text-sm font-medium text-foreground">Recent Searches</h3>
+              <button
+                onClick={clearRecentSearches}
+                className="text-xs text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1"
+                aria-label="Clear recent searches"
+              >
+                <Icon name="Trash" size={12} />
+                Clear
+              </button>
+            </div>
+            <div className="flex flex-wrap gap-2">
+              {recentSearches.slice(0, 3).map((recentSearch) => (
+                <button
+                  key={recentSearch.id}
+                  onClick={() => handleRecentSearchSelect(recentSearch)}
+                  className="inline-flex items-center gap-2 px-3 py-2 text-sm bg-muted/50 hover:bg-muted border border-border/50 hover:border-border rounded-full transition-all duration-200 hover:shadow-sm group"
+                  aria-label={`Select ${recentSearch.location.name}`}
+                >
+                  <Icon name="Clock" size={14} className="text-muted-foreground group-hover:text-foreground" />
+                  <span className="text-foreground group-hover:text-foreground">
+                    {recentSearch.location.name}
+                  </span>
+                  <span className="text-xs text-muted-foreground group-hover:text-muted-foreground">
+                    {formatRelativeTime(recentSearch.timestamp)}
+                  </span>
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Search Results Dropdown */}
       {showResults && (
         <div className="absolute top-full left-0 right-0 mt-2 z-[100]">
           <Command className="glass-strong border border-border/20 rounded-lg shadow-xl backdrop-blur-xl isolate">

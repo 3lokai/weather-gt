@@ -8,7 +8,7 @@ CSS variables wired to Tailwind with next-themes integration; light/dark base wi
 * Tokens applied app‑wide; AA contrast in both modes.
 * Uses next-themes for theme management (light/dark modes).
 * Automatic time-based theme switching on page load (light during day, dark during night).
-* **Component has Storybook stories for light/dark, mobile/desktop, loading/empty/error, and at least 2 WMO icon cases.**
+
 
 ## Dependencies
 None

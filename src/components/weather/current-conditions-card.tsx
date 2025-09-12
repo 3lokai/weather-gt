@@ -10,6 +10,7 @@ import { getWeatherCondition } from "@/lib/api/open-meteo";
 import { useWeatherStore, type Location } from "@/lib/store/weather-store";
 import { formatDateTime } from "@/lib/utils/units";
 import { cn } from "@/lib/utils";
+import { useWeatherShare } from "@/hooks/use-weather-share";
 import Image from "next/image";
 
 export interface CurrentConditionsData {
@@ -25,6 +26,8 @@ export interface CurrentConditionsCardProps {
   conditions: CurrentConditionsData;
   /** Location for display */
   location: Location;
+  /** Date to display (defaults to current date) */
+  displayDate?: Date;
   /** Additional CSS classes */
   className?: string;
   /** Enable weather hero background */
@@ -36,11 +39,13 @@ export interface CurrentConditionsCardProps {
 export function CurrentConditionsCard({
   conditions,
   location,
+  displayDate,
   className,
   showHeroBackground = false,
   heroBackgroundOpacity = 0.4
 }: CurrentConditionsCardProps) {
-  const { units } = useWeatherStore();
+  const { units, favorites, addFavorite, removeFavorite } = useWeatherStore();
+  const { shareWeather } = useWeatherShare();
   const cardRef = useRef<HTMLDivElement>(null);
   
   const { condition, iconKey, themeGroup } = getWeatherCondition(
@@ -63,9 +68,30 @@ export function CurrentConditionsCard({
     return `${loc.name}, ${loc.country}`;
   };
 
-  // Get current date and time
-  const currentDateTime = new Date();
-  const formattedDateTime = formatDateTime(currentDateTime, units.timeFormat);
+  // Get date and time to display (use provided date or current date)
+  const dateToDisplay = displayDate || new Date();
+  const formattedDateTime = formatDateTime(dateToDisplay, units.timeFormat);
+
+  // Check if location is favorited
+  const isFavorited = favorites.some(fav => fav.id === location.id);
+
+  // Handle favorite toggle
+  const handleFavoriteToggle = () => {
+    if (isFavorited) {
+      removeFavorite(location.id);
+    } else {
+      addFavorite(location);
+    }
+  };
+
+  // Handle share
+  const handleShare = async () => {
+    try {
+      await shareWeather();
+    } catch (error) {
+      console.error('Failed to share weather:', error);
+    }
+  };
 
   return (
     <Card
@@ -108,23 +134,29 @@ export function CurrentConditionsCard({
       <div className="absolute top-4 right-4 z-20 flex gap-2">
         <Button
           variant="ghost"
-          className="h-16 w-16 text-muted-foreground hover:text-orange-500 hover:bg-orange-50 dark:hover:bg-orange-950/20 active:text-red-500 active:bg-red-50 dark:active:bg-red-950/20 transition-all duration-200"
-          aria-label="Add to favorites"
-          onClick={() => {
-            // TODO: Implement favorites functionality in E4-02
-            console.log('Heart clicked - favorites functionality to be implemented');
-          }}
+          className={cn(
+            "h-16 w-16 transition-all duration-200",
+            isFavorited 
+              ? "text-red-500 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-950/20" 
+              : "text-muted-foreground hover:text-orange-500 hover:bg-orange-50 dark:hover:bg-orange-950/20"
+          )}
+          aria-label={isFavorited ? "Remove from favorites" : "Add to favorites"}
+          onClick={handleFavoriteToggle}
         >
-          <Icon name="Heart" size={32} className="size-8" />
+          <Icon 
+            name="Heart" 
+            size={32} 
+            className={cn(
+              "size-8 transition-all duration-200",
+              isFavorited ? "fill-red-500 text-red-500" : "text-muted-foreground"
+            )} 
+          />
         </Button>
         <Button
           variant="ghost"
           className="h-16 w-16 text-muted-foreground hover:text-blue-500 hover:bg-blue-50 dark:hover:bg-blue-950/20 active:text-blue-600 active:bg-blue-100 dark:active:bg-blue-900/30 transition-all duration-200"
           aria-label="Share weather"
-          onClick={() => {
-            // TODO: Implement share functionality in E7-02
-            console.log('Share clicked - share functionality to be implemented');
-          }}
+          onClick={handleShare}
         >
           <Icon name="Share" size={32} className="size-8" />
         </Button>

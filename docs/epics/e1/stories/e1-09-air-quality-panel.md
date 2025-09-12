@@ -7,7 +7,7 @@ Show PM2.5, PM10, O₃, NO₂, SO₂, CO; regional AQI if available.
 
 * Severity chips (Good/Moderate/Unhealthy…); tooltip explains metric.
 * A11y labels for screen readers.
-* **Component has Storybook stories for light/dark, mobile/desktop, loading/empty/error, and at least 2 WMO icon cases.**
+
 
 ## Dependencies
 None

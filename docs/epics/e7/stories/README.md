@@ -12,7 +12,6 @@ This directory contains individual story files for Epic E7 - Polish & Demo. Each
 ### P1 Stories (Strongly desired)
 - **[E7-03 - Offline/Network UX](./e7-03-offline-network-ux.md)** - Network failure handling and offline states
 - **[E7-04 - Keyboard Shortcuts](./e7-04-keyboard-shortcuts.md)** - Power user keyboard shortcuts
-- **[E7-05 - Storybook Mini](./e7-05-storybook-mini.md)** - Component documentation and testing
 
 ### P2 Stories (Nice to have)
 - **[E7-07 - Demo Mode](./e7-07-demo-mode.md)** - Curated demo experience for judges
@@ -27,7 +26,6 @@ Based on dependencies and priority, recommended implementation order:
 3. **E7-02** (Deep Links & Share) - Core functionality for demo
 4. **E7-03** (Offline/Network UX) - Depends on E6-01 (PWA)
 5. **E7-04** (Keyboard Shortcuts) - Enhances user experience
-6. **E7-05** (Storybook Mini) - Documentation and testing
 7. **E7-07** (Demo Mode) - Depends on E6-01 (PWA)
 8. **E7-08** (Moon Phase & Wind Arrow) - Nice-to-have enhancements
 

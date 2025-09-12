@@ -98,7 +98,6 @@ The current codebase contains multiple demo components and component variants th
 
 - [ ] **Task 3: Update Component Documentation**
   - [ ] Update component prop interfaces
-  - [ ] Update Storybook stories to remove unused variants
   - [ ] Update component documentation
   - [ ] Ensure all examples use production-relevant props
 
